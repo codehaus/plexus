@@ -80,10 +80,6 @@
     <!-- we don't want to inherit the wrong version  -->
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-component-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
     </dependency>
   </dependencies>

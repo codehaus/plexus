@@ -78,9 +78,6 @@ public class PlexusRuntimeBuilderTest
 
         // assert on core artifacts
         // container(s), appserver-host and plexus-utils
-        File componentApiJar = new File( getWorkingDirectory(), "core/plexus-component-api-1.0-alpha-18.jar" );
-        assertTrue( "plexus-component-api not in core dir", componentApiJar.exists() );
-
         File containerJar = new File( getWorkingDirectory(), "core/plexus-container-default-1.0-alpha-18.jar" );
         assertTrue( "plexus-container-default not in core dir", containerJar.exists() );
 
