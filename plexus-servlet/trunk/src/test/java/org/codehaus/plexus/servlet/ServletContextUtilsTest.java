@@ -25,7 +25,6 @@ package org.codehaus.plexus.servlet;
  */
 
 import junit.framework.TestCase;
-import org.codehaus.plexus.embed.Embedder;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.DefaultPlexusContainer;
 
