@@ -2,9 +2,6 @@ package org.codehaus.plexus.appserver.application.deploy.lifecycle.phase;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 
 import org.codehaus.plexus.ContainerConfiguration;
@@ -39,30 +36,21 @@ public class AppInitializationPhase
             addLibJars( context, name );
 
             // This call will initialise and start the container
-
-            InputStream in = context.getAppConfigurationFile() == null ? null : new FileInputStream( context
-                .getAppConfigurationFile().getAbsoluteFile() );
+            String config = context.getAppConfigurationFile() == null ? null : context.getAppConfigurationFile().getAbsolutePath();
 
             ContainerConfiguration cc= new DefaultContainerConfiguration();
             cc.setName( name );
             cc.setContext( context.getContextValues() );
             cc.setClassWorld( context
                 .getAppRuntimeProfile().getApplicationWorld() );
-            cc.setContainerConfiguration( context.getAppConfigurationFile()==null?null:context.getAppConfigurationFile().getAbsolutePath() );
+            cc.setContainerConfiguration( config );
             cc.setParentContainer( context.getAppServerContainer() );
 
             applicationContainer = new DefaultPlexusContainer( cc );
-
-//            applicationContainer = new DefaultPlexusContainer( name, context.getContextValues(), context
-//                .getAppRuntimeProfile().getApplicationWorld(), in, context.getAppServerContainer() );
         }
         catch ( PlexusContainerException e )
         {
             throw new AppDeploymentException( "Error starting container.", e );
-        }
-        catch ( FileNotFoundException e )
-        {
-            throw new AppDeploymentException( "Cannot find application.xml configuration file", e );
         }
 
         context.getAppRuntimeProfile().setApplicationContainer( applicationContainer );
