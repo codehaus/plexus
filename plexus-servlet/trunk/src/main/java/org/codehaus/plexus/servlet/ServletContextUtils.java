@@ -26,7 +26,6 @@ package org.codehaus.plexus.servlet;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -39,12 +38,7 @@ import java.util.StringTokenizer;
 
 import javax.servlet.ServletContext;
 
-import org.codehaus.plexus.classworlds.ClassWorld;
-import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.MutablePlexusContainer;
-import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.PlexusContainerException;
+import org.codehaus.plexus.*;
 import org.codehaus.plexus.component.repository.exception.ComponentLifecycleException;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.util.PropertyUtils;
@@ -87,7 +81,12 @@ public final class ServletContextUtils
         {
             context.log( "Initializing Plexus." );
 
-            container = new DefaultPlexusContainer( null, containerContext, null, resolveConfig( context ), null );
+            ContainerConfiguration cc = new DefaultContainerConfiguration();
+            cc.setName( null );
+            cc.setContext( containerContext );
+            cc.setContainerConfigurationURL( resolveConfig( context ) );
+
+            container = new DefaultPlexusContainer( cc );
 
             context.setAttribute( PlexusConstants.PLEXUS_KEY, container );
 
@@ -112,12 +111,13 @@ public final class ServletContextUtils
             // container realm, or even the parent classworld, since then the
             // components in WEB-INF/lib won't be discovered.
 
-            container = new DefaultPlexusContainer(
-                parentContainer.getName() + "-war",
-                containerContext,
-                null,
-                resolveConfig( context ),
-                parentContainer );
+            ContainerConfiguration cc = new DefaultContainerConfiguration();
+            cc.setName( parentContainer.getName() + "-war" );
+            cc.setContext( containerContext );
+            cc.setContainerConfigurationURL( resolveConfig( context ) );
+            cc.setParentContainer( parentContainer );
+
+            container = new DefaultPlexusContainer( cc );
 
             context.setAttribute( PlexusConstants.PLEXUS_KEY, container );
         }
@@ -205,7 +205,7 @@ public final class ServletContextUtils
         return properties;
     }
 
-    private InputStream resolveConfig( ServletContext context )
+    private URL resolveConfig( ServletContext context )
         throws PlexusContainerException
     {
         String plexusConf = context.getInitParameter( PlexusServletUtils.PLEXUS_CONFIG_PARAM );
@@ -227,7 +227,7 @@ public final class ServletContextUtils
 
             context.log( "resource = " + resource );
 
-            return resource == null ? null : resource.openStream();
+            return resource;
         }
         catch ( MalformedURLException e )
         {
