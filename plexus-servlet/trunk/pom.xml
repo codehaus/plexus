@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-servlet</artifactId>
   <name>Plexus Servlet</name>
-  <version>1.0-beta-9-SNAPSHOT</version>
+  <version>1.0-beta-9</version>
   <dependencies>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -33,9 +33,9 @@
 
   <url>http://plexus.codehaus.org/plexus-servlet/</url>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-servlet/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-servlet/trunk</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-servlet/trunk/</url>
+    <connection>scm:svn:https://svn.codehaus.org/plexus/plexus-servlet/tags/plexus-servlet-1.0-beta-9</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-servlet/tags/plexus-servlet-1.0-beta-9</developerConnection>
+    <url>https://svn.codehaus.org/plexus/plexus-servlet/tags/plexus-servlet-1.0-beta-9</url>
   </scm>
   <build>
     <pluginManagement>
