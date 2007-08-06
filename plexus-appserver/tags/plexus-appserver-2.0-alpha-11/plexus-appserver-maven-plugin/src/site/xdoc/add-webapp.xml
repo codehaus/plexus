@@ -1,0 +1,162 @@
+<document>
+  <properties>
+    <title>Adding war in a Plexus Runtime</title>
+    <author email="olamy@codehaus.org">Olivier Lamy</author>
+  </properties>
+  <body>
+    <section name="Configuring the Maven Plugin">
+      <p>You need to use the plugin org.codehaus.plexus:plexus-appserver-maven-plugin and declare it as follow :
+        <source>
+<![CDATA[        
+...
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-appserver-maven-plugin</artifactId>
+      <extensions>true</extensions>
+      <executions>
+        <execution>
+          <goals>
+            ...
+            <goal>add-webapps</goal>
+            ...
+          </goals>
+        </execution>
+      </executions>        
+....        
+]]>
+        </source>      
+      </p>
+      
+    </section>
+    <section name="Automatic Generation">
+      <p>The application.xml can be generated automatically for each project's dependency of type war.</p>    
+      <p>To configure the generation (handle only one http listener default value 8080), use webappMappings to set webAppContext per war artifact. <br />
+        The sample below configure :
+          <ul>
+            <li>httpListener 8090</li>
+            <li>context /continuum for the artifact org.apache.maven.continuum:continuum-webapp:war (your project <b>MUST</b> this artifact as dependency)</li>
+          </ul>
+        <source>
+<![CDATA[        
+...
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-appserver-maven-plugin</artifactId>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <goals>
+              ...
+              <goal>add-webapps</goal>
+              ...
+            </goals>
+          </execution>
+        </executions>    
+        <configuration>
+        ...
+          <webappPort>8090</webappPort>
+          <webappMappings>
+            ...
+            <property>
+              <name>org.apache.maven.continuum:continuum-webapp</name>
+              <value>/continuum</value>
+            </property>
+            ...
+          </webappMappings>          
+        ...
+        </configuration>    
+....        
+]]>        
+        </source>
+      </p>
+    </section>
+    <section name="Use predefine configuration file">
+      <p><b>since 2.0-alpha-10-SNAPSHOT</b></p>
+      <p>You can use a predefine application.xml which will be interpolated.<br />
+      <p>The properties found in applicationProperties will be use for the file interpolation</p>
+      <p>Some predefined properties will be injected :
+        <ul>
+          <li>webappPort contains mojo attribute webappPort</li>
+          <li>warFilePath contains ${plexus.home}/lib/ + war.getName</li>
+          <li>contextPath contains the defined webAppContext from webappMappings.</li>
+          <li>all properties found in applicationProperties</li>
+        </ul>
+      </p>      
+      <br />
+        Minimal application.xml :
+        <source>
+<![CDATA[  
+  <application>
+    <services>
+      <service>
+        <id>jetty</id>
+        <configuration>
+          <webapps>
+            <webapp> 
+              <file>${warFilePath}</file>
+              <context>${contextPath}</context>
+              <extraction-path>${plexus.home}/webapp</extraction-path>
+              <standardWebappClassloader>true</standardWebappClassloader>
+              <listeners>
+                <http-listener>
+                  <port>${webappPort}</port>
+                </http-listener>
+              </listeners>
+            </webapp>
+          </webapps>
+        </configuration>
+      </service>
+    </services>
+  </application>
+]]>         
+        </source>
+        your resource must contains the mandatory content :
+        <ul>
+          <li>line with <![CDATA[ <file>${warFilePath}</file> ]]> (or you have to correctly defined the value in your file)</li>
+        </ul>
+      </p>
+      <p>
+        <source>
+<![CDATA[        
+...
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-appserver-maven-plugin</artifactId>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <goals>
+              ...
+              <goal>add-webapps</goal>
+              ...
+            </goals>
+          </execution>
+        </executions>    
+        <configuration>
+        ...
+          <webappPort>8090</webappPort>
+          <applicationFile>src/conf/application.xml</applicationFile>
+          <webappMappings>
+            ...
+            <property>
+              <name>org.apache.maven.continuum:continuum-webapp</name>
+              <value>/continuum</value>
+            </property>
+            ...
+          </webappMappings>       
+         <applicationProperties>
+           <property>
+             <name>jetty.port</name>
+             <value>8090</value>
+           </property>
+           <property>
+             <name>foo</name>
+             <value>bar</value>
+           </property>
+         </applicationProperties>             
+        ...
+        </configuration>    
+....        
+]]>        
+        </source>      
+      </p>
+    </section>
+  </body>
+</document>
