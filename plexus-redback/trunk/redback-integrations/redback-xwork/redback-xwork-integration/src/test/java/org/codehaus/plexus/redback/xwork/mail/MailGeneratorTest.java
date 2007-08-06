@@ -69,4 +69,32 @@ public class MailGeneratorTest
         assertNotNull( content );
         assertTrue( content.indexOf( '$' ) == -1 ); // make sure everything is properly populate
     }
+
+    public void testGenerateAccountValidationMailCustomUrl()
+        throws Exception
+    {
+        AuthenticationKey authkey = keyManager.createKey( "username", "New User Email Validation",
+                                                          policy.getUserValidationSettings().getEmailValidationTimeout() );
+
+        generator = (MailGenerator) lookup( MailGenerator.ROLE, "custom-url" );
+        String content = generator.generateMail( "newAccountValidationEmail", authkey, "baseUrl" );
+
+        assertNotNull( content );
+        assertTrue( content.indexOf( "baseUrl" ) == -1 ); // make sure everything is properly populate
+        assertTrue( content.indexOf( "MY_APPLICATION_URL/security" ) > 0 ); // make sure everything is properly populate
+    }
+
+    public void testGeneratePasswordResetMailCustomUrl()
+        throws Exception
+    {
+        AuthenticationKey authkey = keyManager.createKey( "username", "Password Reset Request",
+                                                          policy.getUserValidationSettings().getEmailValidationTimeout() );
+
+        generator = (MailGenerator) lookup( MailGenerator.ROLE, "custom-url" );
+        String content = generator.generateMail( "passwordResetEmail", authkey, "baseUrl" );
+
+        assertNotNull( content );
+        assertTrue( content.indexOf( "baseUrl" ) == -1 ); // make sure everything is properly populate
+        assertTrue( content.indexOf( "MY_APPLICATION_URL/security" ) > 0 ); // make sure everything is properly populate
+    }
 }
