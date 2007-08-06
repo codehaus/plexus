@@ -1,0 +1,20 @@
+<configuration>
+
+  <servletContexts>
+    <servletContext>
+      <context>/</context>
+      <servlets>
+        <servlet>
+          <name>test</name>
+          <path>/test</path>
+          <servletClass>com.package.SomeClass</servletClass>
+        </servlet>
+        <servlet>
+          <name>test2</name>
+          <path>/test2</path>
+          <servletClass>com.package.SomeOtherClass</servletClass>
+        </servlet>
+      </servlets>
+    </servletContext>
+  </servletContexts>
+</configuration>

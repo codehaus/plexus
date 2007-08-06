@@ -1,0 +1,32 @@
+ -----
+ Plexus Appserver Host Runtime
+ -----
+ Rahul Thakur
+ -----
+ 03 May 2007
+ -----
+
+Overview
+
+  TODO: Discuss the objectives of Plexus Appserver Host in brief
+
+
+
+Concepts 
+
+  Pre-requisites for users to get started hacking components/apps/services for the runtime?
+
+  
+  Touch upon
+    - Plexus Components
+
+    - Plexus Applications 
+
+    - {{{plexus-services.html}Plexus Services}}
+
+    - Lifecycle & Phases (Hook back to Plexus Developers Guide)
+ 
+    - Booters 
+  
+
+
