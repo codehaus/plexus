@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+/*
+ * Copyright 2001-2006 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+
+<project name="Redback">
+  <bannerLeft>
+    <name>Redback</name>
+    <href>http://plexus.codehaus.org/redback</href>
+  </bannerLeft>
+  <!--
+  <bannerRight>
+    <name>The Codehaus</name>
+    <href>http://codehaus.org</href>
+    <src>http://media.codehaus.org/images/unity-codehaus-logo.png</src>
+  </bannerRight>
+  -->
+  <skin>
+    <groupId>org.codehaus.plexus</groupId>
+    <artifactId>plexus-stylus-skin</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </skin>
+ 
+  <body>
+    <links>
+      <item name="Plexus" href="http://plexus.codehaus.org/"/>
+      <item name="The Codehaus" href="http://codehaus.org" />
+    </links>
+
+    <menu name="Overview">
+      <item name="Introduction" href="index.html"/>
+      <item name="Authentication" href="authentication.html"/>
+      <item name="Authorization" href="authorization.html"/>
+      <item name="User Management" href="user-management.html"/>
+      <item name="Key Stores" href="key-store.html"/>
+    </menu>
+    
+    <menu name="Integration">
+      <item name="General" href="integration/general.html"/>
+      <item name="Webwork" href="integration/webwork.html"/>
+      <item name="Acegi" href="integration/acegi.html"/>
+      <item name="XFire" href="integration/xfire.html"/>
+    </menu>
+
+    <menu name="Role Based Access Control">
+      <item name="Introduction" href="rbac/introduction.html"/>
+      <item name="Role Management" href="rbac/role-management.html"/>
+      <item name="Resource Links" href="rbac/resource-links.html"/>
+    </menu>
+    
+    ${reports}
+  </body>
+</project>
