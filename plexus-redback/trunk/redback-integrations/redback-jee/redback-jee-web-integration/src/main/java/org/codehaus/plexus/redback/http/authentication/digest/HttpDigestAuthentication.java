@@ -84,6 +84,12 @@ public class HttpDigestAuthentication
         TokenBasedAuthenticationDataSource authDataSource = new TokenBasedAuthenticationDataSource();
         String authHeader = request.getHeader( "Authorization" );
 
+        // in tomcat this is : authorization=Basic YWRtaW46TWFuYWdlMDc=
+        if ( authHeader == null )
+        {
+            authHeader = request.getHeader("authorization");
+        }
+        
         if ( ( authHeader != null ) && authHeader.startsWith( "Digest " ) )
         {
             String rawDigestHeader = authHeader.substring( 7 );
