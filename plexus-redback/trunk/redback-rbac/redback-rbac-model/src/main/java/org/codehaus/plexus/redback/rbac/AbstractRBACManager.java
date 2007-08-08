@@ -601,13 +601,23 @@ public abstract class AbstractRBACManager
             while ( it.hasNext() )
             {
                 String roleName = (String) it.next();
-                Role crole = getRole( roleName );
-                if ( !roleSet.contains( crole ) )
+                
+                try
+                {                
+                    Role crole = getRole( roleName );               
+                 
+                    if ( !roleSet.contains( crole ) )
+                    {
+                        gatherEffectiveRoles( crole, roleSet );
+                    }
+                }
+                catch ( RbacObjectNotFoundException e )
                 {
-                    gatherEffectiveRoles( crole, roleSet );
+                    // the client application might not manage role clean up totally correctly so we want to notify
+                    // of a child role issue and offer a clean up process at some point
+                    getLogger().warn( "dangling child role: " + roleName  + " on " + role.getName() );
                 }
             }
-
         }
 
         if ( !roleSet.contains( role ) )
