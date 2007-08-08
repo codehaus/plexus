@@ -57,7 +57,13 @@ public class HttpBasicAuthentication
 
         PasswordBasedAuthenticationDataSource authDataSource;
         String header = request.getHeader( "Authorization" );
-
+        
+        // in tomcat this is : authorization=Basic YWRtaW46TWFuYWdlMDc=
+        if (header==null)
+        {
+           header = request.getHeader("authorization");
+        }
+        
         if ( ( header != null ) && header.startsWith( "Basic " ) )
         {
             String base64Token = header.substring( 6 );
