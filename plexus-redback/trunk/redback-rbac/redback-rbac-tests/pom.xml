@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.plexus.redback</groupId>
     <artifactId>redback-rbac</artifactId>
-    <version>1.0-alpha-2</version>
+    <version>1.0-alpha-3-SNAPSHOT</version>
   </parent>
   <artifactId>redback-rbac-tests</artifactId>
   <name>Plexus Redback :: RBAC Test Framework</name>
@@ -43,8 +43,8 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/tags/redback-1.0-alpha-2/redback-rbac/redback-rbac-tests</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/tags/redback-1.0-alpha-2/redback-rbac/redback-rbac-tests</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/tags/redback-1.0-alpha-2/redback-rbac/redback-rbac-tests</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/trunk/redback-rbac/redback-rbac-tests</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/trunk/redback-rbac/redback-rbac-tests</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-authorization/plexus-security-authorization-rbac/plexus-security-authorization-rbac-stores/plexus-security-authorization-rbac-store-test</url>
   </scm>
 </project>

@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.plexus.redback</groupId>
     <artifactId>redback-xwork</artifactId>
-    <version>1.0-alpha-2</version>
+    <version>1.0-alpha-3-SNAPSHOT</version>
   </parent> 
   <artifactId>redback-xwork-content</artifactId>
   <name>Plexus Redback :: Integration :: XWork Content War</name>
@@ -39,9 +39,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/tags/redback-1.0-alpha-2/redback-integrations/redback-xwork/redback-xwork-content</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/tags/redback-1.0-alpha-2/redback-integrations/redback-xwork/redback-xwork-content</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-redback/tags/redback-1.0-alpha-2/redback-integrations/redback-xwork/redback-xwork-content</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/trunk/redback-integrations/redback-xwork/redback-xwork-content</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/trunk/redback-integrations/redback-xwork/redback-xwork-content</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-redback/trunk/redback-integrations/redback-xwork/redback-xwork-content</url>
   </scm>
   <build>
     <plugins>
