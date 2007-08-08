@@ -50,8 +50,7 @@ public class JpoxRoleManagerTest
         super.setUp();
 
         DefaultConfigurableJdoFactory jdoFactory = (DefaultConfigurableJdoFactory) lookup( JdoFactory.ROLE, "users" );
-        assertEquals( DefaultConfigurableJdoFactory.class.getName(), jdoFactory.getClass().getName() );
-
+        
         jdoFactory.setPersistenceManagerFactoryClass( "org.jpox.PersistenceManagerFactoryImpl" ); //$NON-NLS-1$
 
         jdoFactory.setDriverName( System.getProperty( "jdo.test.driver", "org.hsqldb.jdbcDriver" ) ); //$NON-NLS-1$  //$NON-NLS-2$
