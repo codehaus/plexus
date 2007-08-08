@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.plexus.redback</groupId>
     <artifactId>redback-jee</artifactId>
-    <version>1.0-alpha-2-SNAPSHOT</version>
+    <version>1.0-alpha-2</version>
   </parent>
   <artifactId>redback-jee-web-integration</artifactId>
   <name>Plexus Redback :: Integration :: J(2)EE Web Integration</name>
@@ -33,8 +33,8 @@
   </dependencies>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/trunk/redback-integrations/redback-jee/redback-jee-web-integration</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/trunk/redback-integrations/redback-jee/redback-jee-web-integration</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-redback/trunk/redback-integrations/redback-jee/redback-jee-web-integration</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/tags/redback-1.0-alpha-2/redback-integrations/redback-jee/redback-jee-web-integration</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/tags/redback-1.0-alpha-2/redback-integrations/redback-jee/redback-jee-web-integration</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-redback/tags/redback-1.0-alpha-2/redback-integrations/redback-jee/redback-jee-web-integration</url>
   </scm>
 </project>
