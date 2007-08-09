@@ -33,7 +33,7 @@ import java.io.InputStream;
 public class DAVInputStream extends InputStream {
 
     /** <p>The {@link InputStream} of the source {@link File}. </p> */
-    private InputStream input = null;
+    protected InputStream input = null;
     /** <p>The {@link DAVResource} associated with this instance. </p> */
     private DAVResource resource = null;
 
@@ -42,6 +42,11 @@ public class DAVInputStream extends InputStream {
      */
     protected DAVInputStream(DAVResource resource) {
         if (resource == null) throw new NullPointerException();
+        init(resource);
+    }
+    
+    protected void init(DAVResource resource)
+    {
         try {
             this.input = new FileInputStream(resource.getFile());
         } catch (IOException e) {

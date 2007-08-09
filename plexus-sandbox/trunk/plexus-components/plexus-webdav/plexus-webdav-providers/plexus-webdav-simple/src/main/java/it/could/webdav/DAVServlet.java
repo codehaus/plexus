@@ -18,6 +18,8 @@ package it.could.webdav;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -40,16 +42,16 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class DAVServlet implements Servlet, DAVListener {
 
+    /** <p>The {@link DAVRepository} configured for this instance.</p> */
+    protected DAVRepository repository = null;
+    /** <p>The {@link DAVLogger} configured for this instance.</p> */
+    protected DAVLogger logger = null;
+    /** <p>The {@link DAVProcessor} configured for this instance.</p> */
+    protected DAVProcessor processor = null;
     /** <p>The {@link ServletContext} associated with this instance.</p> */
     private ServletContext context = null;
     /** <p>The {@link ServletConfig} associated with this instance.</p> */
     private ServletConfig config= null;
-    /** <p>The {@link DAVRepository} configured for this instance.</p> */
-    private DAVRepository repository = null;
-    /** <p>The {@link DAVProcessor} configured for this instance.</p> */
-    private DAVProcessor processor = null;
-    /** <p>The {@link DAVLogger} configured for this instance.</p> */
-    private DAVLogger logger = null;
 
     /**
      * <p>Create a new {@link DAVServlet} instance.</p>
@@ -98,7 +100,11 @@ public class DAVServlet implements Servlet, DAVListener {
         /* Create repository and processor */
         try {
             File root = new File(rootPath);
-            if (! root.isAbsolute()) {
+            // The repository may not be the local filesystem. It may be rooted at "/". 
+            // But then on Windows new File("/").isAbsolute() is false.
+            boolean unixAbsolute = rootPath.startsWith("/");
+            boolean localAbsolute = root.isAbsolute();
+            if (! unixAbsolute && !localAbsolute) {
                 URL url = this.context.getResource("/" + rootPath);
                 if (! "file".equals(url.getProtocol())) {
                     throw new ServletException("Invalid root \"" + url + "\"");
@@ -107,11 +113,18 @@ public class DAVServlet implements Servlet, DAVListener {
                 }
             }
 
-            /* Make sure that we use the correct repository type */
-            if ("true".equalsIgnoreCase(config.getInitParameter("xmlOnly"))) {
-                this.repository = new XMLRepository(root);
+            /* Discover the repository implementation at runtime */
+            String repositoryClass = config.getInitParameter("repositoryClass");
+            if(repositoryClass != null) {
+            	this.repository = DAVServlet.newRepository(repositoryClass, root);
             } else {
-                this.repository = new DAVRepository(root);
+            	// legacy configuration format. keep for now 
+	            /* Make sure that we use the correct repository type */
+	            if ("true".equalsIgnoreCase(config.getInitParameter("xmlOnly"))) {
+	                this.repository = new XMLRepository(root);
+	            } else {
+	                this.repository = new DAVRepository(root);
+	            }
             }
 
             /* Initialize the processor and register ourselves as listeners */
@@ -238,4 +251,31 @@ public class DAVServlet implements Servlet, DAVListener {
         if (servletName == null) throw new NullPointerException();
         return DAVRepository.class.getName() + "." + servletName;
     }
+    
+    /** factory for subclasses configured in web.xml 
+     * @param repositoryClass must extend DAVRepository and have a public constructor(File).
+     *  */
+    static DAVRepository newRepository(String repositoryClass, File root)
+    throws ServletException
+    {
+    	try {
+    		Class c = Class.forName(repositoryClass);
+    		Constructor ctor = c.getConstructor(new Class[]{File.class});
+    		DAVRepository repo = (DAVRepository)ctor.newInstance(new Object[]{root});
+    		return repo;
+    	} catch(ClassNotFoundException e) {
+    		throw new ServletException(e);
+    	} catch(LinkageError le) {
+    		throw new ServletException(le);        	
+    	} catch(NoSuchMethodException ns) {
+    		throw new ServletException(ns);
+    	} catch(InvocationTargetException it) {
+    		throw new ServletException(it);
+    	} catch(IllegalAccessException ia) {
+    		throw new ServletException(ia);
+    	} catch(InstantiationException ie) {
+    		throw new ServletException(ie);
+    	}
+    }
+    
 }

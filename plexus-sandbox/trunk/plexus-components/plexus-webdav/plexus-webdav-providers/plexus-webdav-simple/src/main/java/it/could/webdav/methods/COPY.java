@@ -63,7 +63,7 @@ public class COPY implements DAVMethod {
  
         try {
             resource.copy(dest, transaction.getOverwrite(), recursive);
-            transaction.setStatus(204);
+            transaction.setStatus(transaction.getOverwrite() ? 204 : 201);
         } catch (DAVMultiStatus multistatus) {
             multistatus.write(transaction);
         }

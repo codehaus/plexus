@@ -137,6 +137,7 @@ public class GET extends HEAD {
         byte buffer[] = new byte[4096];
         int k = -1;
         while ((k = in.read(buffer)) != -1) out.write(buffer, 0, k);
+        in.close();
         out.flush();
     }
 }

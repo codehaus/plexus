@@ -46,12 +46,12 @@ public class PUT implements DAVMethod {
      */
     public void process(DAVTransaction transaction, DAVResource resource)
     throws IOException {
-        /* 
-         * The HTTP status code will depend on the existance of the resource:
-         * if not found: HTTP/1.1 201 Created
-         * if existing:  HTTP/1.1 204 No Content
-         */
-        transaction.setStatus(resource.isNull()? 201: 204);
+    	/* 
+    	* The HTTP status code will depend on the existance of the resource:
+    	* if not found: HTTP/1.1 201 Created
+    	* if existing:  HTTP/1.1 204 No Content
+    	*/
+    	transaction.setStatus(resource.isNull()? 201: 204);
 
         /* Open the streams for reading and writing */
         InputStream in = transaction.read();
@@ -63,6 +63,7 @@ public class PUT implements DAVMethod {
             byte buffer[] = new byte[4096];
             int k = -1;
             while ((k = in.read(buffer)) != -1) out.write(buffer, 0, k);
+            in.close();            
             out.close();
         } finally {
             out.abort();
