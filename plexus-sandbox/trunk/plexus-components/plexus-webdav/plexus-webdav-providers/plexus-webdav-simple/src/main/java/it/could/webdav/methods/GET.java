@@ -75,6 +75,7 @@ public class GET extends HEAD {
         }
 
         if (resource.isCollection()) {
+            transaction.setHeader( "Content-Disposition", "inline; filename=\"index.html\"");
             PrintWriter out = transaction.write(ENCODING);
             String path = resource.getRelativePath();
             out.println("<html>");
