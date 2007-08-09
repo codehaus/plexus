@@ -56,6 +56,11 @@ public class DAVResource implements Comparable {
     protected DAVResource(DAVRepository repo, File file) {
         if (repo == null) throw new NullPointerException("Null repository");
         if (file == null) throw new NullPointerException("Null resource");
+        init(repo, file);
+    }
+
+    protected void init(DAVRepository repo, File file)
+    {
         this.repository = repo;
         this.file = file;
 
@@ -338,7 +343,7 @@ public class DAVResource implements Comparable {
         if (this.isNull()) throw new DAVException(404, "Not found", this);
 
         if (this.isResource()) {
-            if (!this.file.delete()) {
+            if (!windowsSafeDelete(this.file)) {
                 throw new DAVException(403, "Can't delete resource", this);
             } else {
                 this.repository.notify(this, DAVListener.RESOURCE_REMOVED);
@@ -394,6 +399,7 @@ public class DAVResource implements Comparable {
             byte buffer[] = new byte[4096];
             int k = -1;
             while ((k = in.read(buffer)) != -1) out.write(buffer, 0, k);
+            in.close();
             out.close();
         }
 
@@ -416,6 +422,18 @@ public class DAVResource implements Comparable {
         }
     }
 
+    /**
+     * <p>Moves this resource to the specified destination.</p>
+     *
+     * @throws DAVException If for any reason this resource cannot be deleted.
+     */
+    public void move(DAVResource dest, boolean overwrite, boolean recursive)
+    throws DAVMultiStatus {
+    	// the base class implementation is just copy-then-delete
+    	copy(dest, overwrite, recursive);
+    	this.delete();
+    }
+    
     /**
      * <p>Create a collection identified by this {@link DAVResource}.</p>
      *
@@ -467,4 +485,30 @@ public class DAVResource implements Comparable {
             throw new DAVException(403, "Parent not a collection", this);
         return new DAVOutputStream(this);
     }
+    
+    /** File.delete(file) sometimes fails transiently on Windows.
+     * This occurs even in low-I/O conditions, with file Explorer closed.
+     * Delete can still fail (correctly) due to the separate Windows problem 
+     * of file sharing violations.
+     * @return the status of the last attempt of File.delete()
+     */
+    private static boolean windowsSafeDelete(File f)
+    {
+    	// www.mail-archive.com/java-user@lucene.apache.org/msg08994.html
+    	boolean success = f.delete();
+    	int attempts = 1;
+    	while(!success && f.exists() && attempts < 3) {
+    		if(attempts > 2) {
+    			System.gc();
+    		}
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException ignore) {
+            }
+            success = f.delete();
+            attempts++;
+    	}
+    	return success;    	 
+    }
+    
 }

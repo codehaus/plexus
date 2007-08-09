@@ -16,11 +16,14 @@
  * ========================================================================== */
 package it.could.webdav.methods;
 
+import it.could.webdav.DAVException;
+import it.could.webdav.DAVMethod;
 import it.could.webdav.DAVMultiStatus;
 import it.could.webdav.DAVResource;
 import it.could.webdav.DAVTransaction;
 
 import java.io.IOException;
+import java.net.URI;
 
 
 /**
@@ -29,7 +32,7 @@ import java.io.IOException;
  *
  * @author <a href="http://could.it/">Pier Fumagalli</a>
  */
-public class MOVE extends COPY {
+public class MOVE implements DAVMethod {
 
     /**
      * <p>Create a new {@link MOVE} instance.</p>
@@ -42,11 +45,34 @@ public class MOVE extends COPY {
      * <p>Process the <code>MOVE</code> method.</p>
      */
     public void process(DAVTransaction transaction, DAVResource resource)
-    throws IOException {
+    throws IOException {    	
+        URI target = transaction.getDestination();
+        if (target == null) throw new DAVException(412, "No destination");
+        DAVResource dest = resource.getRepository().getResource(target);
+        
+        int depth = transaction.getDepth();
+        boolean recursive = false;
+        if (depth == 0) {
+            recursive = false;
+        } else if (depth == DAVTransaction.INFINITY) {
+            recursive = true;
+        } else {
+            throw new DAVException(412, "Invalid Depth specified");
+        }
+ 
         try {
-            super.process(transaction, resource);
-            resource.delete();
-            transaction.setStatus(204);
+			int status;
+			if(! dest.isNull() && ! transaction.getOverwrite()) {
+				status = 412; // MOVE-on-existing should fail with 412
+			} else {
+	            resource.move(dest, transaction.getOverwrite(), recursive);
+	            if(transaction.getOverwrite()) {
+	            	status = 204; // No Content
+	            } else {
+	            	status = 201; // Created
+	            }
+			}
+            transaction.setStatus(status);        
         } catch (DAVMultiStatus multistatus) {
             multistatus.write(transaction);
         }

@@ -42,9 +42,9 @@ public class DAVRepository {
 
 
     /** <p>The {@link File} identifying the root of this repository.</p> */
-    private File root = null;
+    protected File root = null;  
     /** <p>The {@link URI} associated with the root of this repository.</p> */
-    private URI base = null;
+    protected URI base = null;
     /** <p>The {@link Set} of all configured {@link DAVListener}s.</p> */
     private Set listeners = new HashSet();
 
@@ -56,6 +56,11 @@ public class DAVRepository {
      * @throws NullPointerExceptoin If the specified root was <b>null</b>.
      */
     public DAVRepository(File root)
+    throws IOException {
+    	init(root);
+    }
+
+    protected void init(File root)
     throws IOException {
         if (root == null) throw new NullPointerException("Null root");
         if (root.isDirectory()) {

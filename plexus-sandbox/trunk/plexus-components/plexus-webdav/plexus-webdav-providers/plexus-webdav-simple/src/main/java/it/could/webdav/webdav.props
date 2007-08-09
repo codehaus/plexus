@@ -10,4 +10,4 @@ servlet.information = Could.IT WebDAV Servlet
 servlet.signature = CouldIT-WebDAV
 
 # Version used in build files and combined to information and signature
-version = 0.4
+version = 0.5-dev

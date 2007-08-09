@@ -41,7 +41,7 @@ public class DAVOutputStream extends OutputStream {
     /** <p>The original resource {@link File}.</p> */
     private File temporary = null;
     /** <p>The {@link OutputStream} of the temporary {@link File}. </p> */
-    private OutputStream output = null;
+    protected OutputStream output = null;
     /** <p>The {@link DAVResource} associated with this instance. </p> */
     private DAVResource resource = null;
 
@@ -51,7 +51,10 @@ public class DAVOutputStream extends OutputStream {
     protected DAVOutputStream(DAVResource resource) {
         if (resource == null) throw new NullPointerException();
         this.resource = resource;
-
+        init(resource);
+    }
+    
+    protected void init(DAVResource resource) {
         try {
             this.temporary = resource.getParent().getFile();
             this.temporary = File.createTempFile(DAVResource.PREFIX,
