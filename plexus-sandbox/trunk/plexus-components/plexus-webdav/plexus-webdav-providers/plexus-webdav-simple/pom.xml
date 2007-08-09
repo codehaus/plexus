@@ -41,6 +41,8 @@
         <excludes>
           <exclude>**/*.java</exclude>
           <exclude>**/package.html</exclude>
+          <exclude>**/url.gif</exclude>
+          <exclude>**/url.pdf</exclude>
         </excludes>
       </resource>
     </resources>
