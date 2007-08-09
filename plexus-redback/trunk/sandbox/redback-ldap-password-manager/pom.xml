@@ -5,14 +5,13 @@
   <parent>
     <groupId>org.codehaus.plexus.redback</groupId>
     <artifactId>redback-users</artifactId>
-    <version>1.0-alpha-2-SNAPSHOT</version>
+    <version>1.0-alpha-3-SNAPSHOT</version>
   </parent>
   
   <artifactId>redback-ldap-password-manager</artifactId>
-  <version>1.0-SNAPSHOT</version>
   
   <name>redback-ldap-password-manager</name>
-
+ 
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
