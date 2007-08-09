@@ -1,4 +1,4 @@
-This library contains the patched sources to the it.could simple WebDAV library v0.4, licensed under the Apache License 2.0.
+This library contains the patched sources to the it.could simple WebDAV library r280, licensed under the Apache License 2.0.
 
 http://could.it/main/a-simple-approach-to-webdav.html
 
