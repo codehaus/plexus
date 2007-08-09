@@ -125,7 +125,7 @@ public class DAVTransaction {
     public int getDepth() {
         String depth = request.getHeader("Depth");
         if (depth == null) return INFINITY;
-        if ("infinity".equals(depth)) return INFINITY;
+        if ("infinity".equalsIgnoreCase(depth)) return INFINITY;
         try {
             return Integer.parseInt(depth);
         } catch (NumberFormatException exception) {
