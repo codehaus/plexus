@@ -111,6 +111,9 @@ public class JavamailMailSender
         {
             addProperty( AbstractJavamailMailSender.MAIL_SMTP_TIMEOUT, "30000" );
         }
+        
+        addProperty( AbstractJavamailMailSender.MAIL_SMTP_QUITWAIT, "false" );
+        
         Session session = Session.getInstance( getProperties(), null );
 
         return session;
