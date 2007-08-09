@@ -72,6 +72,8 @@ public abstract class AbstractJavamailMailSender
     public static final String MAIL_TRANSPORT_PROTOCOL = "mail.transport.protocol";
 
     public static final String MAIL_SMTP_DEBUG = "mail.smtp.debug";
+    
+    public static final String MAIL_SMTP_QUITWAIT = "mail.smtp.quitwait";
 
     /**
      * @deprecated
