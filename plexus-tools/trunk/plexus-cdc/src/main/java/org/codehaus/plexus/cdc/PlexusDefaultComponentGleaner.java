@@ -42,13 +42,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Suspendable;
 import org.codehaus.plexus.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -366,6 +360,20 @@ public class PlexusDefaultComponentGleaner
 
             String requirementClass = field.getType().getJavaClass().getFullyQualifiedName();
 
+            boolean isMap = requirementClass.equals( Map.class.getName() ) ||
+                    requirementClass.equals( Collection.class.getName() );
+
+            try
+            {
+                isMap = isMap || Collection.class.isAssignableFrom( Class.forName( requirementClass ) );
+            }
+            catch ( ClassNotFoundException e )
+            {
+                // ignore the assignable Collection test, though this should never happen
+            }
+
+            boolean isList = requirementClass.equals( List.class.getName() );
+
             ComponentRequirement cr = new ComponentRequirement();
 
             String role = getParameter( parameters, PLEXUS_ROLE_PARAMETER );
@@ -382,10 +390,6 @@ public class PlexusDefaultComponentGleaner
             cr.setRoleHint( getParameter( parameters, PLEXUS_ROLE_HINT_PARAMETER ) );
 
             cr.setFieldName( field.getName() );
-
-            boolean isMap = requirementClass.equals( Map.class.getName() );
-
-            boolean isList = requirementClass.equals( List.class.getName() );
 
             if ( isMap || isList )
             {
