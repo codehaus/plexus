@@ -6,7 +6,7 @@ package org.codehaus.plexus.component.repository.cdc;
  * @version $Id: ComponentRequirement.java 2573 2005-09-30 23:38:00Z jdcasey $ 
  * @todo Maybe hashCode and equals should use only 'role' 
  */
-public final class ComponentRequirement
+public class ComponentRequirement
 {
     private String role;
 
