@@ -30,6 +30,7 @@ import com.thoughtworks.qdox.model.JavaClassCache;
 import com.thoughtworks.qdox.model.JavaField;
 import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.cdc.ComponentRequirement;
+import org.codehaus.plexus.component.repository.cdc.ComponentRequirementList;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.logging.LogEnabled;
@@ -63,6 +64,8 @@ public class PlexusDefaultComponentGleaner
     public static final String PLEXUS_ROLE_PARAMETER = "role";
 
     public static final String PLEXUS_ROLE_HINT_PARAMETER = "role-hint";
+
+    public static final String PLEXUS_ROLE_HINT_LIST_PARAMETER = "role-hints";
 
     public static final String PLEXUS_ALIAS_PARAMETER = "alias";
 
@@ -374,7 +377,29 @@ public class PlexusDefaultComponentGleaner
 
             boolean isList = requirementClass.equals( List.class.getName() );
 
-            ComponentRequirement cr = new ComponentRequirement();
+            ComponentRequirement cr;
+
+            String hint = getParameter( parameters, PLEXUS_ROLE_HINT_PARAMETER );
+
+            if ( isMap || isList )
+            {
+                cr = new ComponentRequirementList();
+
+                String hintList = getParameter( parameters, PLEXUS_ROLE_HINT_LIST_PARAMETER );
+
+                if ( hintList != null )
+                {
+                    String[] hintArr = hintList.split( "," );
+
+                    ( (ComponentRequirementList) cr).setRoleHints( Arrays.asList( hintArr ) );
+                }
+            }
+            else
+            {
+                cr = new ComponentRequirement();
+
+                cr.setRoleHint( hint );
+            }
 
             String role = getParameter( parameters, PLEXUS_ROLE_PARAMETER );
 
@@ -387,13 +412,11 @@ public class PlexusDefaultComponentGleaner
                 cr.setRole( role );
             }
 
-            cr.setRoleHint( getParameter( parameters, PLEXUS_ROLE_HINT_PARAMETER ) );
-
             cr.setFieldName( field.getName() );
 
             if ( isMap || isList )
             {
-                if ( cr.getRoleHint() != null && !cr.getRoleHint().equals( PLEXUS_DEFAULT_HINT ) )
+                if ( hint != null )
                 {
                     getLogger().warn( "Field: '" + field.getName() + "': A role hint cannot be specified if the " +
                         "field is a java.util.Map or a java.util.List" );

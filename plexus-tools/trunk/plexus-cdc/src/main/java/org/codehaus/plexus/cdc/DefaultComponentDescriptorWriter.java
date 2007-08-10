@@ -32,6 +32,7 @@ import java.util.List;
 import org.codehaus.plexus.component.repository.ComponentDependency;
 import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.cdc.ComponentRequirement;
+import org.codehaus.plexus.component.repository.cdc.ComponentRequirementList;
 import org.codehaus.plexus.component.repository.cdc.ComponentSetDescriptor;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
@@ -181,7 +182,20 @@ public class DefaultComponentDescriptorWriter
 
             element( w, "role", cr.getRole() );
 
-            element( w, "role-hint", cr.getRoleHint() );
+            if ( cr instanceof ComponentRequirementList )
+            {
+                List hints = ( (ComponentRequirementList) cr ).getRoleHints();
+
+                w.startElement( "role-hints" );
+
+                // TODO add the hints
+
+                w.endElement();
+            }
+            else
+            {
+                element( w, "role-hint", cr.getRoleHint() );
+            }
 
             element( w, "field-name", cr.getFieldName() );
 

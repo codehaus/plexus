@@ -96,6 +96,16 @@ public class ComponentDescriptorCreatorTest
         assertEquals( "Expected 2 components with role *Child*", 2, i );
     }
 
+    public void testPartialListInjection()
+        throws Exception
+    {
+        ComponentSetDescriptor csd = buildCsd( 3 );
+
+        ComponentDescriptor cd = getComponentDescriptor( csd, "org.codehaus.plexus.cdc.test.ComponentX" );
+
+        assertEquals( 1, cd.getRequirements().size() );
+    }
+
     // ----------------------------------------------------------------------
     // Private
     // ----------------------------------------------------------------------
