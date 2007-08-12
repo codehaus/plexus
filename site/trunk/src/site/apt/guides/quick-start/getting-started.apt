@@ -10,14 +10,14 @@
 
 Five Minute Tutorial
 
-  In this tutorial, you will create a simple component, and use the Plexus embedder to start a container.
+  In this tutorial, you will create a simple component, and use the Plexus to start a container.
 
   <<Note:>> If you are using Maven 2, you can obtain the full sample code, and then build and run it using the
   following commands:
 
 ----
 mvn archetype:create \
-    -DarchetypeVersion=1.0-SNAPSHOT
+    -DarchetypeVersion=1.0-SNAPSHOT\
     -DarchetypeGroupId=org.codehaus.plexus.examples -DarchetypeArtifactId=plexus-examples-tutorial \
     -DartifactId=tutorial -DgroupId=test -DremoteRepositories=http://snapshots.repository.codehaus.org/ 
 cd tutorial
@@ -117,24 +117,23 @@ public class ParmesanCheese
 * Executing the Plexus Application
 
   The final step is to execute the application that uses this component. In this example, you will use
-  an embedded container from a standard Java class with a <<<main()>>> method.
+  an container from a standard Java class with a <<<main()>>> method.
 
 ** Creating the container
 
-  Creating the embedded container is very simple:
+  Creating the container is very simple:
 
 ----
-import org.codehaus.plexus.embed.Embedder;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.PlexusContainerException;
 
 public class App
 {
-
     public static void main(String args[]) throws Exception
     {
-        Embedder embedder = new Embedder();
-        embedder.start();
-
-        ...
+        PlexusContainer container= new DefaultPlexusContainer();
+        ...    
+        container.dispose();
     }
 }
 ----
@@ -146,10 +145,10 @@ public class App
 ** Retrieving the Component
 
   To retrieve the <<<Cheese>>> component from the container and execute it's <<<getAroma()>>> method, add the
-  following lines after those that start the embedder:
+  following lines after those that start the container:
 
 ----
-    Cheese cheese = (Cheese) embedder.lookup( Cheese.ROLE, "parmesan" );
+    Cheese cheese = (Cheese) container.lookup( Cheese.ROLE, "parmesan" );
     System.out.println( "Parmesan is " + cheese.getAroma() );
 ----
 
