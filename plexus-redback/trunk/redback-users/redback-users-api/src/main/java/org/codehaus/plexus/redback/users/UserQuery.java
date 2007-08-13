@@ -27,7 +27,7 @@ public interface UserQuery
 
     final static String ORDER_BY_FULLNAME = "fullname";
 
-    final static String ORDER_BY_EMAIL = "username";
+    final static String ORDER_BY_EMAIL = "email";
 
     final static Set ALLOWED_ORDER_FIELDS =
         new HashSet( Arrays.asList( new String[]{ORDER_BY_USERNAME, ORDER_BY_FULLNAME, ORDER_BY_EMAIL} ) );
