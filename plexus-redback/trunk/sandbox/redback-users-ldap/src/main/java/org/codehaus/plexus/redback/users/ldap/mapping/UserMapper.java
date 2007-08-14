@@ -23,6 +23,7 @@ import javax.naming.directory.Attributes;
 
 public interface UserMapper
 {
+	public static final String ROLE = UserMapper.class.getName();
 
     BasicUser getUser( Attributes attributes )
         throws MappingException;
