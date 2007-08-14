@@ -26,6 +26,13 @@ import org.codehaus.plexus.util.StringUtils;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttributes;
 
+/**
+ * 
+ * @author <a href="jesse@codehaus.org"> jesse
+ * @version "$Id$"
+ *
+ * @plexus.component role="org.codehaus.plexus.redback.users.ldap.mapping.UserMapper" role-hint="basic"
+ */
 public class BasicUserMapper
     implements UserMapper
 {
@@ -42,16 +49,34 @@ public class BasicUserMapper
 
     private PasswordManager passwordManager;
 
+    /**
+     * @plexus.configuration default-value="email"
+     */
     String emailAttribute;
 
+    /**
+     * @plexus.configuration default-value="givenName"
+     */
     String fullNameAttribute;
 
+    /**
+     * @plexus.configuration default-value="userPassword"
+     */
     String passwordAttribute;
 
+    /**
+     * @plexus.configuration default-value="cn"
+     */
     String userIdAttribute;
 
+    /**
+     * @plexus.configuration default-value=""
+     */
     String userBaseDn;
 
+    /**
+     * @plexus.configuration default-value="inetOrgPerson"
+     */
     String userObjectClass;
 
     public Attributes getCreationAttributes( User user, boolean encodePasswordIfChanged )

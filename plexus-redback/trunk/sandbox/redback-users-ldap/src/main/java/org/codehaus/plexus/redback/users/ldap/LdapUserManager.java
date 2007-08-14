@@ -1,5 +1,4 @@
 package org.codehaus.plexus.redback.users.ldap;
-
 /*
  * Copyright 2001-2007 The Codehaus.
  *
@@ -16,6 +15,10 @@ package org.codehaus.plexus.redback.users.ldap;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.ldap.helper.LdapConnection;
+import org.codehaus.plexus.ldap.helper.LdapConnectionFactory;
+import org.codehaus.plexus.ldap.helper.LdapException;
+
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
@@ -24,26 +27,47 @@ import org.codehaus.plexus.redback.users.UserManager;
 import org.codehaus.plexus.redback.users.UserManagerListener;
 import org.codehaus.plexus.redback.users.UserNotFoundException;
 import org.codehaus.plexus.redback.users.UserQuery;
-import org.codehaus.plexus.redback.users.ldap.ctl.LdapController;
 import org.codehaus.plexus.redback.users.ldap.ctl.LdapControllerException;
+import org.codehaus.plexus.redback.users.ldap.ctl.LdapController;
 import org.codehaus.plexus.redback.users.ldap.mapping.MappingException;
 import org.codehaus.plexus.redback.users.ldap.mapping.UserMapper;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.naming.directory.DirContext;
 
+/**
+ * 
+ * @author <a href="jesse@codehaus.org"> jesse
+ * @version "$Id$"
+ *
+ * @plexus.component role="org.codehaus.plexus.redback.users.UserManager" role-hint="ldap"
+ */
 public class LdapUserManager
     implements UserManager, LogEnabled
 {
+	
+	/**
+	 * @plexus.requirement role-hint="configurable"
+	 */
+	private LdapConnectionFactory connectionFactory;
+	
 
     private List<UserManagerListener> listeners = new ArrayList<UserManagerListener>();
 
     private Logger logger;
 
+    /**
+	 * @plexus.requirement role-hint="default"
+	 */
     private LdapController controller;
 
+    /**
+	 * @plexus.requirement role-hint="basic"
+	 */
     private UserMapper mapper;
 
     public void addUserManagerListener( UserManagerListener listener )
@@ -185,6 +209,8 @@ public class LdapUserManager
     public User findUser( String username )
         throws UserNotFoundException
     {
+    	
+    	
         // TODO Auto-generated method stub
         return null;
     }
@@ -229,14 +255,22 @@ public class LdapUserManager
         return "LDAP User-Manager: " + getClass().getName();
     }
 
-    @SuppressWarnings("unchecked")
     public List getUsers()
     {
-        // TODO Auto-generated method stub
+    	try 
+    	{
+    		List users = new ArrayList();
+    		users.addAll( controller.getUsers( newDirContext() ) );
+    		return users;
+    	}
+    	catch ( Exception e )
+    	{
+    		e.printStackTrace();
+    	}
+    	
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     public List getUsers( boolean orderAscending )
     {
         // TODO Auto-generated method stub
@@ -278,8 +312,17 @@ public class LdapUserManager
 
     private DirContext newDirContext()
     {
-        // TODO Implement DirContext creation.
-        return null;
+    	try
+    	{
+    		LdapConnection connection = connectionFactory.getConnection();
+    		
+    		return connection.getDirContext();
+    	}
+    	catch ( LdapException le )
+    	{
+    		le.printStackTrace();
+    		return null;
+    	}    	       
     }
 
     protected Logger getLogger()
