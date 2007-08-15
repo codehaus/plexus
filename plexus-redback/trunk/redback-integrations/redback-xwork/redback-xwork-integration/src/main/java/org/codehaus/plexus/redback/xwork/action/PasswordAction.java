@@ -19,6 +19,7 @@ package org.codehaus.plexus.redback.xwork.action;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.codehaus.plexus.redback.policy.PasswordEncoder;
 import org.codehaus.plexus.redback.policy.PasswordRuleViolationException;
@@ -64,6 +65,8 @@ public class PasswordAction
     private String newPassword;
 
     private String newPasswordConfirm;
+    
+    private String targetUrl;   
 
     private boolean provideExisting;
 
@@ -203,16 +206,25 @@ public class PasswordAction
         }
         else
         {
-            autologinCookies.removeRememberMeCookie();
-            autologinCookies.removeSignonCookie();
 
-            setAuthTokens( null );
-
+                      
             if ( super.session != null )
-            {
-                ( (SessionMap) super.session ).invalidate();
-            }
-
+            {            
+                
+                Map map  = (Map) super.session ;
+                String url = "";
+                if ( map.containsKey( "targetUrl" ) ) 
+                {
+                    url = map.remove( "targetUrl" ).toString() ;                    
+                    getLogger().info( "targetUrl is retrieved and removed from the session: " + url );
+                }
+                else 
+                {
+                    url = super.getBaseUrl();
+                    getLogger().info( "targetUrl is empty, assign it to baseUrl: " + url ); 
+                }
+                setTargetUrl( url );
+            }    
             return SUCCESS;
         }
     }
@@ -270,5 +282,15 @@ public class PasswordAction
         throws SecureActionException
     {
         return SecureActionBundle.AUTHONLY;
+    }
+
+    public String getTargetUrl()
+    {
+        return targetUrl;
+    }
+
+    public void setTargetUrl( String targetUrl )
+    {
+        this.targetUrl = targetUrl;
     }
 }

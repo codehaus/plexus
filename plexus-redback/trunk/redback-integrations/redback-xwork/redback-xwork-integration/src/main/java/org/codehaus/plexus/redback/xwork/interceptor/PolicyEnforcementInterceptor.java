@@ -16,6 +16,10 @@ package org.codehaus.plexus.redback.xwork.interceptor;
  * limitations under the License.
  */
 
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.redback.configuration.UserConfiguration;
 import org.codehaus.plexus.redback.system.DefaultSecuritySession;
@@ -25,6 +29,7 @@ import org.codehaus.plexus.redback.system.SecuritySystemConstants;
 import org.codehaus.plexus.redback.users.User;
 import org.codehaus.plexus.redback.users.UserManager;
 
+import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.ActionContext;
 import com.opensymphony.xwork.ActionInvocation;
 import com.opensymphony.xwork.interceptor.Interceptor;
@@ -97,6 +102,16 @@ public class PolicyEnforcementInterceptor
 
             if ( checkForcePasswordChange( securitySession, actionInvocation ) )
             {
+                Map session = ServletActionContext.getContext().getSession();
+                HttpServletRequest request = ServletActionContext.getRequest();
+                
+                String queryString = request.getQueryString();
+                String targetUrl = request.getRequestURL() + ( queryString==null ? "" : "?" + queryString );
+                
+                session.put( "targetUrl", targetUrl  );
+ 
+                getLogger().info( "storing targetUrl : " + targetUrl );                   
+                
                 return SECURITY_USER_MUST_CHANGE_PASSWORD;
             }
             
