@@ -124,7 +124,7 @@
       <result name="security-register-success" type="security-external">
         <param name="externalResult">security-register-success</param>
       </result>      
-      <result name="success">/WEB-INF/jsp/redback/passwordResetNotification.jsp</result>
+      <result name="success" type="redirect">${targetUrl}</result>
       <result name="cancel" type="redirect-action">
         <param name="actionName">logout</param>
         <param name="namespace">/security</param>
