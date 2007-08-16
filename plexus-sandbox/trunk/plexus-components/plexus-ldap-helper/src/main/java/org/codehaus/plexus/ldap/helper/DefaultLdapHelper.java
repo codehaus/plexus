@@ -26,6 +26,9 @@ import java.util.List;
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id: DefaultLdapHelper.java,v 1.1 2006/02/11 18:31:32 trygvis Exp $
+ * 
+ * @plexus.component role="org.codehaus.plexus.ldap.helper.LdapHelper"
+ *   role-hint="default"
  */
 public class DefaultLdapHelper<T>
     extends AbstractLogEnabled

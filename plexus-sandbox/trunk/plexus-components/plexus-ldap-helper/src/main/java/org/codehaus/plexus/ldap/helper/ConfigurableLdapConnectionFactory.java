@@ -39,25 +39,52 @@ import java.util.Properties;
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id: ConfigurableLdapConnectionFactory.java,v 1.3 2006/02/06 15:15:54 trygvis Exp $
+ * 
+ * @plexus.component role="org.codehaus.plexus.ldap.helper.LdapConnectionFactory"
+ *   role-hint="configurable"
  */
 public class ConfigurableLdapConnectionFactory
     extends AbstractLogEnabled
     implements LdapConnectionFactory, Initializable
 {
+	/**
+	 * @plexus.configuration
+	 */
     private String hostname;
 
+	/**
+	 * @plexus.configuration
+	 */
     private int port;
 
+	/**
+	 * @plexus.configuration
+	 */
     private String baseDn;
 
+	/**
+	 * @plexus.configuration
+	 */
     private String contextFactory;
 
+	/**
+	 * @plexus.configuration
+	 */
     private String bindDn;
 
+	/**
+	 * @plexus.configuration
+	 */
     private String password;
 
+	/**
+	 * @plexus.configuration
+	 */
     private String authenticationMethod;
 
+	/**
+	 * @plexus.configuration
+	 */
     private Properties extraProperties;
 
     private LdapConnectionConfiguration configuration;
@@ -134,4 +161,7 @@ public class ConfigurableLdapConnectionFactory
     {
         return "{ConfigurableLdapConnectionFactory: configuration: " + configuration + "}";
     }
+    
+    
+    
 }

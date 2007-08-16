@@ -14,6 +14,8 @@ import java.util.ArrayList;
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
+ * 
+ * @plexus.component role="org.codehaus.plexus.ldap.helper.factory.LdapFactoryHelper" role="default"
  */
 public class DefaultLdapFactoryHelper
     extends AbstractLogEnabled
