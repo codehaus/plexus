@@ -341,4 +341,14 @@ public class LdapUserManager
         this.logger = logger;
     }
 
+	public LdapConnectionFactory getConnectionFactory() {
+		return connectionFactory;
+	}
+
+	public void setConnectionFactory(LdapConnectionFactory connectionFactory) {
+		this.connectionFactory = connectionFactory;
+	}
+    
+    
+
 }

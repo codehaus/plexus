@@ -24,7 +24,7 @@ import javax.naming.directory.SearchResult;
 /**
  * 
  * @author <a href="jesse@codehaus.org"> jesse
- * @version "$Id:$"
+ * @version "$Id$"
  *
  * @plexus.component role="org.codehaus.plexus.redback.users.ldap.ctl.LdapController" role-hint="default"
  */
@@ -168,7 +168,7 @@ public class DefaultLdapController
         }
 
         ctls.setDerefLinkFlag( true );
-        ctls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
+        ctls.setSearchScope( SearchControls.SUBTREE_SCOPE );
         ctls.setReturningAttributes( userAttributes );
 
         String filter = "(&(objectClass=" + mapper.getUserObjectClass() + ")(" + mapper.getUserIdAttribute() + "=" + ( key != null ? key : "*" ) + "))";
@@ -188,16 +188,12 @@ public class DefaultLdapController
         {
             NamingEnumeration<SearchResult> results = searchUsers( null, context, null );
             Set<User> users = new LinkedHashSet<User>();
-
-            
             
             while ( results.hasMoreElements() )
             {
                 SearchResult result = results.nextElement();
                 users.add( mapper.getUser( result.getAttributes() ) );
             }
-
-            System.out.println("returning users: " + users.size() );
             
             return users;
         }
