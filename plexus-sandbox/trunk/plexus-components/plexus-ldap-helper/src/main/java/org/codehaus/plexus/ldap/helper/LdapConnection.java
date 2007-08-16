@@ -53,8 +53,9 @@ public class LdapConnection
         throws LdapException
     {
         this.config = config;
-
+        
         LdapName baseDn = new LdapName( config.getBaseDn().getRdns() );
+       
 
         if ( subRdn != null )
         {
