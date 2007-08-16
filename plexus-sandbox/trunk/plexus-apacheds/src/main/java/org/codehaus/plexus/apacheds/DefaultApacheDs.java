@@ -1,21 +1,22 @@
 package org.codehaus.plexus.apacheds;
 
 import org.apache.directory.server.configuration.MutableServerStartupConfiguration;
+import org.apache.directory.server.core.configuration.MutablePartitionConfiguration;
 import org.apache.directory.server.core.configuration.ShutdownConfiguration;
 import org.apache.directory.server.core.configuration.SyncConfiguration;
 import org.apache.directory.server.core.partition.impl.btree.MutableBTreePartitionConfiguration;
-import org.apache.directory.server.core.schema.bootstrap.ApacheSchema;
-import org.apache.directory.server.core.schema.bootstrap.ApachednsSchema;
-import org.apache.directory.server.core.schema.bootstrap.AutofsSchema;
-import org.apache.directory.server.core.schema.bootstrap.CollectiveSchema;
-import org.apache.directory.server.core.schema.bootstrap.CorbaSchema;
-import org.apache.directory.server.core.schema.bootstrap.CoreSchema;
-import org.apache.directory.server.core.schema.bootstrap.CosineSchema;
-import org.apache.directory.server.core.schema.bootstrap.InetorgpersonSchema;
-import org.apache.directory.server.core.schema.bootstrap.JavaSchema;
-import org.apache.directory.server.core.schema.bootstrap.Krb5kdcSchema;
-import org.apache.directory.server.core.schema.bootstrap.NisSchema;
-import org.apache.directory.server.core.schema.bootstrap.SystemSchema;
+import org.apache.directory.server.schema.bootstrap.ApacheSchema;
+import org.apache.directory.server.schema.bootstrap.ApachednsSchema;
+import org.apache.directory.server.schema.bootstrap.AutofsSchema;
+import org.apache.directory.server.schema.bootstrap.CollectiveSchema;
+import org.apache.directory.server.schema.bootstrap.CorbaSchema;
+import org.apache.directory.server.schema.bootstrap.CoreSchema;
+import org.apache.directory.server.schema.bootstrap.CosineSchema;
+import org.apache.directory.server.schema.bootstrap.InetorgpersonSchema;
+import org.apache.directory.server.schema.bootstrap.JavaSchema;
+import org.apache.directory.server.schema.bootstrap.Krb5kdcSchema;
+import org.apache.directory.server.schema.bootstrap.NisSchema;
+import org.apache.directory.server.schema.bootstrap.SystemSchema;
 import org.apache.directory.server.jndi.ServerContextFactory;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
@@ -28,6 +29,7 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.BasicAttributes;
+import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
 import java.io.File;
 import java.util.HashSet;
@@ -38,7 +40,9 @@ import java.util.TreeMap;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
+ * @version $Id:$
+ * 
+ * @plexus.component role="org.codehaus.plexus.apacheds.ApacheDs" role-hint="default"
  */
 public class DefaultApacheDs
     extends AbstractLogEnabled
@@ -48,9 +52,20 @@ public class DefaultApacheDs
     // Configuration
     // ----------------------------------------------------------------------
 
+	/**
+	 * @plexus.configuration default-value="true"
+	 */
     private boolean enableNetworking;
 
+    /**
+     * @plexus.configuration default-value="${plexus.home}"
+     */
     private File basedir;
+    
+    /**
+     * @plexus.configuration default-value="10389"
+     */
+    private int port;
 
     // ----------------------------------------------------------------------
     //
@@ -107,7 +122,7 @@ public class DefaultApacheDs
     public void addPartition( String name, String root, Set indexedAttributes, Attributes partitionAttributes )
         throws NamingException
     {
-        MutableBTreePartitionConfiguration configuration = new MutableBTreePartitionConfiguration();
+    	MutablePartitionConfiguration configuration = new MutablePartitionConfiguration();
         configuration.setName( name );
         configuration.setSuffix( root );
         configuration.setIndexedAttributes( indexedAttributes );
@@ -117,13 +132,14 @@ public class DefaultApacheDs
 
     public void addPartition( Partition partition )
         throws NamingException
-    {
-        MutableBTreePartitionConfiguration configuration = new MutableBTreePartitionConfiguration();
+    {	
+    	MutablePartitionConfiguration configuration = new MutablePartitionConfiguration();
+
         configuration.setName( partition.getName() );
         configuration.setSuffix( partition.getSuffix() );
         configuration.setIndexedAttributes( partition.getIndexedAttributes() );
         configuration.setContextEntry( partition.getContextAttributes() );
-        configuration.setSynchOnWrite( true );
+        //configuration.setSynchOnWrite( true );
         configuration.setCacheSize( 1 );
         configuration.setOptimizerEnabled( false );
         partitionConfigurations.add( configuration );
@@ -155,7 +171,7 @@ public class DefaultApacheDs
         // The root entry of the partition
         // ----------------------------------------------------------------------
 
-        Attributes attributes = new BasicAttributes();
+        Attributes attributes = new BasicAttributes( true );
         attributes.put( "dc", domainComponents[0] );
         Attribute objectClass = new BasicAttribute( "objectClass" );
         objectClass.add( "top" );
@@ -202,12 +218,14 @@ public class DefaultApacheDs
         configuration.setEnableNtp( false );
         configuration.setEnableKerberos( false );
         configuration.setEnableChangePassword( false );
-        configuration.setLdapPort( 10389 );
+        configuration.setLdapPort( port );
         configuration.setEnableNetworking( enableNetworking );
         configuration.setSynchPeriodMillis( 100 );
 
-        configuration.setContextPartitionConfigurations( partitionConfigurations );
+        configuration.setPartitionConfigurations( partitionConfigurations );
 
+        
+        
         Set bootstrapSchemas = new HashSet();
         bootstrapSchemas.add( new AutofsSchema() );
         bootstrapSchemas.add( new CorbaSchema() );
@@ -221,7 +239,7 @@ public class DefaultApacheDs
         bootstrapSchemas.add( new NisSchema() );
         bootstrapSchemas.add( new SystemSchema() );
         bootstrapSchemas.add( new ApachednsSchema() );
-        configuration.setBootstrapSchemas( bootstrapSchemas );
+        //configuration.setBootstrapSchemas( bootstrapSchemas );
 
         Properties env = new Properties();
         env.setProperty( Context.SECURITY_PRINCIPAL, "uid=admin,ou=system" );
@@ -230,8 +248,12 @@ public class DefaultApacheDs
         env.setProperty( Context.PROVIDER_URL, "ou=system" );
         env.setProperty( Context.INITIAL_CONTEXT_FACTORY, ServerContextFactory.class.getName() );
         env.putAll( configuration.toJndiEnvironment() );
-        new InitialDirContext( env );
+        InitialDirContext context = new InitialDirContext( env );
 
+        //Attributes inetAttributes = context.getAttributes( "cn=inetorgperson,ou=schema" );
+        
+        //inetAttributes.remove( "m-disabled" );
+        
         this.configuration = configuration;
 
         getLogger().info( "Started Apache Directory Server server." );
