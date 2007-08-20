@@ -154,7 +154,7 @@ public interface UserManager
     /**
      * Delete a user using the username.
      *
-     * @param principal the principal to look for.
+     * @param username the username to look for.
      * @throws UserNotFoundException the user was not found.
      */
     void deleteUser( String username )
