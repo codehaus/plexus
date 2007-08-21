@@ -195,7 +195,15 @@ public class DefaultLdapController
             while ( results.hasMoreElements() )
             {
                 SearchResult result = results.nextElement();
-                users.add( mapper.getUser( result.getAttributes() ) );
+                Object o = context.lookup( result.getNameInNamespace() ); 
+                if ( o instanceof Attributes )
+                {
+                	Attributes attributes = (Attributes) o;
+                }
+                else
+                {
+                	log.info( "Error with obtaining attibutes for " + result.getNameInNamespace() );
+                }
             }
             
             return users;
@@ -280,10 +288,18 @@ public class DefaultLdapController
                 Attributes attrs = next.getAttributes();
                 System.out.println( "ATTRIBUTES: + " + AttributeUtils.toString( attrs ) );
                 System.out.println( "ATTR: " + attrs.toString() + "\n\nName: "+ next.getNameInNamespace() );
-                Object o = context.lookup( next.getNameInNamespace() );                
-                Attributes attributes = (Attributes) o;
-                System.out.println( "ATTR2: " + attributes.toString() );
-                return mapper.getUser( attributes );
+                Object o = context.lookup( next.getNameInNamespace() ); 
+                if ( o instanceof Attributes )
+                {
+                	Attributes attributes = (Attributes) o;
+                	System.out.println( "ATTR2: " + attributes.toString() );
+                	return mapper.getUser( attributes );
+                }
+                else
+                {
+                	log.info( "Failed to get Attributes back from " + next.getNameInNamespace() );
+                	return null;
+                }
             }
             else
             {

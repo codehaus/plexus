@@ -40,12 +40,12 @@ import org.codehaus.plexus.apacheds.ApacheDs;
 import org.codehaus.plexus.apacheds.Partition;
 import org.codehaus.plexus.ldap.helper.LdapConnection;
 import org.codehaus.plexus.ldap.helper.LdapConnectionFactory;
+import org.codehaus.plexus.redback.password.PasswordManager;
+import org.codehaus.plexus.redback.policy.PasswordEncoder;
+import org.codehaus.plexus.redback.policy.encoders.SHA256PasswordEncoder;
 import org.codehaus.plexus.redback.users.User;
 import org.codehaus.plexus.redback.users.UserManager;
 
-import sun.security.action.GetLongAction;
-
-import com.sun.jndi.ldap.LdapCtx;
 
 /**
  * LdapUserManagerTest 
@@ -61,6 +61,8 @@ public class LdapUserManagerTest extends PlexusTestCase
 	
 	private String suffix;
 	
+	private PasswordEncoder passwordEncoder;
+	
 	/**
 	 * @plexus.requirement role-hint="configurable"
 	 */
@@ -72,6 +74,8 @@ public class LdapUserManagerTest extends PlexusTestCase
     {
     	super.setUp();
     		
+    	passwordEncoder = new SHA256PasswordEncoder();
+    	
     	apacheDs = (ApacheDs)lookup(ApacheDs.ROLE, "test" );    	
          
     	//suffix = apacheDs.addSimplePartition( "test", new String[]{ "plexus", "codehaus", "org"} ).getSuffix();
@@ -139,11 +143,11 @@ public class LdapUserManagerTest extends PlexusTestCase
     	
     	assertNotNull( userManager );
     	
-    	assertTrue( userManager.userExists( "jesse" ));
-    
+    	assertTrue( userManager.userExists( "jesse" ));    
+    	
     	List users = userManager.getUsers();
     	
-    	assertNotNull( users );
+    	assertNotNull( users );    	
     	
     	User jesse = userManager.findUser("jesse");
     	
@@ -151,12 +155,15 @@ public class LdapUserManagerTest extends PlexusTestCase
     	
     	assertEquals("jesse", jesse.getPrincipal().toString() );
     	assertEquals("foo", jesse.getEmail() );
+    	System.out.println( "password: " + jesse.getEncodedPassword() );
+    	
+    	assertTrue( passwordEncoder.isPasswordValid(jesse.getEncodedPassword(), "foo") );
     	
     	//System.out.println(users.size());
     }
     
     private void bindUserObject(DirContext context, String cn, String dn)
-			throws NamingException 
+			throws Exception 
 	{
 		Attributes attributes = new BasicAttributes(true);
 		BasicAttribute objectClass = new BasicAttribute("objectClass");
@@ -169,7 +176,7 @@ public class LdapUserManagerTest extends PlexusTestCase
 		attributes.put("cn", cn);
 		attributes.put("sn", "foo");
 		attributes.put("email", "foo");
-		attributes.put("userPassword", "foo");
+		attributes.put("userPassword", passwordEncoder.encodePassword( "foo" ) );
 		attributes.put("givenName", "foo");
 		context.bind(dn, attributes);
 	}
