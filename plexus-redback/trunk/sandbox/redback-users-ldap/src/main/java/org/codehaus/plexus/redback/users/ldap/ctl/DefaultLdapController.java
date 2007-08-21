@@ -44,6 +44,7 @@ public class DefaultLdapController
     public void removeUser( Object principal, DirContext context )
         throws LdapControllerException
     {
+    	/**
         log.info( "Searching for user: " + principal );
 
         try
@@ -58,6 +59,7 @@ public class DefaultLdapController
 
             throw new LdapControllerException( message, e );
         }
+        */
     }
 
     /* (non-Javadoc)
@@ -66,6 +68,7 @@ public class DefaultLdapController
     public void updateUser( User user, DirContext context )
         throws LdapControllerException, MappingException
     {
+    	/*
         BasicUser inLdap = getUser( user.getPrincipal(), context );
 
         String userIdAttribute = mapper.getUserIdAttribute();
@@ -113,7 +116,7 @@ public class DefaultLdapController
                 throw new LdapControllerException( message, e );
             }
         }
-
+*/
     }
 
     /* (non-Javadoc)
@@ -199,6 +202,7 @@ public class DefaultLdapController
                 if ( o instanceof Attributes )
                 {
                 	Attributes attributes = (Attributes) o;
+                	users.add( mapper.getUser( attributes ) );
                 }
                 else
                 {
@@ -222,6 +226,7 @@ public class DefaultLdapController
     public void createUser( User user, DirContext context, boolean encodePasswordIfChanged )
         throws LdapControllerException, MappingException
     {
+    	/**
         String userIdAttribute = mapper.getUserIdAttribute();
         String userBaseDn = mapper.getUserBaseDn();
 
@@ -266,6 +271,7 @@ public class DefaultLdapController
 
             throw new LdapControllerException( message, e );
         }
+        */
     }
 
     /* (non-Javadoc)

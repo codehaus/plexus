@@ -34,6 +34,7 @@ import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchResult;
 
 
+import org.apache.directory.shared.ldap.ldif.LdifUtils;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.apacheds.ApacheDs;
@@ -42,6 +43,7 @@ import org.codehaus.plexus.ldap.helper.LdapConnection;
 import org.codehaus.plexus.ldap.helper.LdapConnectionFactory;
 import org.codehaus.plexus.redback.password.PasswordManager;
 import org.codehaus.plexus.redback.policy.PasswordEncoder;
+import org.codehaus.plexus.redback.policy.encoders.SHA1PasswordEncoder;
 import org.codehaus.plexus.redback.policy.encoders.SHA256PasswordEncoder;
 import org.codehaus.plexus.redback.users.User;
 import org.codehaus.plexus.redback.users.UserManager;
@@ -74,7 +76,7 @@ public class LdapUserManagerTest extends PlexusTestCase
     {
     	super.setUp();
     		
-    	passwordEncoder = new SHA256PasswordEncoder();
+    	passwordEncoder = new SHA1PasswordEncoder();
     	
     	apacheDs = (ApacheDs)lookup(ApacheDs.ROLE, "test" );    	
          
@@ -96,6 +98,8 @@ public class LdapUserManagerTest extends PlexusTestCase
     
 
 	protected void tearDown() throws Exception {
+		
+		
 		
 		InitialDirContext context = apacheDs.getAdminContext();
 		
@@ -125,7 +129,7 @@ public class LdapUserManagerTest extends PlexusTestCase
 
     }
     
-    public void testInitialization( ) throws Exception
+    public void testConnection( ) throws Exception
     {
     	assertNotNull( connectionFactory );
     	
@@ -134,20 +138,33 @@ public class LdapUserManagerTest extends PlexusTestCase
     	assertNotNull( connection );
     	
     	DirContext context = connection.getDirContext();
+    
+    	assertNotNull( context );
+    }
+    	
+    public void testDirectUsersExistance() throws Exception
+    {
+    	LdapConnection connection = connectionFactory.getConnection();
+    	
+    	DirContext context = connection.getDirContext();
     	
     	assertExist( context, createDn( "jesse" ), "cn", "jesse" );
     	//assertExist( context, createDn( "sn=foo" ), "sn", "sn=foo" );
     	assertExist( context, createDn( "joakim" ), "cn", "joakim" );
     	
-    	assertNotNull( context );
-    	
+    }
+    
+    public void testUserManager() throws Exception
+    { 	
     	assertNotNull( userManager );
     	
     	assertTrue( userManager.userExists( "jesse" ));    
     	
     	List users = userManager.getUsers();
     	
-    	assertNotNull( users );    	
+    	assertNotNull( users );  
+    	
+    	assertEquals( 2, users.size() );
     	
     	User jesse = userManager.findUser("jesse");
     	
@@ -155,11 +172,9 @@ public class LdapUserManagerTest extends PlexusTestCase
     	
     	assertEquals("jesse", jesse.getPrincipal().toString() );
     	assertEquals("foo", jesse.getEmail() );
-    	System.out.println( "password: " + jesse.getEncodedPassword() );
-    	
+    	assertEquals("foo", jesse.getFullName() );
     	assertTrue( passwordEncoder.isPasswordValid(jesse.getEncodedPassword(), "foo") );
     	
-    	//System.out.println(users.size());
     }
     
     private void bindUserObject(DirContext context, String cn, String dn)
@@ -195,6 +210,7 @@ private void assertExist( DirContext context, String dn, String attribute, Strin
     //System.out.println( "checking " + value + " against " + attributes.get( attribute ).get());
     assertEquals( value, attributes.get( attribute ).get() );
     
+    System.out.println( LdifUtils.convertToLdif(attributes) );
     //System.out.println( AttributeUtils.toString( attributes ) );
 }
     
