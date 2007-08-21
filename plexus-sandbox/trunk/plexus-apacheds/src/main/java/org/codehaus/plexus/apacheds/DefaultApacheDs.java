@@ -257,6 +257,8 @@ public class DefaultApacheDs
         this.configuration = configuration;
 
         getLogger().info( "Started Apache Directory Server server." );
+        
+        stopped = false;
     }
 
     public void stopServer()

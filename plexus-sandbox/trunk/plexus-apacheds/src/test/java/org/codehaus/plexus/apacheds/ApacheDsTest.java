@@ -25,12 +25,16 @@ public class ApacheDsTest
         super.setUp();
 
         FileUtils.deleteDirectory( getTestFile( "target/plexus-home" ) );
+                
     }
 
     public void testBasic()
         throws Exception
     {
         ApacheDs apacheDs = (ApacheDs) lookup( ApacheDs.ROLE );
+        
+        apacheDs.setBasedir( getTestFile( "target/plexus-home" ) );
+        
         apacheDs.addSimplePartition( "test", new String[]{"plexus", "codehaus", "org"} ).getSuffix();
         apacheDs.startServer();
 
@@ -53,7 +57,7 @@ public class ApacheDsTest
         // ----------------------------------------------------------------------
 
         apacheDs = (ApacheDs) lookup( ApacheDs.ROLE );
-        apacheDs.addSimplePartition( "test", new String[]{"plexus", "codehaus", "org"} ).getSuffix();
+        //apacheDs.addSimplePartition( "test", new String[]{"plexus", "codehaus", "org"} ).getSuffix();
         apacheDs.startServer();
 
         assertExist( context, createDn( "cn=trygvis" ), "cn", "cn=trygvis" );
