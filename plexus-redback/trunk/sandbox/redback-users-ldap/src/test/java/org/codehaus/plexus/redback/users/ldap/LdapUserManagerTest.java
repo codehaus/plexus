@@ -40,6 +40,7 @@ import org.codehaus.plexus.apacheds.ApacheDs;
 import org.codehaus.plexus.apacheds.Partition;
 import org.codehaus.plexus.ldap.helper.LdapConnection;
 import org.codehaus.plexus.ldap.helper.LdapConnectionFactory;
+import org.codehaus.plexus.redback.users.User;
 import org.codehaus.plexus.redback.users.UserManager;
 
 import sun.security.action.GetLongAction;
@@ -94,9 +95,9 @@ public class LdapUserManagerTest extends PlexusTestCase
 		
 		InitialDirContext context = apacheDs.getAdminContext();
 		
-		context.unbind( createDn( "cn=jesse" ) );
+		context.unbind( createDn( "jesse" ) );
         
-        context.unbind( createDn( "cn=joakim" ) );
+        context.unbind( createDn( "joakim" ) );
 		
 		apacheDs.stopServer();
 		
@@ -110,11 +111,11 @@ public class LdapUserManagerTest extends PlexusTestCase
     {
         InitialDirContext context = apacheDs.getAdminContext();        
 
-        String cn = "cn=jesse";
+        String cn = "jesse";
         bindUserObject( context, cn, createDn( cn ) );
         assertExist( context, createDn( cn ), "cn", cn );
 
-        cn = "cn=joakim";
+        cn = "joakim";
         bindUserObject( context, cn, createDn( cn ) );
         assertExist( context, createDn( cn ), "cn", cn );
 
@@ -130,19 +131,26 @@ public class LdapUserManagerTest extends PlexusTestCase
     	
     	DirContext context = connection.getDirContext();
     	
-    	assertExist( context, createDn( "cn=jesse" ), "cn", "cn=jesse" );
+    	assertExist( context, createDn( "jesse" ), "cn", "jesse" );
     	//assertExist( context, createDn( "sn=foo" ), "sn", "sn=foo" );
-    	assertExist( context, createDn( "cn=joakim" ), "cn", "cn=joakim" );
+    	assertExist( context, createDn( "joakim" ), "cn", "joakim" );
     	
     	assertNotNull( context );
     	
     	assertNotNull( userManager );
     	
     	assertTrue( userManager.userExists( "jesse" ));
-    	
+    
     	List users = userManager.getUsers();
     	
     	assertNotNull( users );
+    	
+    	User jesse = userManager.findUser("jesse");
+    	
+    	assertNotNull( jesse );
+    	
+    	assertEquals("jesse", jesse.getPrincipal().toString() );
+    	assertEquals("foo", jesse.getEmail() );
     	
     	//System.out.println(users.size());
     }
@@ -168,7 +176,7 @@ public class LdapUserManagerTest extends PlexusTestCase
 
 private String createDn( String cn )
 {
-    return cn + "," + suffix;
+    return "cn=" + cn + "," + suffix;
 }
 
 private void assertExist( DirContext context, String dn, String attribute, String value )
@@ -177,10 +185,10 @@ private void assertExist( DirContext context, String dn, String attribute, Strin
     Object o = context.lookup( dn );
     assertTrue( o instanceof Attributes );
     Attributes attributes = (Attributes) o;
-    System.out.println( "checking " + value + " against " + attributes.get( attribute ).get());
+    //System.out.println( "checking " + value + " against " + attributes.get( attribute ).get());
     assertEquals( value, attributes.get( attribute ).get() );
     
-    System.out.println( AttributeUtils.toString( attributes ) );
+    //System.out.println( AttributeUtils.toString( attributes ) );
 }
     
 }
