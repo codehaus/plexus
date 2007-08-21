@@ -206,13 +206,22 @@ public class LdapUserManager
         // TODO Implement erase!
     }
 
-    public User findUser( String username )
-        throws UserNotFoundException
+    public User findUser( String username ) throws UserNotFoundException
     {
-    	
-    	
-        // TODO Auto-generated method stub
-        return null;
+    	try
+        {
+            return controller.getUser( username, newDirContext() );
+        }
+        catch ( LdapControllerException e )
+        {
+            getLogger().error( "Failed to find user: " + username, e );
+            return null;
+        }
+        catch ( MappingException e )
+        {
+            getLogger().error( "Failed to map user: " + username, e );
+            return null;
+        }
     }
 
     public User findUser( Object principal )

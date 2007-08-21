@@ -1,5 +1,6 @@
 package org.codehaus.plexus.redback.users.ldap.ctl;
 
+import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.redback.users.User;
@@ -165,9 +166,10 @@ public class DefaultLdapController
             ctls.setCountLimit( 0 );
         }
 
+        //ctls.setReturningObjFlag(false);
         ctls.setDerefLinkFlag( true );
         ctls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
-        ctls.setReturningAttributes( userAttributes );
+        ctls.setReturningAttributes( new String[] { "*" } );
 
         //String filter = "(&(objectClass=" + mapper.getUserObjectClass() + ")(" + mapper.getUserIdAttribute() + "=" + ( key != null ? key : "*" ) + "))";
         String filter = "(" + mapper.getUserIdAttribute() + "=" + ( key != null ? key : "*" ) + ")";
@@ -275,7 +277,13 @@ public class DefaultLdapController
             if ( result.hasMoreElements() )
             {
                 SearchResult next = result.nextElement();
-                return mapper.getUser( next.getAttributes() );
+                Attributes attrs = next.getAttributes();
+                System.out.println( "ATTRIBUTES: + " + AttributeUtils.toString( attrs ) );
+                System.out.println( "ATTR: " + attrs.toString() + "\n\nName: "+ next.getNameInNamespace() );
+                Object o = context.lookup( next.getNameInNamespace() );                
+                Attributes attributes = (Attributes) o;
+                System.out.println( "ATTR2: " + attributes.toString() );
+                return mapper.getUser( attributes );
             }
             else
             {
