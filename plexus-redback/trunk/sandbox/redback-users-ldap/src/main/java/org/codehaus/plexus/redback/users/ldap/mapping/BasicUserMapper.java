@@ -231,7 +231,7 @@ public class BasicUserMapper
         
         user.setEmail( LdapUtils.getAttributeValue( attributes, emailAddressAttribute, "email address" ) );
         user.setFullName( LdapUtils.getAttributeValue( attributes, nameAttribute, "name" ) );
-        //user.setPassword( LdapUtils.getAttributeValueFromByteArray( attributes, passwordAttribute, "password" ) );
+        user.setEncodedPassword( LdapUtils.getAttributeValue( attributes, passwordAttribute, "password" ) );
 
 //        if ( configuration.isWebsiteAttributeLabelUri() )
 //        {
