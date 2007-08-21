@@ -34,6 +34,7 @@ import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchResult;
 
 
+import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.apacheds.ApacheDs;
 import org.codehaus.plexus.apacheds.Partition;
@@ -57,7 +58,7 @@ public class LdapUserManagerTest extends PlexusTestCase
 
 	private ApacheDs apacheDs;
 	
-	private String suffix = "dc=redback,dc=plexus,dc=codehaus,dc=org";
+	private String suffix;
 	
 	/**
 	 * @plexus.requirement role-hint="configurable"
@@ -72,14 +73,16 @@ public class LdapUserManagerTest extends PlexusTestCase
     		
     	apacheDs = (ApacheDs)lookup(ApacheDs.ROLE, "test" );    	
          
+    	//suffix = apacheDs.addSimplePartition( "test", new String[]{ "plexus", "codehaus", "org"} ).getSuffix();
+    	
     	suffix = apacheDs.addSimplePartition( "test", new String[]{"redback", "plexus", "codehaus", "org"} ).getSuffix();
     	
+    	System.out.println( "DN Suffix: " + suffix );
+    	
      	apacheDs.startServer();
-    	
-    	
+    		
     	makeUsers();
-    	
-    	
+    	  	
     	userManager = (UserManager)lookup( UserManager.ROLE, "ldap" );
     	
     	connectionFactory = (LdapConnectionFactory) lookup( LdapConnectionFactory.ROLE, "configurable" );
@@ -127,15 +130,19 @@ public class LdapUserManagerTest extends PlexusTestCase
     	
     	DirContext context = connection.getDirContext();
     	
+    	assertExist( context, createDn( "cn=jesse" ), "cn", "cn=jesse" );
+    	//assertExist( context, createDn( "sn=foo" ), "sn", "sn=foo" );
+    	assertExist( context, createDn( "cn=joakim" ), "cn", "cn=joakim" );
+    	
     	assertNotNull( context );
     	
     	assertNotNull( userManager );
     	
-    	assertTrue( userManager.userExists( "jesse" ) );
+    	assertTrue( userManager.userExists( "jesse" ));
     	
-    	//List users = userManager.getUsers();
+    	List users = userManager.getUsers();
     	
-    	//assertNotNull( users );
+    	assertNotNull( users );
     	
     	//System.out.println(users.size());
     }
@@ -143,13 +150,16 @@ public class LdapUserManagerTest extends PlexusTestCase
     private void bindUserObject(DirContext context, String cn, String dn)
 			throws NamingException 
 	{
-		Attributes attributes = new BasicAttributes();
+		Attributes attributes = new BasicAttributes(true);
 		BasicAttribute objectClass = new BasicAttribute("objectClass");
 		objectClass.add("top");
-		objectClass.add("inetOrgPerson");
+		objectClass.add("inetorgperson");
+		objectClass.add("person");
+		objectClass.add("organizationalperson");
 		// objectClass.add( "uidObject" );
 		attributes.put(objectClass);
 		attributes.put("cn", cn);
+		attributes.put("sn", "foo");
 		attributes.put("email", "foo");
 		attributes.put("userPassword", "foo");
 		attributes.put("givenName", "foo");
@@ -167,7 +177,10 @@ private void assertExist( DirContext context, String dn, String attribute, Strin
     Object o = context.lookup( dn );
     assertTrue( o instanceof Attributes );
     Attributes attributes = (Attributes) o;
+    System.out.println( "checking " + value + " against " + attributes.get( attribute ).get());
     assertEquals( value, attributes.get( attribute ).get() );
+    
+    System.out.println( AttributeUtils.toString( attributes ) );
 }
     
 }

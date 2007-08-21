@@ -8,8 +8,6 @@ import org.codehaus.plexus.redback.users.ldap.mapping.MappingException;
 import org.codehaus.plexus.redback.users.ldap.mapping.UserMapper;
 import org.codehaus.plexus.redback.users.ldap.mapping.UserUpdate;
 
-import sun.security.action.GetLongAction;
-
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -164,17 +162,20 @@ public class DefaultLdapController
 
         if ( key != null )
         {
-            ctls.setCountLimit( 1 );
+            ctls.setCountLimit( 0 );
         }
 
         ctls.setDerefLinkFlag( true );
-        ctls.setSearchScope( SearchControls.SUBTREE_SCOPE );
+        ctls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
         ctls.setReturningAttributes( userAttributes );
 
-        String filter = "(&(objectClass=" + mapper.getUserObjectClass() + ")(" + mapper.getUserIdAttribute() + "=" + ( key != null ? key : "*" ) + "))";
-
-        log.info( "Searching for users with filter: \'" + filter + "\'" );
-
+        //String filter = "(&(objectClass=" + mapper.getUserObjectClass() + ")(" + mapper.getUserIdAttribute() + "=" + ( key != null ? key : "*" ) + "))";
+        String filter = "(" + mapper.getUserIdAttribute() + "=" + ( key != null ? key : "*" ) + ")";
+        //String filter = "(objectClass=" + mapper.getUserObjectClass() + ")";
+        
+        
+        log.info( "Searching for users with filter: \'" + filter + "\'" + " from base dn: " + mapper.getUserBaseDn());
+        
         return context.search( mapper.getUserBaseDn(), filter, ctls );
     }
 

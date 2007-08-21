@@ -25,7 +25,7 @@
         <password-attribute>userPassword</password-attribute>
         <user-id-attribute>cn</user-id-attribute>
         <user-base-dn>dc=redback,dc=plexus,dc=codehaus,dc=org</user-base-dn>
-        <user-object-class>inetOrgPerson</user-object-class>
+        <user-object-class>inetorgperson</user-object-class>
       </configuration>
     </component>
     <component>
