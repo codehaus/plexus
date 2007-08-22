@@ -25,13 +25,11 @@ public class ObjectStateHelperTest
         super.setUp();
 
         apacheDs = (ApacheDs) lookup( ApacheDs.ROLE );
+        
+        apacheDs.addSimplePartition( "test", new String[]{ "test" } ).getSuffix();
 
-        Partition partition = new Partition();
-        partition.setName( "test" );
-        partition.setSuffix( "dc=test" );
-        partition.getContextAttributes().put( new BasicAttribute( "objectClass", "top" ) );
-        apacheDs.addPartition( partition );
-
+        apacheDs.setBasedir( getTestFile("target/plexus-home") );
+             
         apacheDs.startServer();
     }
 
