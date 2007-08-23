@@ -52,6 +52,9 @@ public interface TaskQueue
     Task take()
         throws TaskQueueException;
 
+    boolean remove( Task task )
+        throws ClassCastException, NullPointerException;
+
     // ----------------------------------------------------------------------
     // Queue Inspection
     // ----------------------------------------------------------------------

@@ -109,6 +109,18 @@ public class TaskQueueTest
         assertNull( taskQueue.take() );
     }
 
+    public void testRemoveTask()
+        throws Exception
+    {
+        Task task = new BuildProjectTask( 0 );
+
+        taskQueue.put( task );
+
+        taskQueue.remove( task );
+
+        assertNull( taskQueue.take() );
+    }
+
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
