@@ -20,6 +20,10 @@ public interface ApacheDs
 
     void setBasedir( File basedir );
 
+    void setPort( int port );
+    
+    int getPort();
+    
     void setEnableNetworking( boolean enableNetworking );
 
     void addPartition( String name, String root, Set indexedAttributes, Attributes partitionAttributes )
