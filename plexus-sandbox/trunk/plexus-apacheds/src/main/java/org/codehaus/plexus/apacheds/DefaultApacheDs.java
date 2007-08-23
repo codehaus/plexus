@@ -329,4 +329,16 @@ public class DefaultApacheDs
             throw new NamingException( "The server has to be started before used." );
         }
     }
+
+    public int getPort()
+    {
+        return port;
+    }
+
+    public void setPort( int port )
+    {
+        this.port = port;
+    }
+    
+    
 }
