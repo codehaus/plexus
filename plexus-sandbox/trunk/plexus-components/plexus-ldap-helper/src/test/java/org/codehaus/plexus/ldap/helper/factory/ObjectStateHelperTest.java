@@ -29,7 +29,9 @@ public class ObjectStateHelperTest
         apacheDs.addSimplePartition( "test", new String[]{ "test" } ).getSuffix();
 
         apacheDs.setBasedir( getTestFile("target/plexus-home") );
-             
+        
+        apacheDs.setPort( 13091 );
+        
         apacheDs.startServer();
     }
 
