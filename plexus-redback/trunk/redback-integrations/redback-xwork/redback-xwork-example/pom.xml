@@ -61,6 +61,11 @@
       <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>redback-taglib</artifactId>
     </dependency> 
+   <dependency>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-users-ldap</artifactId>
+      <version>1.0-alpha-3-SNAPSHOT</version>
+    </dependency> 
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-log4j-logging</artifactId>

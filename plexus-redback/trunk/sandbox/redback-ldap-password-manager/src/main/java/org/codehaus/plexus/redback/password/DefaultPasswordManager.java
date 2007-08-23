@@ -26,14 +26,27 @@ import org.codehaus.plexus.redback.password.hash.PasswordHashException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * 
+ * @author <a href="jesse@codehaus.org"> jesse
+ * @version "$Id:$"
+ *
+ * @plexus.component role="org.codehaus.plexus.redback.password.PasswordManager" role-hint="default"
+ */
 public class DefaultPasswordManager
     implements PasswordManager, LogEnabled
 {
 
     private static final Pattern ENCODING_SPEC_PATTERN = Pattern.compile( "\\{([a-zA-Z0-9]+)\\}(.+)" );
 
+    /**
+     * @plexus.configuration default-value="md5"
+     */
     private String defaultHash;
 
+    /**
+     * @plexus.requirement role="org.codehaus.plexus.redback.password.hash.PasswordHash"
+     */
     private ActiveMap passwordHashes;
 
     private Logger log;

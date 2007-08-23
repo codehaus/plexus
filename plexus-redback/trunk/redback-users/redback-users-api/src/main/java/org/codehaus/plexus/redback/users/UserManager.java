@@ -29,6 +29,13 @@ public interface UserManager
     public static final String ROLE = UserManager.class.getName();
 
     /**
+     * Is the UserManager read only?  if so then create and modify actions are to be disabled
+     * 
+     * @return boolean true if user manager is disabled
+     */
+    public boolean isReadOnly();
+    
+    /**
      * And Identifier for the UserManager.
      *
      * @return the user manager identifier.

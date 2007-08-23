@@ -70,6 +70,11 @@ public class LdapUserManager
 	 */
     private UserMapper mapper;
 
+    public boolean isReadOnly()
+    {
+        return true;
+    }
+    
     public void addUserManagerListener( UserManagerListener listener )
     {
         if ( !listeners.contains( listener ) )
