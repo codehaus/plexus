@@ -210,6 +210,12 @@ public class DefaultTaskQueue
         return (Task) queue.poll( timeout, timeUnit );
     }
 
+    public boolean remove( Task task )
+        throws ClassCastException, NullPointerException
+    {
+        return queue.remove( task );
+    }
+
     // ----------------------------------------------------------------------
     // Queue Inspection
     // ----------------------------------------------------------------------
