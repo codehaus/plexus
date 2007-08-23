@@ -16,9 +16,6 @@ package org.codehaus.plexus.redback.users.ldap.mapping;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.redback.password.PasswordManager;
-import org.codehaus.plexus.redback.password.PasswordManagerException;
-import org.codehaus.plexus.redback.password.UnsupportedAlgorithmException;
 import org.codehaus.plexus.redback.users.User;
 import org.codehaus.plexus.redback.users.ldap.BasicUser;
 import org.codehaus.plexus.util.StringUtils;
@@ -46,8 +43,6 @@ public class BasicUserMapper
     public static final String NAME = "name";
 
 //    public static final String WEBSITE = "website";
-
-    private PasswordManager passwordManager;
 
     /**
      * @plexus.configuration default-value="email"
@@ -85,6 +80,7 @@ public class BasicUserMapper
         Attributes userAttrs = new BasicAttributes();
 
         boolean passwordSet = false;
+        /*
         if ( encodePasswordIfChanged && !StringUtils.isEmpty( user.getPassword() ) )
         {
             try
@@ -102,7 +98,7 @@ public class BasicUserMapper
                 throw new MappingException( "Failed to encode user password: " + e.getMessage(), e );
             }
         }
-
+*/
         if ( !passwordSet && ( user.getEncodedPassword() != null ) )
         {
             userAttrs.put( getPasswordAttribute(), user.getEncodedPassword() );
@@ -231,7 +227,16 @@ public class BasicUserMapper
         
         user.setEmail( LdapUtils.getAttributeValue( attributes, emailAddressAttribute, "email address" ) );
         user.setFullName( LdapUtils.getAttributeValue( attributes, nameAttribute, "name" ) );
-        user.setEncodedPassword( LdapUtils.getAttributeValue( attributes, passwordAttribute, "password" ) );
+        
+        String encodedPassword = LdapUtils.getAttributeValueFromByteArray( attributes, passwordAttribute, "password" );
+        
+        System.out.println("encoded password: " + encodedPassword );
+        if ( encodedPassword.startsWith( "{" ) )
+        {
+            encodedPassword = encodedPassword.substring( encodedPassword.indexOf( "}" ) + 1 );
+        }
+        System.out.println("encoded password: " + encodedPassword );
+        user.setEncodedPassword( encodedPassword );
 
 //        if ( configuration.isWebsiteAttributeLabelUri() )
 //        {
@@ -250,6 +255,7 @@ public class BasicUserMapper
         return userIdAttribute;
     }
 
+    /*
     public PasswordManager getPasswordManager()
     {
         return passwordManager;
@@ -259,7 +265,7 @@ public class BasicUserMapper
     {
         this.passwordManager = passwordManager;
     }
-
+*/
     public String getEmailAttribute()
     {
         return emailAttribute;

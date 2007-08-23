@@ -36,16 +36,16 @@ public class BasicUser
 
     private List<String> previousEncodedPasswords;
 
-    private boolean locked;
-    private boolean requiresPasswordChange;
-    private boolean permanent;
-    private boolean valid;
+    private boolean locked = false;
+    private boolean requiresPasswordChange = false;
+    private boolean permanent = true;
+    private boolean valid = true;
 
     private Date creationDate;
 
     private int failedLoginAttempts;
-    private Date lastLoginDate;
-    private Date lastPasswordChange;
+    private Date lastLoginDate = new Date();
+    private Date lastPasswordChange = new Date();
 
     // DO NOT STORE AS SUCH!!!
     private String newPassword;
