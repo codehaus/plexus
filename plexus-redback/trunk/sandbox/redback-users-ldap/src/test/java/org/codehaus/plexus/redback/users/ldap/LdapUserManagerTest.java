@@ -41,7 +41,6 @@ import org.codehaus.plexus.apacheds.ApacheDs;
 import org.codehaus.plexus.apacheds.Partition;
 import org.codehaus.plexus.ldap.helper.LdapConnection;
 import org.codehaus.plexus.ldap.helper.LdapConnectionFactory;
-import org.codehaus.plexus.redback.password.PasswordManager;
 import org.codehaus.plexus.redback.policy.PasswordEncoder;
 import org.codehaus.plexus.redback.policy.encoders.SHA1PasswordEncoder;
 import org.codehaus.plexus.redback.policy.encoders.SHA256PasswordEncoder;
@@ -88,8 +87,8 @@ public class LdapUserManagerTest extends PlexusTestCase
     	
      	apacheDs.startServer();
     		
-    	makeUsers();
-    	  	
+    	makeUsers();    	
+    	
     	userManager = (UserManager)lookup( UserManager.ROLE, "ldap" );
     	
     	connectionFactory = (LdapConnectionFactory) lookup( LdapConnectionFactory.ROLE, "configurable" );
@@ -139,7 +138,8 @@ public class LdapUserManagerTest extends PlexusTestCase
     	
     	DirContext context = connection.getDirContext();
     
-    	assertNotNull( context );
+    	assertNotNull( context );	
+    	
     }
     	
     public void testDirectUsersExistance() throws Exception

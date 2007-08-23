@@ -227,8 +227,20 @@ public class LdapUserManager
     public User findUser( Object principal )
         throws UserNotFoundException
     {
-        // TODO Auto-generated method stub
-        return null;
+        try
+        {
+            return controller.getUser( principal, newDirContext() );
+        }
+        catch ( LdapControllerException e )
+        {
+            getLogger().error( "Failed to find user: " + principal, e );
+            return null;
+        }
+        catch ( MappingException e )
+        {
+            getLogger().error( "Failed to map user: " + principal, e );
+            return null;
+        }
     }
 
     @SuppressWarnings("unchecked")
