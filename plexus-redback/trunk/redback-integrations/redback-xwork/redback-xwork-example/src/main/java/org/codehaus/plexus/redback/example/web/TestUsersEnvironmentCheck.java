@@ -61,7 +61,7 @@ public class TestUsersEnvironmentCheck
     /**
      * boolean detailing if this environment check has been executed
      */
-    private boolean checked = false;
+    private boolean checked = true;
 
     private void createUser( String username, String fullname, String email, String password, boolean locked,
                              boolean validated )

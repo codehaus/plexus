@@ -53,6 +53,11 @@ public class CachedUserManager
      */
     private EhcacheComponent usersCache;
 
+    public boolean isReadOnly()
+    {
+        return userImpl.isReadOnly();
+    }
+    
     public User addUser( User user )
     {
         if ( user != null )

@@ -63,6 +63,11 @@ public class JdoUserManager
     }
 
 
+    public boolean isReadOnly()
+    {
+        return false;
+    }
+    
     public UserQuery createUserQuery()
     {
         return new JdoUserQuery();

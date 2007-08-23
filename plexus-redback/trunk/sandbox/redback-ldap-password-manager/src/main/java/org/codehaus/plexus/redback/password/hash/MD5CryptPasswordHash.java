@@ -18,6 +18,13 @@ package org.codehaus.plexus.redback.password.hash;
 
 import org.codehaus.plexus.redback.password.hash.alg.MD5Crypt;
 
+/**
+ * 
+ * @author <a href="jesse@codehaus.org"> jesse
+ * @version "$Id:$"
+ *
+ * @plexus.component role="org.codehaus.plexus.redback.password.hash.PasswordHash" role-hint="md5"
+ */
 public class MD5CryptPasswordHash
     implements PasswordHash
 {

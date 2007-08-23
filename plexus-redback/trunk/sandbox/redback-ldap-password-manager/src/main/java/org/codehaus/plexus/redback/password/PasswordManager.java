@@ -18,7 +18,8 @@ package org.codehaus.plexus.redback.password;
 
 public interface PasswordManager
 {
-
+	public static final String ROLE = PasswordManager.class.getName();
+	
     boolean checkPassword( String rawPasswordInfo, String input )
         throws UnsupportedAlgorithmException, PasswordManagerException;
 

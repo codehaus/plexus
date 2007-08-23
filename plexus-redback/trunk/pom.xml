@@ -179,6 +179,16 @@
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus.redback</groupId>
+        <artifactId>redback-users-configurable</artifactId>
+        <version>${security.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus.redback</groupId>
+        <artifactId>redback-users-ldap</artifactId>
+        <version>${security.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus.redback</groupId>
         <artifactId>redback-users-cached</artifactId>
         <version>${security.version}</version>
       </dependency>

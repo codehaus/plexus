@@ -49,7 +49,7 @@ public class UserManagerAuthenticator
     implements Authenticator
 {
     /**
-     * @plexus.requirement role-hint="cached"
+     * @plexus.requirement role-hint="configurable"
      */
     private UserManager userManager;
     

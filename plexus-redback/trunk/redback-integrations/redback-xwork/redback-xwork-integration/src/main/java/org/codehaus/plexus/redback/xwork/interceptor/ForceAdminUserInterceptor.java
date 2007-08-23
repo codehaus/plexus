@@ -41,7 +41,7 @@ public class ForceAdminUserInterceptor
     private static boolean checked = false;
 
     /**
-     * @plexus.requirement role-hint="cached"
+     * @plexus.requirement role-hint="configurable"
      */
     private UserManager userManager;
 

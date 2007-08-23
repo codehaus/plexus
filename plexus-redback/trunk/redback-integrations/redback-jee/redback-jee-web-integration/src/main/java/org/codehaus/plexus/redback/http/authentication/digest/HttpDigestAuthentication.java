@@ -48,7 +48,7 @@ public class HttpDigestAuthentication
     extends SessionBasedHttpAuthenticator
 {
     /**
-     * @plexus.requirement role-hint="jdo"
+     * @plexus.requirement role-hint="configurable"
      */
     private UserManager userManager;
 

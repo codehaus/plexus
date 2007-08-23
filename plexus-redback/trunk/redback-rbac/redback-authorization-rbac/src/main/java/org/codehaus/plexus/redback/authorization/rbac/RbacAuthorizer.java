@@ -57,7 +57,7 @@ public class RbacAuthorizer
     private RBACManager manager;
 
     /**
-     * @plexus.requirement role-hint="cached"
+     * @plexus.requirement role-hint="configurable"
      */
     private UserManager userManager;
 

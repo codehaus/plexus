@@ -18,7 +18,8 @@ package org.codehaus.plexus.redback.password.hash;
 
 public interface PasswordHash
 {
-
+	public static final String ROLE = PasswordHash.class.getName();
+	
     public String encodePassword( String password, Object salt )
         throws PasswordHashException;
 

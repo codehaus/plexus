@@ -71,6 +71,11 @@ public class MemoryUserManager
         }
         return "MemoryUserManager - (unknown version)";
     }
+    
+    public boolean isReadOnly()
+    {
+        return false;
+    }
 
     public UserQuery createUserQuery()
     {

@@ -43,7 +43,7 @@ public class LockedAdminEnvironmentCheck extends AbstractLogEnabled implements E
 {
 
     /**
-     * @plexus.requirement role-hint="cached"
+     * @plexus.requirement role-hint="configurable"
      */
     private UserManager userManager;
 
