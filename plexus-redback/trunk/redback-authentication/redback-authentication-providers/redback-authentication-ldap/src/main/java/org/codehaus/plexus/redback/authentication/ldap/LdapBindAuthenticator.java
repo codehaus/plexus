@@ -16,7 +16,17 @@ package org.codehaus.plexus.redback.authentication.ldap;
  * limitations under the License.
  */
 
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.NamingException;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.InitialDirContext;
+
 import org.codehaus.plexus.ldap.helper.LdapConnectionFactory;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.redback.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.redback.authentication.AuthenticationException;
 import org.codehaus.plexus.redback.authentication.AuthenticationResult;
@@ -34,18 +44,9 @@ import org.codehaus.plexus.redback.configuration.UserConfiguration;
  *   role="org.codehaus.plexus.redback.authentication.Authenticator"
  *   role-hint="ldap"
  */
-public class LdapBindAuthenticator
+public class LdapBindAuthenticator extends AbstractLogEnabled
     implements Authenticator
 {
-    private String login;
-
-    private String password;
-
-    /**
-     * @plexus.requirement role-hint="configurable"
-     */
-    private LdapConnectionFactory connectionFactory;
-    
     /**
      * @plexus.requirement role-hint="default"
      */
@@ -61,17 +62,41 @@ public class LdapBindAuthenticator
     {
         PasswordBasedAuthenticationDataSource source = (PasswordBasedAuthenticationDataSource) s;
 
-        login = source.getPrincipal();
-        password = source.getPassword();
-
-        if ( source.getPassword().equals( password ) )
+        List baseDns = config.getList( "ldap.user.base.dn" );
+        
+        Hashtable env = new Hashtable();
+        
+        env.put( Context.INITIAL_CONTEXT_FACTORY, config.getString( "ldap.context.factory" ) );
+        env.put( Context.SECURITY_AUTHENTICATION, config.getString( "ldap.context.authentiction.mechanism") );
+        env.put( Context.PROVIDER_URL, config.getString( "ldap.context.provider.url" ) );
+        env.put( Context.SECURITY_CREDENTIALS, source.getPassword() );
+        
+        for ( Iterator i = baseDns.iterator(); i.hasNext(); )
         {
-            return new AuthenticationResult( true, login, null );
-        }
-
-        return new AuthenticationResult( false, null, null );
+            String baseDn = (String)i.next();
+            
+            env.put( Context.SECURITY_PRINCIPAL, getLdapPrincipal( source.getPrincipal(), baseDn ) );
+            
+            try
+            {
+                DirContext context = new InitialDirContext( env );
+                
+                return new AuthenticationResult( true, source.getPrincipal(), null );
+            }
+            catch ( NamingException e )
+            {
+                getLogger().debug( "Authentication failed to bind on: " + getLdapPrincipal( source.getPrincipal(), baseDn ) + " : " + e.getMessage() );
+            }            
+        }    
+        
+        return new AuthenticationResult( false, source.getPrincipal(), null );
     }
 
+    private String getLdapPrincipal( String principal, String baseDn )
+    {
+        return config.getString( "ldap.user.attribute.userId" ) + "=" + principal + "," + baseDn;
+    }
+    
     public boolean supportsDataSource( AuthenticationDataSource source )
     {
         return ( source instanceof PasswordBasedAuthenticationDataSource );
