@@ -167,6 +167,11 @@ public class UserConfiguration
     {
         return lookupRegistry.getString( key, defaultValue );
     }
+    
+    public List getList( String key )
+    {
+        return lookupRegistry.getList( key );
+    }
 
     public void contextualize( Context context )
         throws ContextException
