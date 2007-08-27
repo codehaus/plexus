@@ -34,6 +34,10 @@
       <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>redback-configuration</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-users-api</artifactId>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
