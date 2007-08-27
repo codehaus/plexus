@@ -29,8 +29,8 @@ import org.codehaus.plexus.redback.users.UserNotFoundException;
 import org.codehaus.plexus.redback.users.UserQuery;
 import org.codehaus.plexus.redback.users.ldap.ctl.LdapControllerException;
 import org.codehaus.plexus.redback.users.ldap.ctl.LdapController;
-import org.codehaus.plexus.redback.users.ldap.mapping.MappingException;
-import org.codehaus.plexus.redback.users.ldap.mapping.UserMapper;
+import org.codehaus.plexus.redback.common.ldap.MappingException;
+import org.codehaus.plexus.redback.common.ldap.UserMapper;
 
 import java.util.ArrayList;
 import java.util.Collection;
