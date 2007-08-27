@@ -27,9 +27,9 @@ import javax.naming.directory.BasicAttributes;
  * @author <a href="jesse@codehaus.org"> jesse
  * @version "$Id: BasicUserMapper.java 6784 2007-08-23 19:21:13Z jesse $"
  *
- * @plexus.component role="org.codehaus.plexus.redback.users.ldap.mapping.UserMapper" role-hint="basic"
+ * @plexus.component role="org.codehaus.plexus.redback.users.ldap.mapping.UserMapper" role-hint="ldap"
  */
-public class BasicUserMapper
+public class LdapUserMapper
     implements UserMapper
 {
 
@@ -148,7 +148,7 @@ public class BasicUserMapper
         return new String[] { emailAttribute, fullNameAttribute, passwordAttribute, userIdAttribute };
     }
 
-    public UserUpdate getUpdate( BasicUser user )
+    public UserUpdate getUpdate( LdapUser user )
         throws MappingException
     {
 
@@ -209,7 +209,7 @@ public class BasicUserMapper
         return null;
     }
 
-    public BasicUser getUser( Attributes attributes )
+    public LdapUser getUser( Attributes attributes )
         throws MappingException
     {
         String userIdAttribute = getUserIdAttribute();
@@ -221,7 +221,7 @@ public class BasicUserMapper
 
         String userId = ( LdapUtils.getAttributeValue( attributes, userIdAttribute, "username" ) );
 
-        BasicUser user = new BasicUser( userId );
+        LdapUser user = new LdapUser( userId );
         user.setOriginalAttributes( attributes );
         
         user.setEmail( LdapUtils.getAttributeValue( attributes, emailAddressAttribute, "email address" ) );
@@ -315,14 +315,14 @@ public class BasicUserMapper
         this.userIdAttribute = userIdAttribute;
     }
 
-    public BasicUser newUserInstance( String username, String fullName, String email )
+    public LdapUser newUserInstance( String username, String fullName, String email )
     {
-        return new BasicUser( username, fullName, email );
+        return new LdapUser( username, fullName, email );
     }
 
-    public BasicUser newTemplateUserInstance()
+    public LdapUser newTemplateUserInstance()
     {
-        return new BasicUser();
+        return new LdapUser();
     }
 
 }

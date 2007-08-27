@@ -24,7 +24,8 @@ import java.util.List;
 
 import javax.naming.directory.Attributes;
 
-public class BasicUser
+// TODO this class should be able to be replaced with a model
+public class LdapUser
     implements User
 {
 
@@ -52,7 +53,7 @@ public class BasicUser
 
     private Attributes originalAttributes;
 
-    public BasicUser( String username )
+    public LdapUser( String username )
     {
         key = username;
         this.username = username;
@@ -61,14 +62,14 @@ public class BasicUser
         creationDate = new Date();
     }
 
-    public BasicUser( String username, String fullName, String email )
+    public LdapUser( String username, String fullName, String email )
     {
         this( username );
         this.fullName = fullName;
         this.email = email;
     }
 
-    public BasicUser()
+    public LdapUser()
     {
         previousEncodedPasswords = new ArrayList<String>();
         failedLoginAttempts = Integer.MIN_VALUE;

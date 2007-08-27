@@ -24,13 +24,13 @@ public interface UserMapper
 {
 	public static final String ROLE = UserMapper.class.getName();
 
-    BasicUser getUser( Attributes attributes )
+    LdapUser getUser( Attributes attributes )
         throws MappingException;
 
     Attributes getCreationAttributes( User user, boolean encodePasswordIfChanged )
         throws MappingException;
 
-    UserUpdate getUpdate( BasicUser user )
+    UserUpdate getUpdate( LdapUser user )
         throws MappingException;
 
     String[] getUserAttributeNames();
@@ -49,8 +49,8 @@ public interface UserMapper
 
     String getUserObjectClass();
 
-    BasicUser newUserInstance( String username, String fullName, String email );
+    LdapUser newUserInstance( String username, String fullName, String email );
 
-    BasicUser newTemplateUserInstance();
+    LdapUser newTemplateUserInstance();
 
 }
