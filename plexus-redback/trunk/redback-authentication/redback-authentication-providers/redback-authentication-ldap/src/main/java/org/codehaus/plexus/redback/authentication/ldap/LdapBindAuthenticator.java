@@ -62,7 +62,7 @@ public class LdapBindAuthenticator extends AbstractLogEnabled
     {
         PasswordBasedAuthenticationDataSource source = (PasswordBasedAuthenticationDataSource) s;
 
-        List baseDns = config.getList( "ldap.user.base.dn" );
+        List baseDns = config.getString( "ldap.user.base.dn" );
         
         Hashtable env = new Hashtable();
         
