@@ -4,10 +4,10 @@ import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.redback.users.User;
-import org.codehaus.plexus.redback.users.ldap.BasicUser;
-import org.codehaus.plexus.redback.users.ldap.mapping.MappingException;
-import org.codehaus.plexus.redback.users.ldap.mapping.UserMapper;
-import org.codehaus.plexus.redback.users.ldap.mapping.UserUpdate;
+import org.codehaus.plexus.redback.common.ldap.BasicUser;
+import org.codehaus.plexus.redback.common.ldap.MappingException;
+import org.codehaus.plexus.redback.common.ldap.UserMapper;
+import org.codehaus.plexus.redback.common.ldap.UserUpdate;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;

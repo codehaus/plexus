@@ -17,7 +17,8 @@ package org.codehaus.plexus.redback.users.ldap;
  */
 
 import org.codehaus.plexus.redback.users.UserQuery;
-import org.codehaus.plexus.redback.users.ldap.mapping.UserMapper;
+import org.codehaus.plexus.redback.common.ldap.BasicUser;
+import org.codehaus.plexus.redback.common.ldap.UserMapper;
 
 public class LdapUserQuery
     implements UserQuery

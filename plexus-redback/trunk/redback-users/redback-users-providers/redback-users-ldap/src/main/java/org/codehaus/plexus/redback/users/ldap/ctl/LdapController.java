@@ -22,8 +22,8 @@ import javax.naming.directory.DirContext;
 
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.redback.users.User;
-import org.codehaus.plexus.redback.users.ldap.BasicUser;
-import org.codehaus.plexus.redback.users.ldap.mapping.MappingException;
+import org.codehaus.plexus.redback.common.ldap.BasicUser;
+import org.codehaus.plexus.redback.common.ldap.MappingException;
 
 public interface LdapController {
 
