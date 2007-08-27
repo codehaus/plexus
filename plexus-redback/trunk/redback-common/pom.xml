@@ -31,5 +31,6 @@
   </scm>
   <modules>
     <module>redback-common-jdo</module>
+    <module>redback-common-ldap</module>
   </modules>
 </project>
