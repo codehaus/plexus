@@ -16,6 +16,7 @@ package org.codehaus.plexus.redback.xwork.action.admin;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.redback.configuration.UserConfiguration;
 import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.role.RoleManager;
 import org.codehaus.plexus.redback.role.RoleManagerException;
@@ -43,10 +44,11 @@ public class AddAdminUserAction
      */
     private RoleManager roleManager;
 
+
     /**
-     * @plexus.requirement role-hint="cached"
+     * @plexus.requirement role-hint="default"
      */
-    private RBACManager rbacManager;
+    private UserConfiguration config;
 
     private EditUserCredentials user;
 
@@ -54,7 +56,7 @@ public class AddAdminUserAction
     {
         if ( user == null )
         {
-            user = new EditUserCredentials( RoleConstants.ADMINISTRATOR_ACCOUNT_NAME );
+            user = new EditUserCredentials( config.getString( "redback.default.admin" ) );
         }
 
         return INPUT;
@@ -64,7 +66,7 @@ public class AddAdminUserAction
     {
         if ( user == null )
         {
-            user = new EditUserCredentials( RoleConstants.ADMINISTRATOR_ACCOUNT_NAME );
+            user = new EditUserCredentials( config.getString( "redback.default.admin" ) );
             addActionError( getText( "invalid.admin.credentials" ) );
             return ERROR;
         }
@@ -77,7 +79,7 @@ public class AddAdminUserAction
 
         UserManager userManager = super.securitySystem.getUserManager();
 
-        if ( userManager.userExists( RoleConstants.ADMINISTRATOR_ACCOUNT_NAME ) )
+        if ( userManager.userExists( config.getString( "redback.default.admin" ) ) )
         {
             // Means that the role name exist already.
             // We need to fail fast and return to the previous page.
@@ -91,7 +93,7 @@ public class AddAdminUserAction
         }
 
         User u =
-            userManager.createUser( RoleConstants.ADMINISTRATOR_ACCOUNT_NAME, user.getFullName(), user.getEmail() );
+            userManager.createUser( config.getString( "redback.default.admin" ), user.getFullName(), user.getEmail() );
         if ( u == null )
         {
             addActionError( getText( "cannot.operate.on.null.user" ) );
