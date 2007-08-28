@@ -19,6 +19,7 @@ package org.codehaus.plexus.redback.xwork.checks.security;
 import java.util.List;
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.redback.configuration.UserConfiguration;
 import org.codehaus.plexus.redback.policy.UserSecurityPolicy;
 import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.role.RoleManager;
@@ -45,12 +46,12 @@ public class GuestUserEnvironmentCheck
     /**
      * @plexus.requirement role-hint="default"
      */
-    private RoleManager roleManager;
-
+    private UserConfiguration config;
+    
     /**
-     * @plexus.requirement role-hint="cached"
+     * @plexus.requirement role-hint="default"
      */
-    private RBACManager rbacManager;
+    private RoleManager roleManager;
 
     /**
      * @plexus.requirement role-hint="default"
@@ -74,15 +75,17 @@ public class GuestUserEnvironmentCheck
 
             User guest;
 
+            String guestString = config.getString( "redback.default.guest", "guest" );
+                        
             try
             {
-                guest = userManager.findUser( "guest" );
+                guest = userManager.findUser( guestString );
             }
             catch ( UserNotFoundException ne )
             {
                 policy.setEnabled( false );
 
-                guest = userManager.createUser( "guest", "Guest", "" );
+                guest = userManager.createUser( guestString, "Guest", "" );
                 guest.setPermanent( true );
                 guest = userManager.addUser( guest );
 
@@ -94,7 +97,7 @@ public class GuestUserEnvironmentCheck
 
             try
             {
-                roleManager.assignRole( "guest", guest.getPrincipal().toString() );           
+                roleManager.assignRole( guestString, guest.getPrincipal().toString() );           
             }
             catch ( RoleManagerException rpe )
             {
