@@ -83,6 +83,34 @@ public class LdapConnection
         }
     }
 
+    /**
+     * This ldap connection will attempt to establish a connection using the configuration, 
+     * replacing the principal and the password 
+     * 
+     * @param config
+     * @param bindDn
+     * @param password
+     * @throws LdapException
+     */
+    public LdapConnection( LdapConnectionConfiguration config, String bindDn, String password ) throws LdapException
+    {
+        this.config = config;
+
+        Hashtable<Object, Object> e = getEnvironment();
+
+        e.put( Context.SECURITY_PRINCIPAL, bindDn );
+        e.put( Context.SECURITY_CREDENTIALS, password );
+        
+        try
+        {
+            context = new InitialDirContext( e );
+        }
+        catch ( NamingException ex )
+        {
+            throw new LdapException( "Could not connect to the server.", ex );
+        }
+    }
+    
     // ----------------------------------------------------------------------
     // Connection Managment
     // ----------------------------------------------------------------------
