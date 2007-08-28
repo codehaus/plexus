@@ -37,16 +37,16 @@ public interface LdapConnectionFactory
 {
     String ROLE = LdapConnectionFactory.class.getName();
 
-    LdapConnection getConnection()
-        throws LdapException;
+    LdapConnection getConnection() throws LdapException;
 
-    LdapConnection getConnection( Rdn subRdn )
-        throws LdapException;
+    LdapConnection getConnection( Rdn subRdn ) throws LdapException;
 
-    LdapName getBaseDnLdapName()
-        throws LdapException;
+    LdapConnection getConnection( String bindDn, String password ) throws LdapException;
+    
+    LdapName getBaseDnLdapName() throws LdapException;
 
     void addObjectFactory( Class<? extends ObjectFactory> objectFactoryClass );
 
     void addStateFactory( Class<? extends StateFactory> objectFactoryClass );
+   
 }

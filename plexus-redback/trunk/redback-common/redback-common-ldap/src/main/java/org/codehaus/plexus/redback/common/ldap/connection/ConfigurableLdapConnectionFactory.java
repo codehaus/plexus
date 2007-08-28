@@ -129,6 +129,11 @@ public class ConfigurableLdapConnectionFactory
     {
         return new LdapConnection( configuration, subRdn );
     }
+    
+    public LdapConnection getConnection( String bindDn, String password ) throws LdapException
+    {
+        return new LdapConnection(configuration, bindDn, password );
+    }
 
     public LdapName getBaseDnLdapName()
         throws LdapException
@@ -152,7 +157,9 @@ public class ConfigurableLdapConnectionFactory
     {
         configuration.getStateFactories().add( stateFactoryClass );
     }
-
+    
+    
+    
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
