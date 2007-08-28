@@ -21,17 +21,22 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.naming.Context;
+import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
+import javax.naming.directory.SearchControls;
+import javax.naming.directory.SearchResult;
 
-import org.codehaus.plexus.ldap.helper.LdapConnectionFactory;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.redback.authentication.AuthenticationDataSource;
 import org.codehaus.plexus.redback.authentication.AuthenticationException;
 import org.codehaus.plexus.redback.authentication.AuthenticationResult;
 import org.codehaus.plexus.redback.authentication.Authenticator;
 import org.codehaus.plexus.redback.authentication.PasswordBasedAuthenticationDataSource;
+import org.codehaus.plexus.redback.common.ldap.UserMapper;
+import org.codehaus.plexus.redback.common.ldap.connection.LdapConnectionFactory;
+import org.codehaus.plexus.redback.common.ldap.connection.LdapException;
 import org.codehaus.plexus.redback.configuration.UserConfiguration;
 
 /**
@@ -48,9 +53,14 @@ public class LdapBindAuthenticator extends AbstractLogEnabled
     implements Authenticator
 {
     /**
-     * @plexus.requirement role-hint="default"
+     * @plexus.requirement role-hint="ldap"
      */
-    private UserConfiguration config;
+    private UserMapper mapper;
+    
+    /**
+     * @plexus.requirement role-hint="configurable"
+     */
+    private LdapConnectionFactory connectionFactory;
     
     public String getId()
     {
@@ -62,39 +72,50 @@ public class LdapBindAuthenticator extends AbstractLogEnabled
     {
         PasswordBasedAuthenticationDataSource source = (PasswordBasedAuthenticationDataSource) s;
 
-        List baseDns = config.getString( "ldap.user.base.dn" );
+        SearchControls ctls = new SearchControls();
+
+        ctls.setCountLimit( 1 );
+
+        ctls.setDerefLinkFlag( true );
+        ctls.setSearchScope( SearchControls.SUBTREE_SCOPE );
+
+        String filter = "(&(objectClass=" + mapper.getUserObjectClass() + ")(" + mapper.getUserIdAttribute() + "=" +  source.getPrincipal() + "))";
         
-        Hashtable env = new Hashtable();
-        
-        env.put( Context.INITIAL_CONTEXT_FACTORY, config.getString( "ldap.context.factory" ) );
-        env.put( Context.SECURITY_AUTHENTICATION, config.getString( "ldap.context.authentiction.mechanism") );
-        env.put( Context.PROVIDER_URL, config.getString( "ldap.context.provider.url" ) );
-        env.put( Context.SECURITY_CREDENTIALS, source.getPassword() );
-        
-        for ( Iterator i = baseDns.iterator(); i.hasNext(); )
+        getLogger().info( "Searching for users with filter: \'" + filter + "\'" + " from base dn: " + mapper.getUserBaseDn() );
+
+        try
         {
-            String baseDn = (String)i.next();
+            DirContext context = connectionFactory.getConnection().getDirContext();
+        
+            NamingEnumeration<SearchResult> results = context.search( mapper.getUserBaseDn(), filter, ctls );
             
-            env.put( Context.SECURITY_PRINCIPAL, getLdapPrincipal( source.getPrincipal(), baseDn ) );
+            getLogger().info( "Found user?: " + results.hasMoreElements() );
             
-            try
+            if ( results.hasMoreElements() )
             {
-                DirContext context = new InitialDirContext( env );
+                SearchResult result = results.nextElement();
+                
+                String userDn = result.getNameInNamespace();
+                
+                getLogger().info( "Attempting Authenication: + " + userDn );
+                
+                connectionFactory.getConnection( userDn, source.getPassword() );
                 
                 return new AuthenticationResult( true, source.getPrincipal(), null );
             }
-            catch ( NamingException e )
+            else
             {
-                getLogger().debug( "Authentication failed to bind on: " + getLdapPrincipal( source.getPrincipal(), baseDn ) + " : " + e.getMessage() );
-            }            
-        }    
-        
-        return new AuthenticationResult( false, source.getPrincipal(), null );
-    }
-
-    private String getLdapPrincipal( String principal, String baseDn )
-    {
-        return config.getString( "ldap.user.attribute.userId" ) + "=" + principal + "," + baseDn;
+                return new AuthenticationResult( false, source.getPrincipal(), null );
+            }
+        }
+        catch ( LdapException e )
+        {
+            return new AuthenticationResult( false, source.getPrincipal(), e );
+        }
+        catch ( NamingException e )
+        {
+            return new AuthenticationResult( false, source.getPrincipal(), e );
+        }
     }
     
     public boolean supportsDataSource( AuthenticationDataSource source )
