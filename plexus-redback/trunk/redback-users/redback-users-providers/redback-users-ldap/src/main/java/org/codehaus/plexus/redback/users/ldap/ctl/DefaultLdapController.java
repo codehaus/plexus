@@ -4,7 +4,7 @@ import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.redback.users.User;
-import org.codehaus.plexus.redback.common.ldap.BasicUser;
+import org.codehaus.plexus.redback.common.ldap.LdapUser;
 import org.codehaus.plexus.redback.common.ldap.MappingException;
 import org.codehaus.plexus.redback.common.ldap.UserMapper;
 import org.codehaus.plexus.redback.common.ldap.UserUpdate;
@@ -34,7 +34,7 @@ public class DefaultLdapController
     private Logger log;
 
     /**
-     * @plexus.requirement role-hint="basic"
+     * @plexus.requirement role-hint="ldap"
      */
     private UserMapper mapper;
 
@@ -171,11 +171,11 @@ public class DefaultLdapController
 
         //ctls.setReturningObjFlag(false);
         ctls.setDerefLinkFlag( true );
-        ctls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
+        ctls.setSearchScope( SearchControls.SUBTREE_SCOPE );
         ctls.setReturningAttributes( new String[] { "*" } );
 
-        //String filter = "(&(objectClass=" + mapper.getUserObjectClass() + ")(" + mapper.getUserIdAttribute() + "=" + ( key != null ? key : "*" ) + "))";
-        String filter = "(" + mapper.getUserIdAttribute() + "=" + ( key != null ? key : "*" ) + ")";
+        String filter = "(&(objectClass=" + mapper.getUserObjectClass() + ")(" + mapper.getUserIdAttribute() + "=" + ( key != null ? key : "*" ) + "))";
+        //String filter = "(" + mapper.getUserIdAttribute() + "=" + ( key != null ? key : "*" ) + ")";
         //String filter = "(objectClass=" + mapper.getUserObjectClass() + ")";
         
         
@@ -277,7 +277,7 @@ public class DefaultLdapController
     /* (non-Javadoc)
 	 * @see org.codehaus.plexus.redback.users.ldap.ctl.LdapControllerI#getUser(java.lang.Object, javax.naming.directory.DirContext)
 	 */
-    public BasicUser getUser( Object key, DirContext context )
+    public LdapUser getUser( Object key, DirContext context )
         throws LdapControllerException, MappingException
     {
         String username = key.toString();

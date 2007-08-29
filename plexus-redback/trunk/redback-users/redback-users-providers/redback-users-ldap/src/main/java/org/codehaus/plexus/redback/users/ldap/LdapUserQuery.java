@@ -17,7 +17,7 @@ package org.codehaus.plexus.redback.users.ldap;
  */
 
 import org.codehaus.plexus.redback.users.UserQuery;
-import org.codehaus.plexus.redback.common.ldap.BasicUser;
+import org.codehaus.plexus.redback.common.ldap.LdapUser;
 import org.codehaus.plexus.redback.common.ldap.UserMapper;
 
 public class LdapUserQuery
@@ -26,7 +26,7 @@ public class LdapUserQuery
 
     private final UserMapper mapper;
 
-    private BasicUser template;
+    private LdapUser template;
 
     private String orderBy;
 
