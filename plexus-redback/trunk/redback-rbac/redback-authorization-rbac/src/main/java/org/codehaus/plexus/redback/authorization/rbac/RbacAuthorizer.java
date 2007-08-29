@@ -24,6 +24,7 @@ import org.codehaus.plexus.redback.authorization.Authorizer;
 import org.codehaus.plexus.redback.authorization.NotAuthorizedException;
 import org.codehaus.plexus.redback.authorization.rbac.evaluator.PermissionEvaluationException;
 import org.codehaus.plexus.redback.authorization.rbac.evaluator.PermissionEvaluator;
+import org.codehaus.plexus.redback.configuration.UserConfiguration;
 import org.codehaus.plexus.redback.rbac.Permission;
 import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
@@ -66,6 +67,11 @@ public class RbacAuthorizer
      */
     private PermissionEvaluator evaluator;
 
+    /**
+     * @plexus.requirement role-hint="default"
+     */
+    private UserConfiguration config;
+    
     public String getId()
     {
         return "RBAC Authorizer - " + this.getClass().getName();
@@ -108,7 +114,8 @@ public class RbacAuthorizer
                 }
             }
             // check if guest user is enabled, if so check the global permissions
-            User guest = userManager.findUser( "guest" );
+            User guest = userManager.findUser( config.getString( "redback.default.guest" ) );
+            
             if ( !guest.isLocked() )
             {
                 // Set permissions = manager.getAssignedPermissions( principal.toString(), operation );
