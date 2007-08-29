@@ -32,17 +32,6 @@ import javax.naming.directory.BasicAttributes;
 public class LdapUserMapper
     implements UserMapper
 {
-
-    public static final String USERNAME = "username";
-
-    public static final String PASSWORD = "password";
-
-    public static final String EMAIL = "email";
-
-    public static final String NAME = "name";
-
-//    public static final String WEBSITE = "website";
-
     /**
      * @plexus.configuration default-value="email"
      */
@@ -79,25 +68,7 @@ public class LdapUserMapper
         Attributes userAttrs = new BasicAttributes();
 
         boolean passwordSet = false;
-        /*
-        if ( encodePasswordIfChanged && !StringUtils.isEmpty( user.getPassword() ) )
-        {
-            try
-            {
-                userAttrs.put( getPasswordAttribute(),
-                               passwordManager.encodePasswordUsingDefaultHash( user.getPassword(), null ) );
-                passwordSet = true;
-            }
-            catch ( UnsupportedAlgorithmException e )
-            {
-                throw new MappingException( "Failed to encode user password: " + e.getMessage(), e );
-            }
-            catch ( PasswordManagerException e )
-            {
-                throw new MappingException( "Failed to encode user password: " + e.getMessage(), e );
-            }
-        }
-*/
+
         if ( !passwordSet && ( user.getEncodedPassword() != null ) )
         {
             userAttrs.put( getPasswordAttribute(), user.getEncodedPassword() );
@@ -112,18 +83,6 @@ public class LdapUserMapper
         {
             userAttrs.put( getEmailAddressAttribute(), user.getEmail() );
         }
-
-//        if ( !StringUtils.isEmpty( user.getWebsite() ) )
-//        {
-//            if ( configuration.isWebsiteAttributeLabelUri() )
-//            {
-//                userAttrs.put( configuration.getWebsiteAttribute(), user.getWebsite() + " " + configuration.getWebsiteUriLabel() );
-//            }
-//            else
-//            {
-//                userAttrs.put( configuration.getWebsiteAttribute(), user.getWebsite() );
-//            }
-//        }
 
         return userAttrs;
     }
@@ -179,33 +138,7 @@ public class LdapUserMapper
                 modAttrs.put( getEmailAddressAttribute(), user.getEmail() );
             }
         }
-
-//        if ( !StringUtils.isEmpty( user.getWebsite() ) )
-//        {
-//            if ( user.getWebsite() == null )
-//            {
-//                if ( configuration.isWebsiteAttributeLabelUri() )
-//                {
-//                    addAttrs.put( configuration.getWebsiteAttribute(), user.getWebsite() + " " + configuration.getWebsiteUriLabel() );
-//                }
-//                else
-//                {
-//                    addAttrs.put( configuration.getWebsiteAttribute(), user.getWebsite() );
-//                }
-//            }
-//            else if ( !user.getWebsite().equals( user.getWebsite() ) )
-//            {
-//                if ( configuration.isWebsiteAttributeLabelUri() )
-//                {
-//                    modAttrs.put( configuration.getWebsiteAttribute(), user.getWebsite() + " " + configuration.getWebsiteUriLabel() );
-//                }
-//                else
-//                {
-//                    modAttrs.put( configuration.getWebsiteAttribute(), user.getWebsite() );
-//                }
-//            }
-//        }
-
+        
         return null;
     }
 
@@ -215,8 +148,6 @@ public class LdapUserMapper
         String userIdAttribute = getUserIdAttribute();
         String emailAddressAttribute = getEmailAddressAttribute();
         String nameAttribute = getUserFullNameAttribute();
-//        String websiteAttribute = getWebsiteAttribute();
-//        String websiteUriLabel = getWebsiteUriLabel();
         String passwordAttribute = getPasswordAttribute();
 
         String userId = ( LdapUtils.getAttributeValue( attributes, userIdAttribute, "username" ) );
@@ -229,22 +160,12 @@ public class LdapUserMapper
         
         String encodedPassword = LdapUtils.getAttributeValueFromByteArray( attributes, passwordAttribute, "password" );
         
-        System.out.println("encoded password: " + encodedPassword );
-        if ( encodedPassword.startsWith( "{" ) )
+        if ( encodedPassword != null && encodedPassword.startsWith( "{" ) )
         {
             encodedPassword = encodedPassword.substring( encodedPassword.indexOf( "}" ) + 1 );
         }
-        System.out.println("encoded password: " + encodedPassword );
+        
         user.setEncodedPassword( encodedPassword );
-
-//        if ( configuration.isWebsiteAttributeLabelUri() )
-//        {
-//            user.setWebsite( LdapUtils.getLabeledUriValue( attributes, websiteAttribute, websiteUriLabel, "website" ) );
-//        }
-//        else
-//        {
-//            user.setWebsite( LdapUtils.getAttributeValue( attributes, websiteAttribute, "website" ) );
-//        }
 
         return user;
     }
@@ -254,17 +175,6 @@ public class LdapUserMapper
         return userIdAttribute;
     }
 
-    /*
-    public PasswordManager getPasswordManager()
-    {
-        return passwordManager;
-    }
-
-    public void setPasswordManager( PasswordManager passwordManager )
-    {
-        this.passwordManager = passwordManager;
-    }
-*/
     public String getEmailAttribute()
     {
         return emailAttribute;
