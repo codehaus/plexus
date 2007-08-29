@@ -15,29 +15,28 @@ package org.codehaus.plexus.redback.users.ldap;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.ldap.helper.LdapConnection;
-import org.codehaus.plexus.ldap.helper.LdapConnectionFactory;
-import org.codehaus.plexus.ldap.helper.LdapException;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.naming.directory.DirContext;
 
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
+import org.codehaus.plexus.redback.common.ldap.MappingException;
+import org.codehaus.plexus.redback.common.ldap.UserMapper;
+import org.codehaus.plexus.redback.common.ldap.connection.LdapConnection;
+import org.codehaus.plexus.redback.common.ldap.connection.LdapConnectionFactory;
+import org.codehaus.plexus.redback.common.ldap.connection.LdapException;
 import org.codehaus.plexus.redback.users.User;
 import org.codehaus.plexus.redback.users.UserManager;
 import org.codehaus.plexus.redback.users.UserManagerListener;
 import org.codehaus.plexus.redback.users.UserNotFoundException;
 import org.codehaus.plexus.redback.users.UserQuery;
-import org.codehaus.plexus.redback.users.ldap.ctl.LdapControllerException;
 import org.codehaus.plexus.redback.users.ldap.ctl.LdapController;
-import org.codehaus.plexus.redback.common.ldap.MappingException;
-import org.codehaus.plexus.redback.common.ldap.UserMapper;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import javax.naming.directory.DirContext;
+import org.codehaus.plexus.redback.users.ldap.ctl.LdapControllerException;
 
 /**
  * 
@@ -66,7 +65,7 @@ public class LdapUserManager
     private LdapController controller;
 
     /**
-	 * @plexus.requirement role-hint="basic"
+	 * @plexus.requirement role-hint="ldap"
 	 */
     private UserMapper mapper;
 
@@ -375,6 +374,4 @@ public class LdapUserManager
 		this.connectionFactory = connectionFactory;
 	}
     
-    
-
 }

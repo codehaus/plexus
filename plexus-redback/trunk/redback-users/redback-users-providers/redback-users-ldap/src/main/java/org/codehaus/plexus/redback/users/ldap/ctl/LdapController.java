@@ -22,7 +22,7 @@ import javax.naming.directory.DirContext;
 
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.redback.users.User;
-import org.codehaus.plexus.redback.common.ldap.BasicUser;
+import org.codehaus.plexus.redback.common.ldap.LdapUser;
 import org.codehaus.plexus.redback.common.ldap.MappingException;
 
 public interface LdapController {
@@ -45,7 +45,7 @@ public interface LdapController {
 			boolean encodePasswordIfChanged) throws LdapControllerException,
 			MappingException;
 
-	public abstract BasicUser getUser(Object key, DirContext context)
+	public abstract LdapUser getUser(Object key, DirContext context)
 			throws LdapControllerException, MappingException;
 
 	public abstract void enableLogging(Logger logger);
