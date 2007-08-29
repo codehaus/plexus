@@ -17,6 +17,7 @@ package org.codehaus.plexus.redback.xwork.interceptor;
  */
 
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.redback.configuration.UserConfiguration;
 import org.codehaus.plexus.redback.users.User;
 import org.codehaus.plexus.redback.users.UserManager;
 import org.codehaus.plexus.redback.users.UserNotFoundException;
@@ -45,6 +46,11 @@ public class ForceAdminUserInterceptor
      */
     private UserManager userManager;
 
+    /**
+     * @plexus.requirement role-hint="default"
+     */
+    private UserConfiguration config;
+    
     public void destroy()
     {
         // no-op
@@ -65,7 +71,7 @@ public class ForceAdminUserInterceptor
 
         try
         {
-            User user = userManager.findUser( "admin" );
+            User user = userManager.findUser( config.getString( "redback.default.admin" ) );
             if ( user == null )
             {
                 getLogger().info( "No admin user configured - forwarding to admin user creation page." );
