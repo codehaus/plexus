@@ -65,7 +65,7 @@ public class LockedAdminEnvironmentCheck extends AbstractLogEnabled implements E
      */
     public void validateEnvironment( List violations )
     {
-        if ( !checked )
+        if ( !checked && !userManager.isReadOnly() )
         {
             List roles = new ArrayList();
             roles.add( RoleConstants.SYSTEM_ADMINISTRATOR_ROLE );
