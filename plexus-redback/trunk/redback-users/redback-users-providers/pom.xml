@@ -39,6 +39,7 @@
     <module>redback-users-cached</module>
     <module>redback-users-memory</module>
     <module>redback-users-jdo</module>
+    <module>redback-users-ldap</module>
     <module>redback-users-configurable</module>
   </modules>
 </project>
