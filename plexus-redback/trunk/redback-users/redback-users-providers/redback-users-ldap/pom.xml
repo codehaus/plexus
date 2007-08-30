@@ -14,11 +14,6 @@
   
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-ldap-helper</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency> 
-    <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>redback-users-api</artifactId>
     </dependency>
@@ -29,6 +24,7 @@
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>redback-common-ldap</artifactId> 
+      <version>1.0-alpha-3-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
