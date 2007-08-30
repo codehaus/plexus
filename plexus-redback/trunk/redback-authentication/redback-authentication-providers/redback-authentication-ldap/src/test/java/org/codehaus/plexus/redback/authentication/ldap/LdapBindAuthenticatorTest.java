@@ -22,7 +22,7 @@ public class LdapBindAuthenticatorTest extends PlexusTestCase
 
     public void testAuthentication() throws Exception
     {
-        LdapBindAuthenticator authnr = (LdapBindAuthenticator)lookup( Authenticator.ROLE, "ldap" );
+//        LdapBindAuthenticator authnr = (LdapBindAuthenticator)lookup( Authenticator.ROLE, "ldap" );
         
         // empty til I get apacheds embedded well
         
