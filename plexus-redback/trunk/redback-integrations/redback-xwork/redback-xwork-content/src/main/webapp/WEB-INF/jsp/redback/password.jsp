@@ -35,7 +35,7 @@
     <ww:password  label="%{getText('password.existing')}" name="existingPassword" size="20" required="true" />
   </c:if>
   <ww:password  label="%{getText('password.new')}" name="newPassword" size="20" required="true" />
-  <ww:password  label="%{getText('password.confirm.new')}" name="newPasswordConfirm" size="20" required="true" />
+  <ww:password  label="%{getText('password.new.confirm')}" name="newPasswordConfirm" size="20" required="true" />
   <ww:submit value="%{getText('password.change')}" method="submit" />
   <ww:submit value="%{getText('cancel')}" method="cancel" />
 </ww:form>
