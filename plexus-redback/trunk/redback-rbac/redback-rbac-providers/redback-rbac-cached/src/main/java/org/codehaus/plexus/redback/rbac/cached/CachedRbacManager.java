@@ -224,7 +224,7 @@ public class CachedRbacManager
 
         if ( el != null )
         {
-            getLogger().debug( "using cached user permission map" );
+            //getLogger().debug( "using cached user permission map" );
             return (Map) el.getObjectValue();
         }
         else
