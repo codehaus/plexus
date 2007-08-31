@@ -19,9 +19,14 @@ import java.lang.annotation.Target;
 public @interface Parameter
 {
     /**
+     * The name for the parameter - optional.
+     */
+    String name() default "";
+
+    /**
      * The default value for the parameter.
      *
      * @return
      */
-    String[] value() default "";
+    String[] value() default {};
 }
