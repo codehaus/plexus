@@ -40,7 +40,7 @@ import java.util.Properties;
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id: ConfigurableLdapConnectionFactory.java,v 1.3 2006/02/06 15:15:54 trygvis Exp $
  * 
- * @plexus.component role="org.codehaus.plexus.ldap.helper.LdapConnectionFactory"
+ * @plexus.component role="org.codehaus.plexus.redback.common.ldap.connection.LdapConnectionFactory"
  *   role-hint="configurable"
  */
 public class ConfigurableLdapConnectionFactory

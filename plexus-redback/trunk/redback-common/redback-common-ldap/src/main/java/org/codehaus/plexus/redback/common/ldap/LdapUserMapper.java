@@ -27,7 +27,7 @@ import javax.naming.directory.BasicAttributes;
  * @author <a href="jesse@codehaus.org"> jesse
  * @version "$Id: BasicUserMapper.java 6784 2007-08-23 19:21:13Z jesse $"
  *
- * @plexus.component role="org.codehaus.plexus.redback.users.ldap.mapping.UserMapper" role-hint="ldap"
+ * @plexus.component role="org.codehaus.plexus.redback.common.ldap.UserMapper" role-hint="ldap"
  */
 public class LdapUserMapper
     implements UserMapper
