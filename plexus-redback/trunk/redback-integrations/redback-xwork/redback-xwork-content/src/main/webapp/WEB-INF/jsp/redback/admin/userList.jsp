@@ -150,6 +150,7 @@
   <td valign="top">
     <p class="description"><ww:text name="user.list.message"/></p>
      
+    <redback:isNotReadOnlyUserManager>
     <redback:ifAuthorized permission="user-management-user-create">
       <div class="task createUser">
         <ww:form action="usercreate!show" namespace="/security" theme="simple" method="post">
@@ -157,6 +158,7 @@
         </ww:form>
       </div>
     </redback:ifAuthorized>
+    </redback:isNotReadOnlyUserManager>
 
     <div class="task showRoles">
       <ww:form action="userlist!show" namespace="/security" theme="simple" method="get">

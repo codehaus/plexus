@@ -15,19 +15,40 @@
   --%>
 <%@ taglib prefix="ww" uri="/webwork" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://plexus.codehaus.org/redback/taglib-1.0" prefix="redback" %>
 
 <c:choose>
   <c:when test="${user.edit}">
-    <ww:label     label="%{getText('username')}"         name="user.username" />
-    <ww:hidden    name="user.username" />
+    <ww:label label="%{getText('username')}"         name="user.username" />
+    <ww:hidden name="user.username" />
   </c:when>
-  <c:otherwise>
-    <ww:textfield label="%{getText('username')}"         name="user.username" size="30" required="true"/>
+  <c:otherwise> 
+  	<redback:isReadOnlyUserManager>
+	  <ww:label label="%{getText('username')}"         name="user.username" />
+	</redback:isReadOnlyUserManager>
+	<redback:isNotReadOnlyUserManager>
+      <ww:textfield label="%{getText('username')}"         name="user.username" size="30" required="true"/>
+	</redback:isNotReadOnlyUserManager>
   </c:otherwise>
 </c:choose>
 
-  <ww:textfield label="%{getText('full.name')}"        name="user.fullName" size="30" required="true"/>
-  <ww:textfield label="%{getText('email.address')}"    name="user.email" size="50"    required="true"/>
+ 
+  
+  <redback:isReadOnlyUserManager>
+    <ww:label label="%{getText('full.name')}"         name="user.fullName" />
+  </redback:isReadOnlyUserManager>
+  <redback:isNotReadOnlyUserManager>
+    <ww:textfield label="%{getText('full.name')}"        name="user.fullName" size="30" required="true"/>
+  </redback:isNotReadOnlyUserManager>
+  
+  <redback:isReadOnlyUserManager>
+    <ww:label label="%{getText('email.address')}"         name="user.email" />
+  </redback:isReadOnlyUserManager>
+  <redback:isNotReadOnlyUserManager>
+    <ww:textfield label="%{getText('email.address')}"    name="user.email" size="50"    required="true"/>
+  </redback:isNotReadOnlyUserManager>
+  
+  <redback:isNotReadOnlyUserManager>
   <c:choose>
     <c:when test="${self}">
       <ww:password  label="%{getText('current.password')}"         name="oldPassword" size="20" required="true"/>
@@ -38,6 +59,7 @@
     </c:otherwise>
   </c:choose>
   <ww:password  label="%{getText('confirm.password')}" name="user.confirmPassword" size="20" required="true"/>
+  </redback:isNotReadOnlyUserManager>
 
 <ww:if test="%{user.timestampAccountCreation != null}">
   <ww:label     label="%{getText('account.creation')}"     name="user.timestampAccountCreation" />
