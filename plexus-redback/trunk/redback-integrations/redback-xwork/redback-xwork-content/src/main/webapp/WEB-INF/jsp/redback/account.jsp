@@ -16,6 +16,7 @@
 
 <%@ taglib prefix="ww" uri="/webwork" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="redback" uri="http://plexus.codehaus.org/redback/taglib-1.0"%>
 
 <html>
 <ww:i18n name="org.codehaus.plexus.redback.xwork.default">
@@ -32,8 +33,13 @@
 <ww:form action="account" namespace="/security" theme="xhtml"
          id="registerForm" method="post" name="register" cssClass="security register">     
   <%@ include file="/WEB-INF/jsp/redback/include/userCredentials.jsp" %>
-  <ww:submit value="%{getText('submit')}" method="submit" />
-  <ww:submit value="%{getText('cancel')}" method="cancel" />
+  <redback:isReadOnlyUserManager>
+  	<ww:submit value="Go Back" method="cancel" />
+  </redback:isReadOnlyUserManager>
+  <redback:isNotReadOnlyUserManager>
+    <ww:submit value="%{getText('submit')}" method="submit" />
+    <ww:submit value="%{getText('cancel')}" method="cancel" />
+  </redback:isNotReadOnlyUserManager>
 </ww:form>
 
 </body>

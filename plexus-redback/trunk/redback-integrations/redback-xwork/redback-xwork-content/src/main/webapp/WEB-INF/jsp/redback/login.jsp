@@ -16,6 +16,7 @@
 
 <%@ taglib prefix="ww" uri="/webwork" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://plexus.codehaus.org/redback/taglib-1.0" prefix="redback" %>
 
 <html>
 <ww:i18n name="org.codehaus.plexus.redback.xwork.default">
@@ -48,6 +49,7 @@
      <ww:a href="%{forgottenAccount}">Email me my account information.</ww:a>
   </li>
     --%>
+  <redback:isNotReadOnlyUserManager>
   <li>
      <ww:text name="login.need.an.account"/>
      <ww:url id="registerUrl" action="register" />
@@ -58,6 +60,7 @@
      <ww:url id="forgottenPassword" action="passwordReset" />
      <ww:a href="%{forgottenPassword}"><ww:text name="login.request.password.reset"/></ww:a>
   </li>
+  </redback:isNotReadOnlyUserManager>
 </ul>
 
 </body>

@@ -34,11 +34,13 @@
   <ww:form action="useredit" namespace="/security" theme="xhtml"
          id="userEditForm" method="post" name="useredit" cssClass="security userEdit">
     <%@ include file="/WEB-INF/jsp/redback/include/userCredentials.jsp" %>
-    <ww:checkbox label="%{getText('user.edit.locked.user')}" name="user.locked" />
-    <ww:checkbox label="%{getText('user.edit.force.user.change.password')}" name="user.passwordChangeRequired" />    
-    <ww:hidden label="Username"    name="username" />
-    <ww:submit value="%{getText('update')}" method="submit" />
-    <ww:submit value="%{getText('cancel')}" method="cancel" />
+    <redback:isNotReadOnlyUserManager>
+      <ww:checkbox label="%{getText('user.edit.locked.user')}" name="user.locked" />
+      <ww:checkbox label="%{getText('user.edit.force.user.change.password')}" name="user.passwordChangeRequired" />    
+      <ww:hidden label="Username"    name="username" />
+      <ww:submit value="%{getText('update')}" method="submit" />
+      <ww:submit value="%{getText('cancel')}" method="cancel" />
+    </redback:isNotReadOnlyUserManager>
   </ww:form>
 </redback:ifAuthorized>
 
