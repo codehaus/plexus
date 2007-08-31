@@ -104,7 +104,7 @@ public class RbacAuthorizer
                     {
                         Permission permission = (Permission) i.next();
 
-                        getLogger().debug( "checking permission " + permission.getName() );
+                        //getLogger().debug( "checking permission " + permission.getName() );
 
                         if ( evaluator.evaluate( permission, operation, resource, principal ) )
                         {
