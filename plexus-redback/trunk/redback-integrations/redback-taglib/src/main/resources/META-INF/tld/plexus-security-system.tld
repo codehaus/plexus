@@ -23,8 +23,14 @@
   </tag>
 
   <tag>
-    <name>IsReadOnlyUserManagerTag</name>
+    <name>isReadOnlyUserManager</name>
     <tagclass>org.codehaus.plexus.redback.taglib.jsp.IsReadOnlyUserManagerTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+  </tag>
+  
+  <tag>
+    <name>isNotReadOnlyUserManager</name>
+    <tagclass>org.codehaus.plexus.redback.taglib.jsp.IsNotReadOnlyUserManagerTag</tagclass>
     <bodycontent>JSP</bodycontent>
   </tag>
 
