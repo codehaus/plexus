@@ -51,14 +51,14 @@ public class RoleSorter
             return -1;
         }
 
-        if ( ( o1 != null ) && ( o2 != null ) )
+        if ( ( o1 != null ) && ( o2 == null ) )
         {
             return 1;
         }
 
         Role r1 = (Role) o1;
         Role r2 = (Role) o2;
-
+        
         return r1.getName().compareTo( r2.getName() );
     }
 }

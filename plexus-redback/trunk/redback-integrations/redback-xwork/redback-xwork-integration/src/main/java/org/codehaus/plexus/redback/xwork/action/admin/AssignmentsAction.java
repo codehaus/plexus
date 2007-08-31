@@ -27,7 +27,12 @@ import org.codehaus.plexus.redback.rbac.RBACManager;
 import org.codehaus.plexus.redback.rbac.RbacManagerException;
 import org.codehaus.plexus.redback.rbac.Resource;
 import org.codehaus.plexus.redback.rbac.Role;
+import org.codehaus.plexus.redback.rbac.TemplatedRole;
 import org.codehaus.plexus.redback.rbac.UserAssignment;
+import org.codehaus.plexus.redback.role.RoleManager;
+import org.codehaus.plexus.redback.role.model.ModelRole;
+import org.codehaus.plexus.redback.role.model.ModelTemplate;
+import org.codehaus.plexus.redback.role.model.RedbackRoleModel;
 import org.codehaus.plexus.redback.system.SecuritySession;
 import org.codehaus.plexus.redback.system.SecuritySystemConstants;
 import org.codehaus.plexus.redback.users.User;
@@ -38,6 +43,8 @@ import org.codehaus.plexus.redback.xwork.interceptor.SecureActionBundle;
 import org.codehaus.plexus.redback.xwork.interceptor.SecureActionException;
 import org.codehaus.plexus.redback.xwork.model.AdminEditUserCredentials;
 import org.codehaus.plexus.redback.xwork.role.RoleConstants;
+import org.codehaus.plexus.redback.xwork.util.ModelTemplateSorter;
+import org.codehaus.plexus.redback.xwork.util.TemplatedRoleSorter;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -61,6 +68,11 @@ public class AssignmentsAction
      */
     private RBACManager manager;
 
+    /**
+     * @plexus.requirement role-hint="default"
+     */
+    private RoleManager rmanager;
+
     // ------------------------------------------------------------------
     // Action Parameters
     // ------------------------------------------------------------------
@@ -68,7 +80,7 @@ public class AssignmentsAction
     private String principal;
 
     private AdminEditUserCredentials user;
-    
+
     /**
      * A List of {@link Role} objects.
      */
@@ -79,45 +91,54 @@ public class AssignmentsAction
      */
     private List availableRoles;
 
-
     private List effectivelyAssignedRoles;
 
     /**
-     * List of names (recieved from client) of roles to add.
+     * List of names (received from client) of dynamic roles to set/unset
      */
-    private List addSelectedRoles;
+    private List addDSelectedRoles;
 
     /**
-     * List of names (recieved from client) of roles to remove.
+     * List of names (received from client) of nondynamic roles to set/unset
      */
-    private List removeSelectedRoles;
+    private List addNDSelectedRoles;
 
-    private boolean addRolesButton;
+    private List nondynamicroles;
 
-    private boolean removeRolesButton;
+    private List dynamicroles;
+
+    private List templates;
+
+    private List NDRoles;
+
+    private List DRoles;
 
     // ------------------------------------------------------------------
     // Action Entry Points - (aka Names)
     // ------------------------------------------------------------------
 
+    public List getTemplates()
+    {
+        return templates;
+    }
+
+    public void setTemplates( List templates )
+    {
+        this.templates = templates;
+    }
+      
     /**
-     * Display the edit user panel.
-     * <p/>
-     * This should consist of the Role details for the specified user.
-     * <p/>
-     * A table of currently assigned roles.
-     * This table should have a column to remove the role from the user.
-     * This table should also have a column of checkboxes that can be selected
-     * and then removed from the user.
-     * <p/>
-     * A table of roles that can be assigned.
-     * This table should have a set of checkboxes that can be selected and
-     * then added to the user.
-     * <p/>
+     * Display the edit user panel. <p/> This should consist of the Role details for the specified user. <p/> A table of
+     * currently assigned roles. This table should have a column to remove the role from the user. This table should
+     * also have a column of checkboxes that can be selected and then removed from the user. <p/> A table of roles that
+     * can be assigned. This table should have a set of checkboxes that can be selected and then added to the user. <p/>
      * Duplicate role assignment needs to be taken care of.
      */
     public String show()
     {
+        this.addNDSelectedRoles = new ArrayList();
+        this.addDSelectedRoles = new ArrayList();
+        
         if ( StringUtils.isEmpty( principal ) )
         {
             addActionError( getText( "rbac.edit.user.empty.principal" ) );
@@ -125,7 +146,6 @@ public class AssignmentsAction
         }
 
         UserManager userManager = super.securitySystem.getUserManager();
-        
 
         if ( !userManager.userExists( principal ) )
         {
@@ -157,8 +177,6 @@ public class AssignmentsAction
         }
 
         // Empty any selected options ...
-        this.addSelectedRoles = new ArrayList();
-        this.removeSelectedRoles = new ArrayList();
         this.effectivelyAssignedRoles = new ArrayList();
 
         try
@@ -204,109 +222,207 @@ public class AssignmentsAction
             return ERROR;
         }
 
+        // get NONDYNAMIC roles
+
+        RedbackRoleModel model = rmanager.getModel();
+        List tmp = model.getRoles();
+
+        try
+        {
+            tmp = filterRolesForCurrentUserAccess( tmp );
+        }
+        catch ( RbacManagerException e )
+        {
+            addActionError( e.getMessage() );
+            return ERROR;
+        }
+
+        boolean flag = false;
+        ModelRole ndrole = null;
+
+        this.NDRoles = new ArrayList();
+        this.nondynamicroles = new ArrayList();
+       
+        for ( Iterator j = tmp.iterator(); j.hasNext(); )
+        {
+            ndrole = (ModelRole) j.next();
+
+            if ( ndrole.isAssignable() )
+            {
+                nondynamicroles.add( ndrole.getName() );
+                for ( Iterator k = assignedRoles.iterator(); k.hasNext(); )
+                {
+                    Role role = (Role) k.next();
+                    if ( ndrole.getName().equals( role.getName() ) )
+                    {
+                        NDRoles.add( ndrole.getName() );
+                    }    
+                }
+            }
+        }
+        Collections.sort( nondynamicroles );
+
+        //get TemplateModels
+        
+        this.templates = new ArrayList();
+
+        List temp = model.getTemplates();
+        for ( Iterator i = temp.iterator(); i.hasNext(); )
+        {
+            ModelTemplate template = (ModelTemplate) i.next();
+            templates.add( template );
+        }
+
+        Collections.sort( templates, new ModelTemplateSorter() );
+        //Collections.reverse( templates );
+
+        //get DYNAMIC roles
+        
+        this.DRoles = new ArrayList();
+        this.dynamicroles = new ArrayList();
+
+        List dtemp = new ArrayList();
+
+        flag = false;
+        ndrole = null;
+        
+        List allRoles = new ArrayList();
+        allRoles.addAll( assignedRoles );
+        allRoles.addAll( availableRoles );
+        
+        for ( Iterator i = allRoles.iterator(); i.hasNext(); )
+        {
+            Role drole = (Role) i.next();
+
+            flag = false;
+
+            for ( Iterator j = nondynamicroles.iterator(); j.hasNext(); )
+            {
+                String ndr = (String) j.next();
+                if ( ndr.equals( drole.getName() ) )
+                {
+                    flag = true;
+                }
+            }
+            if ( !flag )
+            {
+                dtemp.add( drole );
+            }
+        }
+
+        for ( Iterator j = dtemp.iterator(); j.hasNext(); )
+        {
+            Role drole = (Role) j.next();
+
+            if ( drole.isAssignable() )
+            {
+                String templateNamePrefix = "";
+                String delimiter = "";
+                
+                for (Iterator q=templates.iterator(); q.hasNext();)
+                {
+                    ModelTemplate t = (ModelTemplate) q.next();
+                    if( drole.getName().startsWith( t.getNamePrefix() ) )
+                    {
+                        templateNamePrefix = t.getNamePrefix();
+                        delimiter = t.getDelimiter();
+                        break;   
+                    }
+                }
+                TemplatedRole templatedRole = new TemplatedRole( drole, templateNamePrefix, delimiter);
+                dynamicroles.add( templatedRole );
+                
+                for ( Iterator k = assignedRoles.iterator(); k.hasNext(); )
+                {
+                    Role role = (Role) k.next();
+                    if ( drole.getName().equals( role.getName() ) )
+                    {
+                        DRoles.add( drole.getName() );
+                    }    
+                }
+            }
+         }
+
+        Collections.sort( dynamicroles, new TemplatedRoleSorter() );
+        
         return SUCCESS;
     }
 
     /**
      * Display the edit user panel.
-     *
+     * 
      * @return
      */
     public String edituser()
     {
         getLogger().info( "in edit user now" );
-        if ( addRolesButton )
-        {
-            getLogger().info( "add roles button was clicked" );
-            if ( addSelectedRoles != null && addSelectedRoles.size() > 0 )
-            {
-                getLogger().info( "we selected some roles to grant " + addSelectedRoles.size() );
-                try
+        
+        try 
+        { 
+              UserAssignment assignment;
+              
+              if ( manager.userAssignmentExists( principal ) )
+              { 
+                  assignment = manager.getUserAssignment( principal ); 
+              }
+              else 
+              { 
+                  assignment = manager.createUserAssignment( principal );
+              }
+                
+              List roles = new ArrayList();
+              
+              assignment.setRoleNames( roles );
+              
+              if ( addNDSelectedRoles != null )
+              {
+                for ( Iterator i = addNDSelectedRoles.iterator(); i.hasNext(); )
                 {
-                    UserAssignment assignment;
-
-                    if ( manager.userAssignmentExists( principal ) )
-                    {
-                        assignment = manager.getUserAssignment( principal );
-                    }
-                    else
-                    {
-                        assignment = manager.createUserAssignment( principal );
-                    }
-
-                    for ( Iterator i = addSelectedRoles.iterator(); i.hasNext(); )
-                    {
-                        String role = (String) i.next();
-                        getLogger().info( "adding " + role + " to " + principal );
-                        assignment.addRoleName( role );
-                    }
-
-                    manager.saveUserAssignment( assignment );
+                  String r = ( String ) i.next();
+                  getLogger().info( "-------- adding ND Role: " +  r );
+                  assignment.addRoleName( r );
                 }
-                catch ( RbacManagerException ne )
+              }
+              if ( addDSelectedRoles != null )
+              {
+                for ( Iterator i = addDSelectedRoles.iterator(); i.hasNext(); )
                 {
-                    List list = new ArrayList();
-                    list.add( ne.getMessage() );
-                    addActionError( getText( "error.adding.selected.roles", list ) );
-                    return ERROR;
+                  assignment.addRoleName( (String) i.next() );
                 }
-            }
-
-            return SUCCESS;
+              }
+              manager.saveUserAssignment( assignment );
+              
+              getLogger().info( "roles assigned = " + assignment.getRoleNames().size() );
+                
         }
-
-        if ( removeRolesButton )
+        catch ( RbacManagerException ne ) 
         {
-            if ( removeSelectedRoles != null && removeSelectedRoles.size() > 0 )
-            {
-                getLogger().info( "we selected some roles to remove" );
-                try
-                {
-                    UserAssignment assignment = manager.getUserAssignment( principal );
-
-                    List roles = assignment.getRoleNames();
-
-                    for ( Iterator i = removeSelectedRoles.iterator(); i.hasNext(); )
-                    {
-                        roles.remove( (String) i.next() );
-                    }
-
-                    assignment.setRoleNames( roles );
-                    manager.saveUserAssignment( assignment );
-                }
-                catch ( RbacManagerException ne )
-                {
-                    List list = new ArrayList();
-                    list.add( ne.getMessage() );
-                    addActionError( getText( "error.removing.selected.roles", list ) );
-                    return ERROR;
-                }
-            }
-
-            return SUCCESS;
+              List list = new ArrayList(); 
+              list.add( ne.getMessage() ); 
+              addActionError( getText("error.removing.selected.roles", list ) ); 
+              return ERROR; 
         }
-
         return SUCCESS;
     }
 
     /**
      * this is a hack.
-     *
+     * 
      * this is a hack around the requirements of putting RBAC constraits into the model.
-     *
+     * 
      * this adds one very major restriction to this security system, that a role name must contain the identifiers of
      * the resource that is being constrained for adding and granting of roles, this is unacceptable in the long term
-     * and we need to get the model refactored to include this RBAC concept 
-     *
-     *
+     * and we need to get the model refactored to include this RBAC concept
+     * 
+     * 
      * @param roleList
      * @return
      * @throws RbacManagerException
      */
-    private List filterRolesForCurrentUserAccess( List roleList )
-        throws RbacManagerException
+    private List filterRolesForCurrentUserAccess( List roleList ) throws RbacManagerException
     {
-        String currentUser = ((SecuritySession)session.get( SecuritySystemConstants.SECURITY_SESSION_KEY )).getUser().getPrincipal().toString();
+        String currentUser =
+            ( (SecuritySession) session.get( SecuritySystemConstants.SECURITY_SESSION_KEY ) ).getUser().getPrincipal().toString();
 
         List filteredRoleList = new ArrayList();
 
@@ -315,13 +431,14 @@ public class AssignmentsAction
 
         if ( assignedPermissionMap.containsKey( RoleConstants.USER_MANAGEMENT_ROLE_GRANT_OPERATION ) )
         {
-            List roleGrantPermissions = (List) assignedPermissionMap.get( RoleConstants.USER_MANAGEMENT_ROLE_GRANT_OPERATION );
+            List roleGrantPermissions =
+                (List) assignedPermissionMap.get( RoleConstants.USER_MANAGEMENT_ROLE_GRANT_OPERATION );
 
-            for (Iterator i = roleGrantPermissions.iterator(); i.hasNext(); )
+            for ( Iterator i = roleGrantPermissions.iterator(); i.hasNext(); )
             {
-                Permission permission = (Permission)i.next();
+                Permission permission = (Permission) i.next();
 
-                if ( permission.getResource().getIdentifier().equals( Resource.GLOBAL ))
+                if ( permission.getResource().getIdentifier().equals( Resource.GLOBAL ) )
                 {
                     // the current user has the rights to assign any given role
                     return roleList;
@@ -341,11 +458,11 @@ public class AssignmentsAction
         // the role list
         for ( Iterator i = roleList.iterator(); i.hasNext(); )
         {
-            Role role = (Role)i.next();
+            Role role = (Role) i.next();
 
-            for (Iterator j = resourceGrants.iterator(); j.hasNext(); )
+            for ( Iterator j = resourceGrants.iterator(); j.hasNext(); )
             {
-                String resourceIdentifier = (String)j.next();
+                String resourceIdentifier = (String) j.next();
 
                 if ( role.getName().indexOf( resourceIdentifier ) != -1 )
                 {
@@ -356,20 +473,10 @@ public class AssignmentsAction
 
         return filteredRoleList;
     }
-
+    
     // ------------------------------------------------------------------
     // Parameter Accessor Methods
     // ------------------------------------------------------------------
-
-    public boolean isAddRolesButton()
-    {
-        return addRolesButton;
-    }
-
-    public void setAddRolesButton( boolean addRolesButton )
-    {
-        this.addRolesButton = addRolesButton;
-    }
 
     public List getAssignedRoles()
     {
@@ -401,26 +508,6 @@ public class AssignmentsAction
         this.effectivelyAssignedRoles = effectivelyAssignedRoles;
     }
 
-    public boolean isRemoveRolesButton()
-    {
-        return removeRolesButton;
-    }
-
-    public void setRemoveRolesButton( boolean removeRolesButton )
-    {
-        this.removeRolesButton = removeRolesButton;
-    }
-
-    public List getAddSelectedRoles()
-    {
-        return addSelectedRoles;
-    }
-
-    public void setAddSelectedRoles( List addSelectedRoles )
-    {
-        this.addSelectedRoles = addSelectedRoles;
-    }
-
     public String getPrincipal()
     {
         return principal;
@@ -436,23 +523,12 @@ public class AssignmentsAction
         this.principal = username;
     }
 
-    public List getRemoveSelectedRoles()
-    {
-        return removeSelectedRoles;
-    }
-
-    public void setRemoveSelectedRoles( List removeSelectedRoles )
-    {
-        this.removeSelectedRoles = removeSelectedRoles;
-    }
-
     public AdminEditUserCredentials getUser()
     {
         return user;
     }
 
-    public SecureActionBundle initSecureActionBundle()
-        throws SecureActionException
+    public SecureActionBundle initSecureActionBundle() throws SecureActionException
     {
         SecureActionBundle bundle = new SecureActionBundle();
         bundle.setRequiresAuthentication( true );
@@ -461,7 +537,67 @@ public class AssignmentsAction
         bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_ROLE_GRANT_OPERATION, Resource.GLOBAL );
         bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_ROLE_DROP_OPERATION, Resource.GLOBAL );
         bundle.addRequiredAuthorization( RoleConstants.USER_MANAGEMENT_USER_ROLE_OPERATION, Resource.GLOBAL );
-        
+
         return bundle;
+    }
+
+    public List getNondynamicroles()
+    {
+        return nondynamicroles;
+    }
+
+    public void setNondynamicroles( List nondynamicroles )
+    {
+        this.nondynamicroles = nondynamicroles;
+    }
+
+    public List getDynamicroles()
+    {
+        return dynamicroles;
+    }
+
+    public void setDynamicroles( List dynamicroles )
+    {
+        this.dynamicroles = dynamicroles;
+    }
+
+    public List getNDRoles()
+    {
+        return NDRoles;
+    }
+
+    public void setNDRoles( List roles )
+    {
+        NDRoles = roles;
+    }
+
+    public List getDRoles()
+    {
+        return DRoles;
+    }
+
+    public void setDRoles( List roles )
+    {
+        DRoles = roles;
+    }
+
+    public List getAddDSelectedRoles()
+    {
+        return addDSelectedRoles;
+    }
+
+    public void setAddDSelectedRoles( List addDSelectedRoles )
+    {
+        this.addDSelectedRoles = addDSelectedRoles;
+    }
+
+    public List getAddNDSelectedRoles()
+    {
+        return addNDSelectedRoles;
+    }
+
+    public void setAddNDSelectedRoles( List addNDSelectedRoles )
+    {
+        this.addNDSelectedRoles = addNDSelectedRoles;
     }
 }

@@ -52,7 +52,7 @@ public class OperationSorter
             return -1;
         }
 
-        if ( ( o1 != null ) && ( o2 != null ) )
+        if ( ( o1 != null ) && ( o2 == null ) )
         {
             return 1;
         }

@@ -18,26 +18,24 @@ package org.codehaus.plexus.redback.xwork.util;
 
 import java.util.Comparator;
 
-import org.codehaus.plexus.redback.rbac.Permission;
+import org.codehaus.plexus.redback.rbac.TemplatedRole;
 
 /**
- * PermissionSorter
+ * TemplatedRoleSorter
  *
- * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
- * @version $Id$
+ * @author <a href="hisidro@exist.com">Henry Isidro</a>
  */
-public class PermissionSorter
+public class TemplatedRoleSorter
     implements Comparator
 {
-
     public int compare( Object o1, Object o2 )
     {
-        if ( !( o1 instanceof Permission ) )
+        if ( !( o1 instanceof TemplatedRole ) )
         {
             return 0;
         }
 
-        if ( !( o2 instanceof Permission ) )
+        if ( !( o2 instanceof TemplatedRole ) )
         {
             return 0;
         }
@@ -57,10 +55,16 @@ public class PermissionSorter
             return 1;
         }
 
-        Permission r1 = (Permission) o1;
-        Permission r2 = (Permission) o2;
-
-        return r1.getName().compareTo( r2.getName() );
+        TemplatedRole r1 = (TemplatedRole) o1;
+        TemplatedRole r2 = (TemplatedRole) o2;
+        
+        if ( r1.getResource().equals( r2.getResource() ) )
+        {
+            return r1.getTemplateNamePrefix().compareTo( r2.getTemplateNamePrefix() );
+        }
+        else
+        {
+            return r1.getResource().compareTo( r2.getResource() );
+        }
     }
-
 }

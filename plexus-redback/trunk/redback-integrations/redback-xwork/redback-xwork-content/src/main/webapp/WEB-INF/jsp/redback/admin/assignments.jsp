@@ -16,6 +16,7 @@
 
 <%@ taglib prefix="ww" uri="/webwork"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <html>
 <ww:i18n name="org.codehaus.plexus.redback.xwork.default">
@@ -35,52 +36,67 @@
       </table>
     </div>
     
-<c:if test="${!empty effectivelyAssignedRoles}">
-<h3><ww:text name="effective.roles"/></h3>
-
-  <ul>
-    <ww:iterator id="role" value="effectivelyAssignedRoles">
-      <li>${role.name}</li>
-    </ww:iterator>
-  </ul>
-
-</c:if>
-
-<h3><ww:text name="assignments.assigned.roles"/></h3>
-
-<c:choose>
-  <c:when test="${!empty assignedRoles}">
-
-    <ww:form action="removeRolesFromUser" namespace="/security" name="removeRoles">
-      <ww:hidden name="principal"/>
-      <ww:hidden name="removeRolesButton" value="true"/>
-      <ww:checkboxlist list="assignedRoles" name="removeSelectedRoles" listValue="name" listKey="name" theme="redback"/>
-      <br/>
-      <ww:submit value="%{getText('assignments.remove.roles')}" name="removeRolesButton" theme="simple" />
-    </ww:form>
-  </c:when>
-  <c:otherwise>
-    <p><em><ww:text name="assignments.no.roles"/></em></p>
-  </c:otherwise>
-</c:choose>
-
 <h3><ww:text name="assignments.available.roles"/></h3>
 
-<c:choose>
-  <c:when test="${!empty availableRoles}">
     <ww:form action="addRolesToUser" namespace="/security" name="addRoles">
       <ww:hidden name="principal"/>
       <ww:hidden name="addRolesButton" value="true"/>
-      <ww:checkboxlist list="availableRoles" name="addSelectedRoles" listValue="name" listKey="name" theme="redback"/>
+      
+      <h4>Global Roles</h4>
+      <ww:checkboxlist list="nondynamicroles" name="addNDSelectedRoles" value="NDRoles" theme="redback"/>
       <br/>
-      <ww:submit value="%{getText('assignments.add.roles')}" name="addRolesButton" theme="simple" />
-    </ww:form>
-  </c:when>
-  <c:otherwise>
-    <p><em><ww:text name="assignments.no.roles.to.grant"/></em></p>
-  </c:otherwise>
-</c:choose>
+      
+      <h4>Resource Roles</h4>
+      <c:choose>
+        <c:when test="${!empty availableRoles}"> 
+          <c:set var="numtemplates" value="0"/>
+          <table border="1">
+           <tr>
+             <td>&nbsp</td>
+             <ww:iterator id="template" value="templates">
+      	       <td>${template.namePrefix}</td>
+      	       <c:set var="numtemplates" value="${numtemplates + 1}"/>
+              </ww:iterator>
+           </tr>
+           <tr>
+             <c:set var="count" value="0"/>        
+             <ww:iterator id="dynamicrole" value="dynamicroles" status="row_status">
+               <c:if test="${count == 0}">
+                 <td>${dynamicrole.resource}</td>
+               </c:if>
+               <c:set var="chkbx" value="<input type='checkbox' name='addDSelectedRoles' value='${dynamicrole.name}'/>"/>
+               <ww:iterator id="drole" value="DRoles">
+                 <c:if test="${(drole == dynamicrole.name)}">
+                   <c:set var="chkbx" value="<input type='checkbox' name='addDSelectedRoles' value='${dynamicrole.name}' checked='yes'/>"/>
+                 </c:if>
+               </ww:iterator>
+               <td><center>${chkbx}</center></td>
+               <c:set var="count" value="${count + 1}"/>
+               <c:if test="${count == numtemplates}">
+                 <c:choose>
+                   <c:when test="${row_status.last}">
+                     </tr>
+                   </c:when>
+                   <c:otherwise>
+                     </tr><tr>
+                   </c:otherwise>
+                 </c:choose>
+                 <c:set var="count" value="0"/>
+               </c:if>
+             </ww:iterator>
+          </table>
+        </c:when>
+        <c:otherwise>
+          <p><em><ww:text name="assignments.no.roles.to.grant"/></em></p>
+        </c:otherwise>
+      </c:choose>
 
+      <br/>
+      <ww:submit value="%{getText('assignments.submit')}" name="submitRolesButton" theme="simple" />
+      <br/>
+      <ww:reset type="button" value="%{getText('assignments.reset')}" name="resetRolesButton" theme="simple" />
+    </ww:form>
+  
 </body>
 </ww:i18n>
 </html>
