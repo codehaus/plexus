@@ -42,11 +42,11 @@ public class LdapUser
     private boolean permanent = true;
     private boolean valid = true;
 
-    private Date creationDate;
+    private Date creationDate = null;
 
     private int failedLoginAttempts;
-    private Date lastLoginDate = new Date();
-    private Date lastPasswordChange = new Date();
+    private Date lastLoginDate = null;
+    private Date lastPasswordChange = null;
 
     // DO NOT STORE AS SUCH!!!
     private String newPassword;
@@ -59,7 +59,6 @@ public class LdapUser
         this.username = username;
         previousEncodedPasswords = new ArrayList<String>();
         failedLoginAttempts = 0;
-        creationDate = new Date();
     }
 
     public LdapUser( String username, String fullName, String email )

@@ -160,6 +160,8 @@ public class LdapUserMapper
         
         String encodedPassword = LdapUtils.getAttributeValueFromByteArray( attributes, passwordAttribute, "password" );
         
+        // it seems to be a common convention for the password to come back prepended with the encoding type..
+        // however we deal with that via configuration right now so just smoke it.
         if ( encodedPassword != null && encodedPassword.startsWith( "{" ) )
         {
             encodedPassword = encodedPassword.substring( encodedPassword.indexOf( "}" ) + 1 );
