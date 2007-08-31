@@ -51,6 +51,8 @@ public class DefaultUserSecurityPolicy
 
     public static final String LOGIN_ATTEMPT_COUNT = "security.policy.allowed.login.attempt";
 
+    public static final String PASSWORD_EXPIRATION_ENABLED = "security.policy.password.expiration.enabled";
+    
     public static final String PASSWORD_EXPIRATION = "security.policy.password.expiration.days";
 
     public static final String PASSWORD_ENCODER = "security.policy.password.encoder";
@@ -72,6 +74,8 @@ public class DefaultUserSecurityPolicy
     private int loginAttemptCount;
 
     private int passwordExpirationDays;
+    
+    private boolean passwordExpirationEnabled;
 
     /**
      * @plexus.requirement
@@ -196,16 +200,19 @@ public class DefaultUserSecurityPolicy
     public void extensionPasswordExpiration( User user )
         throws MustChangePasswordException
     {
-        Calendar expirationDate = Calendar.getInstance();
-        expirationDate.setTime( user.getLastPasswordChange() );
-        expirationDate.add( Calendar.DAY_OF_MONTH, passwordExpirationDays );
-        Calendar now = Calendar.getInstance();
-
-        if ( now.after( expirationDate ) )
+        if ( passwordExpirationEnabled )
         {
-            user.setLocked( true );
-            user.setPasswordChangeRequired( true );
-            throw new MustChangePasswordException( "Password Expired, You must change your password." );
+            Calendar expirationDate = Calendar.getInstance();
+            expirationDate.setTime( user.getLastPasswordChange() );
+            expirationDate.add( Calendar.DAY_OF_MONTH, passwordExpirationDays );
+            Calendar now = Calendar.getInstance();
+
+            if ( now.after( expirationDate ) )
+            {
+                user.setLocked( true );
+                user.setPasswordChangeRequired( true );
+                throw new MustChangePasswordException( "Password Expired, You must change your password." );
+            }
         }
     }
 
@@ -371,6 +378,7 @@ public class DefaultUserSecurityPolicy
     {
         this.previousPasswordsCount = config.getInt( PASSWORD_RETENTION_COUNT );
         this.loginAttemptCount = config.getInt( LOGIN_ATTEMPT_COUNT );
+        this.passwordExpirationEnabled = config.getBoolean( PASSWORD_EXPIRATION_ENABLED );
         this.passwordExpirationDays = config.getInt( PASSWORD_EXPIRATION );
     }
 }
