@@ -233,12 +233,21 @@ public class PlexusJava5DescriptorMojo
             if ( paramAnnotation != null )
             {
                 String value = "";
-                for ( String s : paramAnnotation.value() )
+                if ( paramAnnotation.value() != null )
                 {
-                    value += ( value.length() == 0 ? "" : "," ) + s;
+                    for ( String s : paramAnnotation.value() )
+                    {
+                        value += ( value.length() == 0 ? "" : "," ) + s;
+                    }
                 }
 
-                XmlPlexusConfiguration config = new XmlPlexusConfiguration( f.getName() );
+                String name = paramAnnotation.name();
+                if ( name == null || name.trim().length() == 0 )
+                {
+                    name = f.getName();
+                }
+
+                XmlPlexusConfiguration config = new XmlPlexusConfiguration( name );
                 config.setValue( value );
                 desc.getConfiguration().addChild( config );
             }
