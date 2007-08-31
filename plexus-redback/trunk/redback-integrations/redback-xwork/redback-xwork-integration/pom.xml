@@ -44,6 +44,14 @@
       <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>redback-authentication-users</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-authentication-ldap</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus.redback</groupId>
+      <artifactId>redback-users-ldap</artifactId>
+    </dependency>
     <!-- Keys Management / Authentication -->
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
