@@ -18,6 +18,8 @@ package org.codehaus.plexus.redback.example.web.action;
 
 import org.codehaus.plexus.redback.system.SecuritySystem;
 import org.codehaus.plexus.xwork.action.PlexusActionSupport;
+import org.codehaus.plexus.redback.role.RoleManager;
+import org.codehaus.plexus.redback.role.RoleManagerException;
 
 /**
  * MainAction 
@@ -37,6 +39,11 @@ public class MainAction
      */
     private SecuritySystem securitySystem;
 
+    /**
+     * @plexus.requirement role-hint="default"
+     */
+    private RoleManager roleManager;
+    
     public String show()
     {
         if ( securitySystem == null )
@@ -50,6 +57,38 @@ public class MainAction
             session.put( "security_id_user_management", securitySystem.getUserManagementId() );
         }
 
+        try
+        {
+
+            if ( !roleManager.templatedRoleExists( "template1", "Test Resource A" ) )
+            {
+                roleManager.createTemplatedRole( "template1", "Test Resource A" );
+            }
+            if ( !roleManager.templatedRoleExists( "template2", "Test Resource A" ) )
+            {
+                roleManager.createTemplatedRole( "template2", "Test Resource A" );
+            }
+            if ( !roleManager.templatedRoleExists( "template3", "Test Resource A" ) )
+            {
+                roleManager.createTemplatedRole( "template3", "Test Resource A" );
+            }
+            if ( !roleManager.templatedRoleExists( "template1", "Test Resource B" ) )
+            {
+                roleManager.createTemplatedRole( "template1", "Test Resource B" );
+            }
+            if ( !roleManager.templatedRoleExists( "template2", "Test Resource B" ) )
+            {
+                roleManager.createTemplatedRole( "template2", "Test Resource B" );
+            }
+            if ( !roleManager.templatedRoleExists( "template3", "Test Resource B" ) )
+            {
+                roleManager.createTemplatedRole( "template3", "Test Resource B" );
+            }
+        }
+        catch ( RoleManagerException e )
+        {
+        	e.printStackTrace();
+        }
         return SUCCESS;
     }
 }
