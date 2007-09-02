@@ -23,7 +23,7 @@ limitations under the License.
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-velocity</artifactId>
   <name>Plexus Velocity Component</name>
-  <version>1.1.7</version>
+  <version>1.1.8-SNAPSHOT</version>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -41,10 +41,4 @@ limitations under the License.
       <version>1.4</version>
     </dependency>
   </dependencies>
-
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-components/tags/plexus-velocity-1.1.7</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-components/tags/plexus-velocity-1.1.7</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-components/tags/plexus-velocity-1.1.7</url>
-  </scm>
 </project>
