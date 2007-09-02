@@ -26,12 +26,10 @@
     </dependency>
   </dependencies>
   <modules>
-    <module>plexus-action</module>
     <module>plexus-archiver</module>
     <module>plexus-bayesian</module>
     <module>plexus-command</module>
     <module>plexus-compiler</module>
-    <module>plexus-drools</module>
     <module>plexus-formica</module>
     <module>plexus-formica-web</module>
     <module>plexus-hibernate</module>
