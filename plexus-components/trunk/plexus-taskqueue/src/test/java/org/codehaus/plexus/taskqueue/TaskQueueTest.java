@@ -24,6 +24,9 @@ package org.codehaus.plexus.taskqueue;
  * SOFTWARE.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.codehaus.plexus.PlexusTestCase;
 
 /**
@@ -119,6 +122,30 @@ public class TaskQueueTest
         taskQueue.remove( task );
 
         assertNull( taskQueue.take() );
+    }
+    
+    public void testRemoveAll()
+        throws Exception
+    {
+        Task firstTask = new BuildProjectTask( 110 );
+
+        taskQueue.put( firstTask );
+
+        Task secondTask = new BuildProjectTask( 11120 );
+
+        taskQueue.put( secondTask );
+
+        assertEquals( 2, taskQueue.getQueueSnapshot().size() );
+
+        List tasks = new ArrayList();
+
+        tasks.add( firstTask );
+
+        tasks.add( secondTask );
+
+        taskQueue.removeAll( tasks );
+
+        assertTrue( taskQueue.getQueueSnapshot().isEmpty() );
     }
 
     // ----------------------------------------------------------------------

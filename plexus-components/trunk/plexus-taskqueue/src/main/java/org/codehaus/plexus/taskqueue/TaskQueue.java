@@ -54,6 +54,9 @@ public interface TaskQueue
 
     boolean remove( Task task )
         throws ClassCastException, NullPointerException;
+    
+    boolean removeAll( List tasks )
+        throws ClassCastException, NullPointerException;
 
     // ----------------------------------------------------------------------
     // Queue Inspection
