@@ -390,7 +390,7 @@ public class AssignmentsAction
                   assignment.addRoleName( (String) i.next() );
                 }
               }
-              manager.saveUserAssignment( assignment );
+              assignment = manager.saveUserAssignment( assignment );
               
               getLogger().info( "roles assigned = " + assignment.getRoleNames().size() );
                 
