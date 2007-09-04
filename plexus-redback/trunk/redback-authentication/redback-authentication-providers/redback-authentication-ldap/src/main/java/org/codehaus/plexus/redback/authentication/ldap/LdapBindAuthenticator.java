@@ -62,6 +62,11 @@ public class LdapBindAuthenticator extends AbstractLogEnabled
      */
     private LdapConnectionFactory connectionFactory;
     
+    /**
+     * @plexus.requirement role-hint="default"
+     */
+    private UserConfiguration config;
+    
     public String getId()
     {
         return "LdapBindAuthenticator";
@@ -71,6 +76,11 @@ public class LdapBindAuthenticator extends AbstractLogEnabled
         throws AuthenticationException
     {
         PasswordBasedAuthenticationDataSource source = (PasswordBasedAuthenticationDataSource) s;
+        
+        if ( !config.getBoolean( "ldap.bind.authenticator.enabled" ) )
+        {
+            return new AuthenticationResult( false, source.getPrincipal(), null );
+        }
 
         SearchControls ctls = new SearchControls();
 
