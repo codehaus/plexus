@@ -1,6 +1,6 @@
 package org.codehaus.plexus.redback.users.ldap.ctl;
 
-import org.apache.directory.shared.ldap.util.AttributeUtils;
+//import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.redback.users.User;
@@ -292,8 +292,8 @@ public class DefaultLdapController
             {
                 SearchResult next = result.nextElement();
                 Attributes attrs = next.getAttributes();
-                log.debug( "ATTRIBUTES: + " + AttributeUtils.toString( attrs ) );
-                log.debug( "ATTR: " + attrs.toString() + "\n\nName: "+ next.getNameInNamespace() );
+                //log.debug( "ATTRIBUTES: + " + AttributeUtils.toString( attrs ) );
+                //log.debug( "ATTR: " + attrs.toString() + "\n\nName: "+ next.getNameInNamespace() );
                 Object o = context.lookup( next.getNameInNamespace() ); 
                 //if ( o instanceof Attributes )
                 //{
