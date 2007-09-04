@@ -32,5 +32,6 @@
   <modules>
     <module>redback-authentication-open</module>
     <module>redback-authentication-memory</module>    
+    <module>redback-authentication-ldap</module>
   </modules>
 </project>
