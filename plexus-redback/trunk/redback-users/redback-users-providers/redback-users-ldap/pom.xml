@@ -24,7 +24,6 @@
     <dependency>
       <groupId>org.codehaus.plexus.redback</groupId>
       <artifactId>redback-common-ldap</artifactId> 
-      <version>1.0-alpha-3-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -42,7 +41,7 @@
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-apacheds</artifactId>
       <version>1.0-SNAPSHOT</version>
-    <!--    <scope>test</scope>  -->
+      <scope>test</scope>
     </dependency>
     
   <!--   <dependency>
