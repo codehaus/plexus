@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.plexus.redback</groupId>
     <artifactId>redback-authentication-providers</artifactId>
-    <version>1.0-alpha-3</version>
+    <version>1.0-alpha-4-SNAPSHOT</version>
   </parent>
   <artifactId>redback-authentication-open</artifactId>
   <name>Plexus Redback :: Authentication Provider :: Open</name>
@@ -30,9 +30,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/tags/redback-1.0-alpha-3/redback-authentication/redback-authentication-providers/redback-authentication-open</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/tags/redback-1.0-alpha-3/redback-authentication/redback-authentication-providers/redback-authentication-open</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/tags/redback-1.0-alpha-3/redback-authentication/redback-authentication-providers/redback-authentication-open</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/trunk/redback-authentication/redback-authentication-providers/redback-authentication-open</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/trunk/redback-authentication/redback-authentication-providers/redback-authentication-open</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-authentication/plexus-security-authentication-providers/plexus-security-authentication-provider-open</url>
   </scm>
   <build>
     <plugins>
