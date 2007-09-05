@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.plexus.redback</groupId>
+    <artifactId>redback</artifactId>
+    <version>1.0-alpha-3</version>
+  </parent>
+  <artifactId>redback-site</artifactId>
+  <name>Plexus Redback :: Site</name>
+  <packaging>pom</packaging>
+  <build>
+    <plugins>
+      <plugin>
+       <groupId>org.apache.maven.plugins</groupId>
+       <artifactId>maven-site-plugin</artifactId>
+       <version>2.0-beta-5</version>
+       <configuration>
+         <port>9000</port>
+         <tempWebappDirectory>${basedir}/target/site/tempdir</tempWebappDirectory>
+       </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <reporting>
+    <excludeDefaults>true</excludeDefaults>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>cim</report>
+              <report>issue-tracking</report>
+              <report>mailing-list</report>
+              <report>license</report>
+              <report>project-team</report>
+              <report>scm</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
+  <distributionManagement>
+   <site>
+      <id>redback-site</id>
+      <name>Plexus Redback Website</name>
+      <url>dav:https://dav.codehaus.org/plexus/redback/</url>
+    </site>
+  </distributionManagement>
+</project>

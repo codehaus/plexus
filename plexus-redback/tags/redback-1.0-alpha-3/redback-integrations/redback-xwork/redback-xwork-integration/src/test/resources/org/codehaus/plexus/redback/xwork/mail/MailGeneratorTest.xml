@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<plexus>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.redback.configuration.UserConfiguration</role>
+      <implementation>org.codehaus.plexus.redback.configuration.UserConfiguration</implementation>
+      <role-hint>custom-url</role-hint>
+      <description>ConfigurationFactory</description>
+      <configuration>
+        <configs>
+          <config>src/test/config/mail.properties</config>
+        </configs>
+      </configuration>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.redback.xwork.mail.MailGenerator</role>
+      <role-hint>custom-url</role-hint>
+      <implementation>org.codehaus.plexus.redback.xwork.mail.VelocityMailGenerator</implementation>
+      <description>Mail generator component implementation using velocity.</description>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.redback.configuration.UserConfiguration</role>
+          <field-name>config</field-name>
+          <role-hint>custom-url</role-hint>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.velocity.VelocityComponent</role>
+          <field-name>velocity</field-name>
+        </requirement>
+      </requirements>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.redback.xwork.mail.MailGenerator</role>
+      <role-hint>velocity</role-hint>
+      <implementation>org.codehaus.plexus.redback.xwork.mail.VelocityMailGenerator</implementation>
+      <description>Mail generator component implementation using velocity.</description>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.redback.configuration.UserConfiguration</role>
+          <field-name>config</field-name>
+          <role-hint>default</role-hint>
+        </requirement>
+        <requirement>
+          <role>org.codehaus.plexus.velocity.VelocityComponent</role>
+          <field-name>velocity</field-name>
+        </requirement>
+      </requirements>
+    </component>
+  </components>
+</plexus>
