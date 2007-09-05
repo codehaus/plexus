@@ -53,6 +53,7 @@
     <menu name="Integration">
       <item name="General" href="integration/general.html"/>
       <item name="Webwork" href="integration/webwork.html"/>
+      <item name="Ldap" href="integration/ldap.html"/>
       <item name="Acegi" href="integration/acegi.html"/>
       <item name="XFire" href="integration/xfire.html"/>
     </menu>
