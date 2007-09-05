@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.codehaus.plexus.redback</groupId>
     <artifactId>redback-users</artifactId>
-    <version>1.0-alpha-3</version>
+    <version>1.0-alpha-4-SNAPSHOT</version>
   </parent>
   
   <artifactId>redback-users-ldap</artifactId>
