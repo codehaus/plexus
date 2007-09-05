@@ -19,13 +19,17 @@
   <modules>
     <module>plexus-appserver</module>
     <module>plexus-archetypes</module>
+    <module>plexus-classworlds</module>
     <module>plexus-component-factories</module>
     <module>plexus-components</module>
     <module>plexus-containers</module>
     <module>plexus-examples</module>
     <module>plexus-logging</module>
     <module>plexus-maven-plugin</module>
-<!--    <module>plexus-redback</module> -->
+    <!--
+    <module>plexus-redback</module>
+    <module>plexus-sandbox</module>
+    -->
     <module>plexus-servlet</module>
     <module>plexus-tools</module>
     <module>plexus-utils</module>
