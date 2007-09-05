@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.codehaus.plexus.redback</groupId>
     <artifactId>redback</artifactId>
-    <version>1.0-alpha-3-SNAPSHOT</version>
+    <version>1.0-alpha-3</version>
   </parent>
   <artifactId>redback-authentication</artifactId>
   <name>Plexus Redback :: Authentication</name>
@@ -31,9 +31,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/trunk/redback-authentication</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/trunk/redback-authentication</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/trunk/plexus-security-authentication</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-redback/tags/redback-1.0-alpha-3/redback-authentication</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-redback/tags/redback-1.0-alpha-3/redback-authentication</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-security/tags/redback-1.0-alpha-3/redback-authentication</url>
   </scm>
   <modules>
     <module>redback-authentication-api</module>
