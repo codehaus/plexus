@@ -66,6 +66,11 @@ public class DefaultApacheDs
      * @plexus.configuration default-value="10389"
      */
     private int port;
+    
+    /**
+     * @plexus.configuration default-value="secret"
+     */
+    private String password;
 
     // ----------------------------------------------------------------------
     //
@@ -99,7 +104,7 @@ public class DefaultApacheDs
         Hashtable environment = new Hashtable( configuration.toJndiEnvironment() );
         environment.put( Context.INITIAL_CONTEXT_FACTORY, ServerContextFactory.class.getName() );
         environment.put( Context.SECURITY_PRINCIPAL, "uid=admin,ou=system" );
-        environment.put( Context.SECURITY_CREDENTIALS, "secret" );
+        environment.put( Context.SECURITY_CREDENTIALS, password );
         environment.put( Context.SECURITY_AUTHENTICATION, "simple" );
 //        environment.put( Context.PROVIDER_URL, "dc=hauskeeper,dc=codehaus,dc=org" );
         return new InitialDirContext( environment );
@@ -113,7 +118,7 @@ public class DefaultApacheDs
         Hashtable environment = new Hashtable( configuration.toJndiEnvironment() );
         environment.put( Context.INITIAL_CONTEXT_FACTORY, ServerContextFactory.class.getName() );
         environment.put( Context.SECURITY_PRINCIPAL, "uid=admin,ou=system" );
-        environment.put( Context.SECURITY_CREDENTIALS, "secret" );
+        environment.put( Context.SECURITY_CREDENTIALS, password );
         environment.put( Context.SECURITY_AUTHENTICATION, "simple" );
         environment.put( Context.PROVIDER_URL, "ou=system" );
         return new InitialDirContext( environment );
