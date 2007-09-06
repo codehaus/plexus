@@ -9,6 +9,7 @@
         <enable-networking>true</enable-networking>
         <basedir>target/plexus-home</basedir>
         <port>10391</port>
+        <password>secret</password>
       </configuration>
     </component>
   </components>

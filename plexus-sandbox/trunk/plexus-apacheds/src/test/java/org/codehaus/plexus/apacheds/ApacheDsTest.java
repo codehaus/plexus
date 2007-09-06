@@ -40,11 +40,11 @@ public class ApacheDsTest
 
         InitialDirContext context = apacheDs.getAdminContext();
 
-        String cn = "cn=trygvis";
+        String cn = "trygvis";
         bindObject( context, cn, createDn( cn ) );
         assertExist( context, createDn( cn ), "cn", cn );
 
-        cn = "cn=bolla";
+        cn = "bolla";
         bindObject( context, cn, createDn( cn ) );
         assertExist( context, createDn( cn ), "cn", cn );
 
@@ -60,10 +60,12 @@ public class ApacheDsTest
         //apacheDs.addSimplePartition( "test", new String[]{"plexus", "codehaus", "org"} ).getSuffix();
         apacheDs.startServer();
 
-        assertExist( context, createDn( "cn=trygvis" ), "cn", "cn=trygvis" );
-        context.unbind( createDn( "cn=trygvis" ) );
-        assertExist( context, createDn( "cn=bolla" ), "cn", "cn=bolla" );
-        context.unbind( createDn( "cn=bolla" ) );
+        assertExist( context, createDn( "trygvis" ), "cn", "trygvis" );
+        assertExist( context, createDn( "trygvis" ), "testAttr", "test" );
+        context.unbind( createDn( "trygvis" ) );
+        assertExist( context, createDn( "bolla" ), "cn", "bolla" );
+        assertExist( context, createDn( "bolla" ), "testAttr", "test" );
+        context.unbind( createDn( "bolla" ) );
 
         apacheDs.stopServer();
     }
@@ -170,12 +172,13 @@ public class ApacheDsTest
 //        objectClass.add( "uidObject" );
         attributes.put( objectClass );
         attributes.put( "cn", cn );
+        attributes.put( "testAttr", "test" );        
         context.bind( dn, attributes );
     }
 
     private String createDn( String cn )
     {
-        return cn + "," + suffix;
+        return "cn=" + cn + "," + suffix;
     }
 
     private void assertExist( DirContext context, String dn, String attribute, String value )
