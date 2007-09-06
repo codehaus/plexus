@@ -18,6 +18,7 @@ import org.apache.directory.server.schema.bootstrap.Krb5kdcSchema;
 import org.apache.directory.server.schema.bootstrap.NisSchema;
 import org.apache.directory.server.schema.bootstrap.SystemSchema;
 import org.apache.directory.server.jndi.ServerContextFactory;
+import org.apache.directory.server.ldap.LdapConfiguration;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
@@ -128,7 +129,7 @@ public class DefaultApacheDs
         throws NamingException
     {
     	MutablePartitionConfiguration configuration = new MutablePartitionConfiguration();
-        configuration.setName( name );
+        configuration.setId( name );
         configuration.setSuffix( root );
         configuration.setIndexedAttributes( indexedAttributes );
         configuration.setContextEntry( partitionAttributes );
@@ -140,13 +141,13 @@ public class DefaultApacheDs
     {	
     	MutablePartitionConfiguration configuration = new MutablePartitionConfiguration();
 
-        configuration.setName( partition.getName() );
+        configuration.setId( partition.getName() );
         configuration.setSuffix( partition.getSuffix() );
         configuration.setIndexedAttributes( partition.getIndexedAttributes() );
         configuration.setContextEntry( partition.getContextAttributes() );
         //configuration.setSynchOnWrite( true );
         configuration.setCacheSize( 1 );
-        configuration.setOptimizerEnabled( false );
+        //configuration.setOptimizerEnabled( false );
         partitionConfigurations.add( configuration );
     }
 
@@ -220,10 +221,12 @@ public class DefaultApacheDs
         MutableServerStartupConfiguration configuration = new MutableServerStartupConfiguration();
         configuration.setWorkingDirectory( basedir );
         configuration.setAllowAnonymousAccess( true );
-        configuration.setEnableNtp( false );
-        configuration.setEnableKerberos( false );
-        configuration.setEnableChangePassword( false );
-        configuration.setLdapPort( port );
+        //configuration.setEnableNtp( false );
+        //configuration.setEnableKerberos( false );
+        //configuration.setEnableChangePassword( false );
+        LdapConfiguration config = new LdapConfiguration();
+        config.setIpPort( port );
+        configuration.setLdapConfiguration( config );
         configuration.setEnableNetworking( enableNetworking );
         configuration.setSynchPeriodMillis( 100 );
 

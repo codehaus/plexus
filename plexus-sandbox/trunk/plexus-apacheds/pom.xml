@@ -12,37 +12,48 @@
     <dependency>
       <groupId>org.apache.directory.server</groupId>
       <artifactId>apacheds-core</artifactId>
-      <version>1.5.0</version>
+      <version>${apacheds.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.server</groupId>
       <artifactId>apacheds-core-shared</artifactId>
-      <version>1.5.0</version>
+      <version>${apacheds.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.server</groupId>
       <artifactId>apacheds-server-jndi</artifactId>
-      <version>1.5.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-schema-bootstrap</artifactId>
-      <version>1.5.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.directory.server</groupId>
-      <artifactId>apacheds-schema-registries</artifactId>
-      <version>1.5.0</version>
+      <version>${apacheds.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.server</groupId>
       <artifactId>apacheds-schema-extras</artifactId>
-      <version>1.5.0</version>
+      <version>${apacheds.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.directory.server</groupId>
+      <artifactId>apacheds-bootstrap-partition</artifactId>
+      <version>${apacheds.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.server</groupId>
+      <artifactId>apacheds-schema-registries</artifactId>
+      <version>${apacheds.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.server</groupId>
+      <artifactId>apacheds-schema-extras</artifactId>
+      <version>${apacheds.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.4.3</version>
+    </dependency>
+    <!-- 
+    <dependency>
+      <groupId>org.apache.directory.server</groupId>
       <artifactId>apacheds-server-main</artifactId>
-      <version>1.5.0</version>
+      <version>${apacheds.version}</version>
       <exclusions>
         <exclusion>
           <groupId>springframework</groupId>
@@ -86,6 +97,7 @@
         </exclusion>
       </exclusions>
     </dependency>
+    -->
   </dependencies>
   <build>
     <plugins>
@@ -115,4 +127,7 @@
       </plugin>
     </plugins>
   </build>
+  <properties>
+    <apacheds.version>1.5.1</apacheds.version>
+  </properties>
 </project>

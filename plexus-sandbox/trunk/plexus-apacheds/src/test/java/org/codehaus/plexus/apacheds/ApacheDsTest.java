@@ -1,14 +1,20 @@
 package org.codehaus.plexus.apacheds;
 
+import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.FileUtils;
 
+import sun.util.logging.resources.logging;
+
+import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
+import javax.naming.directory.SearchControls;
+import javax.naming.directory.SearchResult;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -43,11 +49,36 @@ public class ApacheDsTest
         String cn = "trygvis";
         bindObject( context, cn, createDn( cn ) );
         assertExist( context, createDn( cn ), "cn", cn );
+        assertExist( context, createDn( "trygvis" ), "testAttr", "test" );
 
         cn = "bolla";
         bindObject( context, cn, createDn( cn ) );
         assertExist( context, createDn( cn ), "cn", cn );
+        assertExist( context, createDn( "trygvis" ), "testAttr", "test" );
 
+        SearchControls ctls = new SearchControls();
+
+        ctls.setDerefLinkFlag( true );
+        ctls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
+        ctls.setReturningAttributes( new String[] { "*" } );
+
+        //String filter = "(&(objectClass=inetOrgPerson)(cn=trygvis))";        
+        String filter =  "(cn=trygvis)";      
+        
+        NamingEnumeration<SearchResult> results = context.search( suffix, filter, ctls );
+       
+        assertTrue( "a result should have been returned", results.hasMoreElements() );
+        
+        SearchResult result = results.nextElement();
+        
+        Attributes attrs = result.getAttributes();
+        
+        System.out.println( AttributeUtils.toString( attrs ) );;
+        
+        assertEquals( "test", attrs.get( "testAttr" ) );
+        
+        assertFalse( "should only have one result returned", results.hasMoreElements() );
+        
         apacheDs.stopServer();
 
         release( apacheDs );
