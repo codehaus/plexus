@@ -215,7 +215,7 @@ public class DefaultApacheDs
         Properties environment = new Properties();
         environment.setProperty( "java.naming.security.authentication", "simple" );
         environment.setProperty( "java.naming.security.principal", "uid=admin,ou=system" );
-        environment.setProperty( "java.naming.security.credentials", "secret" );
+        environment.setProperty( "java.naming.security.credentials", password );
 
         MutableServerStartupConfiguration configuration = new MutableServerStartupConfiguration();
         configuration.setWorkingDirectory( basedir );
@@ -229,26 +229,9 @@ public class DefaultApacheDs
 
         configuration.setPartitionConfigurations( partitionConfigurations );
 
-        
-        
-        Set bootstrapSchemas = new HashSet();
-        bootstrapSchemas.add( new AutofsSchema() );
-        bootstrapSchemas.add( new CorbaSchema() );
-        bootstrapSchemas.add( new CoreSchema() );
-        bootstrapSchemas.add( new CosineSchema() );
-        bootstrapSchemas.add( new ApacheSchema() );
-        bootstrapSchemas.add( new CollectiveSchema() );
-        bootstrapSchemas.add( new InetorgpersonSchema() );
-        bootstrapSchemas.add( new JavaSchema() );
-        bootstrapSchemas.add( new Krb5kdcSchema() );
-        bootstrapSchemas.add( new NisSchema() );
-        bootstrapSchemas.add( new SystemSchema() );
-        bootstrapSchemas.add( new ApachednsSchema() );
-        //configuration.setBootstrapSchemas( bootstrapSchemas );
-
         Properties env = new Properties();
         env.setProperty( Context.SECURITY_PRINCIPAL, "uid=admin,ou=system" );
-        env.setProperty( Context.SECURITY_CREDENTIALS, "secret" );
+        env.setProperty( Context.SECURITY_CREDENTIALS, password );
         env.setProperty( Context.SECURITY_AUTHENTICATION, "simple" );
         env.setProperty( Context.PROVIDER_URL, "ou=system" );
         env.setProperty( Context.INITIAL_CONTEXT_FACTORY, ServerContextFactory.class.getName() );
