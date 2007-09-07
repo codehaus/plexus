@@ -8,6 +8,7 @@ import sun.util.logging.resources.logging;
 
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.BasicAttributes;
@@ -49,12 +50,12 @@ public class ApacheDsTest
         String cn = "trygvis";
         bindObject( context, cn, createDn( cn ) );
         assertExist( context, createDn( cn ), "cn", cn );
-        assertExist( context, createDn( "trygvis" ), "testAttr", "test" );
+        //assertExist( context, createDn( "trygvis" ), "testAttr", "test" );
 
         cn = "bolla";
         bindObject( context, cn, createDn( cn ) );
         assertExist( context, createDn( cn ), "cn", cn );
-        assertExist( context, createDn( "trygvis" ), "testAttr", "test" );
+        //assertExist( context, createDn( "trygvis" ), "testAttr", "test" );
 
         SearchControls ctls = new SearchControls();
 
@@ -62,8 +63,8 @@ public class ApacheDsTest
         ctls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
         ctls.setReturningAttributes( new String[] { "*" } );
 
-        //String filter = "(&(objectClass=inetOrgPerson)(cn=trygvis))";        
-        String filter =  "(cn=trygvis)";      
+        String filter = "(&(objectClass=inetOrgPerson)(cn=trygvis))";        
+        //String filter =  "(cn=trygvis)";      
         
         NamingEnumeration<SearchResult> results = context.search( suffix, filter, ctls );
        
@@ -75,9 +76,9 @@ public class ApacheDsTest
         
         System.out.println( AttributeUtils.toString( attrs ) );;
         
-        assertEquals( "test", attrs.get( "testAttr" ) );
+        //assertEquals( "test", attrs.get( "testAttr" ) );
         
-        assertFalse( "should only have one result returned", results.hasMoreElements() );
+        //assertFalse( "should only have one result returned", results.hasMoreElements() );
         
         apacheDs.stopServer();
 
@@ -91,11 +92,13 @@ public class ApacheDsTest
         //apacheDs.addSimplePartition( "test", new String[]{"plexus", "codehaus", "org"} ).getSuffix();
         apacheDs.startServer();
 
+        context = apacheDs.getAdminContext();
+        
         assertExist( context, createDn( "trygvis" ), "cn", "trygvis" );
-        assertExist( context, createDn( "trygvis" ), "testAttr", "test" );
+        //assertExist( context, createDn( "trygvis" ), "testAttr", "test" );
         context.unbind( createDn( "trygvis" ) );
         assertExist( context, createDn( "bolla" ), "cn", "bolla" );
-        assertExist( context, createDn( "bolla" ), "testAttr", "test" );
+        //assertExist( context, createDn( "bolla" ), "testAttr", "test" );
         context.unbind( createDn( "bolla" ) );
 
         apacheDs.stopServer();
@@ -203,8 +206,10 @@ public class ApacheDsTest
 //        objectClass.add( "uidObject" );
         attributes.put( objectClass );
         attributes.put( "cn", cn );
-        attributes.put( "testAttr", "test" );        
-        context.bind( dn, attributes );
+        attributes.put( "sn", cn );
+        //attributes.put( "testAttr", "test" ); 
+        context.createSubcontext( dn, attributes );
+        //context.bind( dn, attributes );
     }
 
     private String createDn( String cn )
@@ -215,9 +220,28 @@ public class ApacheDsTest
     private void assertExist( DirContext context, String dn, String attribute, String value )
         throws NamingException
     {
-        Object o = context.lookup( dn );
-        assertTrue( o instanceof Attributes );
-        Attributes attributes = (Attributes) o;
-        assertEquals( value, attributes.get( attribute ).get() );
+    	SearchControls ctls = new SearchControls();
+
+        ctls.setDerefLinkFlag( true );
+        ctls.setSearchScope( SearchControls.ONELEVEL_SCOPE );
+        ctls.setReturningAttributes( new String[] { "*" } );
+    	
+    	//Object o = context.lookup( dn );
+    	BasicAttributes matchingAttributes = new BasicAttributes();
+    	matchingAttributes.put( attribute, value );
+    	NamingEnumeration<SearchResult> results = context.search( suffix, "(" + attribute + "=" + value + ")", ctls  );
+
+        //assertTrue( o instanceof Attributes );
+        //Attributes attributes = (Attributes) o;
+        //assertEquals( value, attributes.get( attribute ).get() );
+    	assertTrue( results.hasMoreElements() );
+    	
+    	SearchResult result = results.nextElement();
+    	
+    	Attributes attrs = result.getAttributes();
+    	
+    	Attribute testAttr = attrs.get( attribute );
+    	
+    	assertEquals( value, testAttr.get() );
     }
 }
