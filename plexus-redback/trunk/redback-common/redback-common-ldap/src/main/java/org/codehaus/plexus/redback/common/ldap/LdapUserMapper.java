@@ -33,7 +33,7 @@ public class LdapUserMapper
     implements UserMapper
 {
     /**
-     * @plexus.configuration default-value="email"
+     * @plexus.configuration default-value="mail"
      */
     String emailAttribute;
 
