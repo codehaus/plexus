@@ -1,6 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <artifactId>plexus</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.0.11</version>
+  </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus-servlet</artifactId>
   <name>Plexus Servlet</name>
   <version>1.0-beta-11-SNAPSHOT</version>
@@ -26,23 +30,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <distributionManagement>
-    <repository>
-      <id>codehaus.org</id>
-      <name>Plexus Central Repository</name>
-      <url>file:///tmp/repo</url>
-    </repository>
-    <snapshotRepository>
-      <id>codehaus.org</id>
-      <name>Plexus Central Development Repository</name>
-      <url>dav:https://dav.codehaus.org/snapshots.repository/plexus</url>
-    </snapshotRepository>
-    <site>
-      <id>codehaus.org</id>
-      <url>dav:https://dav.codehaus.org/plexus</url>
-    </site>
-  </distributionManagement>
 
   <url>http://plexus.codehaus.org/plexus-servlet/</url>
   <scm>
