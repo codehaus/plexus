@@ -1,0 +1,31 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <artifactId>plexus-components</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.1.12</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>plexus-mainclass-finder</artifactId>
+  <name>Plexus Mainclass Finder</name>
+  <version>1.0-SNAPSHOT</version>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-sandbox/trunk/plexus-components/plexus-mainclass-finder</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-sandbox/trunk/plexus-components/plexus-mainclass-finder</developerConnection>
+  </scm>
+
+  <dependencies>
+    <dependency>
+      <groupId>asm</groupId>
+      <artifactId>asm</artifactId>
+      <version>3.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>asm</groupId>
+      <artifactId>asm-commons</artifactId>
+      <version>3.0</version>
+    </dependency>
+  </dependencies>
+</project>

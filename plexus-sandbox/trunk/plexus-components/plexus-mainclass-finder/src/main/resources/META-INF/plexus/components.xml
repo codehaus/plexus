@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.mainclass.MainClassFinder</role>
+      <role-hint>default</role-hint>
+      <implementation>org.codehaus.plexus.mainclass.AsmMainMethodFinder</implementation>
+    </component>
+  </components>
+</component-set>
