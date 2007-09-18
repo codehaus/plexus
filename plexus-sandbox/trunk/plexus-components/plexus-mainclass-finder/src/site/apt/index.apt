@@ -1,0 +1,22 @@
+
+
+Plexus Main Class Finder Component
+
+  This components finds all classes having a <<<public static void main(String[] args)>>> method.
+
+
+* Usage
+
++------------------------------------------+
+
+MainClassFinder mainClassFinder =  (MainClassFinder) lookup( MainClassFinder.ROLE );
+List classPath = new ArrayList();
+
+classPath.add( new File("classes");
+classPath.add( new File("somejar.jar));
+
+List mainClasses = mainClassFinder.findMainMethods( classPath);
+
++------------------------------------------+
+
+  The resulting <<<mainClasses>>> list should contain the names of all classes that have a <<<main>>> method.
