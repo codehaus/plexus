@@ -33,5 +33,5 @@ public interface MainClassFinder
      * @param classPath a {@link List} of jar files or directories where class files can be found
      * @return a {@link List} of class names (Strings)
      */
-    List findMainMethods( List classPath );
+    List findMainClasses( List classPath );
 }

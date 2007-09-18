@@ -37,7 +37,7 @@ public abstract class AbstractMainMethodFinder
 {
     private static final int DOTCLASSLENGTH = ".class".length();
 
-    public List findMainMethods( List classPath )
+    public List findMainClasses( List classPath )
     {
         List classes = new ArrayList();
         for ( int i = 0; i < classPath.size(); i++ )

@@ -40,7 +40,7 @@ public abstract class AbstractMainMethodFinderTest
         classPath.add( new File(getBasedir(), "src/test/resources/classpath"));
         classPath.add( new File(getBasedir(), "src/test/resources/jarfiles/myjar.jar"));
 
-        List mainClasses = mainClassFinder.findMainMethods( classPath);
+        List mainClasses = mainClassFinder.findMainClasses( classPath);
 
         assertEquals( 2, mainClasses.size());
 
