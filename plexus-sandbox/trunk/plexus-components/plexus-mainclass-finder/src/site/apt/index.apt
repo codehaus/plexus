@@ -15,7 +15,7 @@ List classPath = new ArrayList();
 classPath.add( new File("classes");
 classPath.add( new File("somejar.jar));
 
-List mainClasses = mainClassFinder.findMainMethods( classPath);
+List mainClasses = mainClassFinder.findMainClasses( classPath);
 
 +------------------------------------------+
 
