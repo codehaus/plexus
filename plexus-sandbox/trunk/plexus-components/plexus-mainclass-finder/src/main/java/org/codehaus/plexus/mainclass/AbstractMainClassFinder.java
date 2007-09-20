@@ -88,7 +88,7 @@ public abstract class AbstractMainClassFinder
                         if(getLogger().isDebugEnabled()) {
                             getLogger().debug( "Found main method in class " + classname);
                         }
-                        classes.add( classname );
+                        classes.add( new MainClassImpl(classname, rootDiretory));
                     }
                 }
                 catch ( FileNotFoundException e )
@@ -153,8 +153,9 @@ public abstract class AbstractMainClassFinder
                 {
                     if ( containsMainClass( jar.getInputStream( entry ) ) )
                     {
-                        classes.add( entry.getName().substring( 0, entry.getName().length() - DOTCLASSLENGTH ).replace(
-                            '/', '.' ) );
+                        String className = entry.getName().substring(0, entry.getName().length() - DOTCLASSLENGTH).replace(
+                                '/', '.');
+                        classes.add(new MainClassImpl(className, file));
                     }
                 }
             }
@@ -165,6 +166,23 @@ public abstract class AbstractMainClassFinder
         }
     }
 
+    class MainClassImpl implements MainClass {
+        private String className;
+        private File classPathEntry;
+
+        MainClassImpl(String className, File classPathEntry) {
+            this.className = className;
+            this.classPathEntry = classPathEntry;
+        }
+
+        public String getClassName() {
+            return className;
+        }
+
+        public File getClassLocation() {
+            return classPathEntry;
+        }
+    }
     public void enableLogging(Logger logger) {
         this.logger = logger;
     }
