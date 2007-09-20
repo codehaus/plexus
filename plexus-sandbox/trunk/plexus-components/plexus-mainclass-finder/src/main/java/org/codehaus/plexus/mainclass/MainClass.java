@@ -1,5 +1,7 @@
 package org.codehaus.plexus.mainclass;
 
+import java.io.File;
+
 /*
  * Copyright 2007 The Codehaus Foundation.
  *
@@ -16,22 +18,19 @@ package org.codehaus.plexus.mainclass;
  * limitations under the License.
  */
 
-import java.util.List;
-
 /**
- * Component that will scan a list of paths {@link java.io.File}s for
- * classes containing a <code>public static void main(String[] args)</code> method.
- * The files can represent jar files or directories containing class files.
+ * Interface representing the name and location of a class having a main method.
  */
-public interface MainClassFinder
-{
-    public final static String ROLE = MainClassFinder.class.getName();
+public interface MainClass {
+    /**
+     * Returns the name of the class having a main method.
+     * @return the class name
+     */
+    String getClassName();
 
     /**
-     * Find names of all classes containing a main method.
-     *
-     * @param classPath a {@link List} of jar files or directories where class files can be found
-     * @return a {@link List} of (MainClass)es.
+     * Returns the location (directory or jar file) containing the main method class.
+     * @return the location
      */
-    List findMainClasses( List classPath );
+    File getClassLocation();
 }

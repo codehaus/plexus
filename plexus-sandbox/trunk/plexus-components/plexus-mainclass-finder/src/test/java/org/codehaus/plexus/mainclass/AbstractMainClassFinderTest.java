@@ -37,16 +37,23 @@ public abstract class AbstractMainClassFinderTest
         
         List classPath = new ArrayList();
 
-        classPath.add( new File(getBasedir(), "src/test/resources/classpath"));
-        classPath.add( new File(getBasedir(), "src/test/resources/jarfiles/myjar.jar"));
+        File classPathFile = new File(getBasedir(), "src/test/resources/classpath");
+        File jarFile = new File(getBasedir(), "src/test/resources/jarfiles/myjar.jar");
+
+        classPath.add(classPathFile);
+        classPath.add(jarFile);
 
         List mainClasses = mainClassFinder.findMainClasses( classPath);
 
         assertEquals( 2, mainClasses.size());
 
-        assertEquals( "org.codehaus.plexus.mainclass.MainClassInClassPath", mainClasses.get( 0));
+        MainClass class1 = (MainClass) mainClasses.get(0);
+        assertEquals( "org.codehaus.plexus.mainclass.MainClassInClassPath", class1.getClassName());
+        assertEquals(classPathFile, class1.getClassLocation());
 
-        assertEquals( "org.codehaus.plexus.mainclass.MainClassInJar", mainClasses.get( 1));
+        MainClass class2 = (MainClass) mainClasses.get(1);
+        assertEquals( "org.codehaus.plexus.mainclass.MainClassInJar", class2.getClassName());
+        assertEquals(jarFile, class2.getClassLocation());
         
     }
 }
