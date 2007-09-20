@@ -2,7 +2,7 @@
 
 Plexus Main Class Finder Component
 
-  This components finds all classes having a <<<public static void main(String[] args)>>> method.
+  The {{{apidocs/org/codehaus/plexus/mainclass/MainClassFinder.html}MainClassFinder}} component finds all classes having a <<<public static void main(String[] args)>>> method.
 
 
 * Usage
@@ -17,6 +17,11 @@ classPath.add( new File("somejar.jar));
 
 List mainClasses = mainClassFinder.findMainClasses( classPath);
 
+for (int i = 0; i < mainClasses.size(); i++) {
+    MainClass mainClass = (MainClass) mainClasses.get(i);
+    System.out.println("Found " + mainClass.getClassName() +" in " + mainClass.getClassLocation());
+}
 +------------------------------------------+
 
-  The resulting <<<mainClasses>>> list should contain the names of all classes that have a <<<main>>> method.
+  The resulting <<<mainClasses>>> list should contain one {{{apidocs/org/codehaus/plexus/mainclass/MainClass.html}MainClass}} instance for all classes that have a <<<main>>> method.
+  
