@@ -16,7 +16,7 @@ package org.codehaus.plexus.mainclass;
  * limitations under the License.
  */
 
-public class AsmMainClassFinderTest extends AbstractMainMethodFinderTest
+public class AsmMainClassFinderTest extends AbstractMainClassFinderTest
 {
     protected void setUp()
         throws Exception
