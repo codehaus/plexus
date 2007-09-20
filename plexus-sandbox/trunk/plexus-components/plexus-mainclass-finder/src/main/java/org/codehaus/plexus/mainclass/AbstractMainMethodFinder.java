@@ -16,11 +16,10 @@ package org.codehaus.plexus.mainclass;
  * limitations under the License.
  */
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import org.codehaus.plexus.logging.LogEnabled;
+import org.codehaus.plexus.logging.Logger;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -33,9 +32,10 @@ import java.util.jar.JarFile;
  * {@link AbstractMainMethodFinder#containsMainClass(java.io.InputStream)} method.
  */
 public abstract class AbstractMainMethodFinder
-    implements MainClassFinder
+    implements MainClassFinder, LogEnabled
 {
     private static final int DOTCLASSLENGTH = ".class".length();
+    private Logger logger;
 
     public List findMainClasses( List classPath )
     {
@@ -45,10 +45,17 @@ public abstract class AbstractMainMethodFinder
             File file = (File) classPath.get( i );
             if ( file.isFile() )
             {
+                if(getLogger().isDebugEnabled()) {
+                    getLogger().debug( "Checking for main-classes in jar: " + file);
+                }
                 parseJar( file, classes );
+
             }
             else if ( file.isDirectory() )
             {
+                if(getLogger().isDebugEnabled()) {
+                    getLogger().debug( "Checking for main-classes in directory: " + file);
+                }
                 parseDirectory( file, file, classes );
             }
         }
@@ -76,12 +83,19 @@ public abstract class AbstractMainMethodFinder
 
                     if ( containsMainClass( inputStream ) )
                     {
-                        classes.add( getClassname( file, rootDiretory ) );
+                        String classname = getClassname( file, rootDiretory );
+
+                        if(getLogger().isDebugEnabled()) {
+                            getLogger().debug( "Found main method in class " + classname);
+                        }
+                        classes.add( classname );
                     }
                 }
                 catch ( FileNotFoundException e )
                 {
-                    throw new RuntimeException( "File does not exist: " + file.toString(), e );
+                    String message = "File does not exist: " + file.toString();
+                    getLogger().error( message, e);
+                    throw new RuntimeException( message, e );
                 }
             }
             else if ( file.isFile() &&
@@ -151,4 +165,11 @@ public abstract class AbstractMainMethodFinder
         }
     }
 
+    public void enableLogging(Logger logger) {
+        this.logger = logger;
+    }
+
+    public Logger getLogger() {
+        return logger;
+    }
 }
