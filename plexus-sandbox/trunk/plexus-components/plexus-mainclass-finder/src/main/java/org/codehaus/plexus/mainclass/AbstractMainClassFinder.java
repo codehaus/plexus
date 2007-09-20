@@ -182,6 +182,10 @@ public abstract class AbstractMainClassFinder
         public File getClassLocation() {
             return classPathEntry;
         }
+
+        public String toString() {
+            return getClassName() +" in " + getClassLocation();
+        }
     }
     public void enableLogging(Logger logger) {
         this.logger = logger;
