@@ -4,7 +4,7 @@
     <component>
       <role>org.codehaus.plexus.mainclass.MainClassFinder</role>
       <role-hint>default</role-hint>
-      <implementation>org.codehaus.plexus.mainclass.AsmMainMethodFinder</implementation>
+      <implementation>org.codehaus.plexus.mainclass.AsmMainClassFinder</implementation>
     </component>
   </components>
 </component-set>
