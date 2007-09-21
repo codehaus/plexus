@@ -20,6 +20,7 @@ package org.codehaus.plexus.webdav.simple;
  */
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.webdav.util.MimeTypes;
 
 import java.io.IOException;
@@ -192,17 +193,26 @@ public class ReplacementGetMethod implements DAVMethod
 
     private void sendResource( DAVTransaction transaction, DAVResource resource ) throws IOException
     {
-        OutputStream out = transaction.write();
-        DAVInputStream in = resource.read();
-        
-        byte buffer[] = new byte[4096 * 16];
-        int k = -1;
-        while ( ( k = in.read( buffer ) ) != -1 )
+        OutputStream out = null;
+        DAVInputStream in = null;
+
+        try
         {
-            out.write( buffer, 0, k );
+            out = transaction.write();
+            in = resource.read();
+            
+            byte buffer[] = new byte[4096 * 16];
+            int k = -1;
+            while ( ( k = in.read( buffer ) ) != -1 )
+            {
+                out.write( buffer, 0, k );
+            }
         }
-        
-        out.flush();
+        finally
+        {
+            IOUtil.close( in );
+            IOUtil.close( out );
+        }
     }
 
     private void sendFancyIndex( DAVTransaction transaction, DAVResource resource, final String current,
