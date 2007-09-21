@@ -78,4 +78,48 @@ public final class StreamTools {
 
         return total;
     }
+    
+    /**
+     * Closes the output stream. The output stream can be null and any IOException's will be swallowed.
+     * 
+     * @param outputStream The stream to close.
+     */
+    public static void close( OutputStream outputStream )
+    {
+        if ( outputStream == null )
+        {
+            return;
+        }
+
+        try
+        {
+            outputStream.close();
+        }
+        catch( IOException ex )
+        {
+            // ignore
+        }
+    }
+    
+    /**
+     * Closes the input stream. The input stream can be null and any IOException's will be swallowed.
+     * 
+     * @param inputStream The stream to close.
+     */
+    public static void close( InputStream inputStream )
+    {
+        if ( inputStream == null )
+        {
+            return;
+        }
+
+        try
+        {
+            inputStream.close();
+        }
+        catch( IOException ex )
+        {
+            // ignore
+        }
+    }
 }

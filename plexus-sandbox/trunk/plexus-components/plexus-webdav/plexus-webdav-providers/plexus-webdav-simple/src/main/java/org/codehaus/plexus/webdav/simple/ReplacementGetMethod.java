@@ -20,7 +20,6 @@ package org.codehaus.plexus.webdav.simple;
  */
 
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.webdav.util.MimeTypes;
 
 import java.io.IOException;
@@ -31,6 +30,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
+import it.could.util.StreamTools;
 import it.could.webdav.DAVException;
 import it.could.webdav.DAVInputStream;
 import it.could.webdav.DAVMethod;
@@ -212,8 +212,8 @@ public class ReplacementGetMethod implements DAVMethod
         }
         finally
         {
-            IOUtil.close( in );
-            IOUtil.close( out );
+            StreamTools.close( in );
+            StreamTools.close( out );
         }
     }
 
