@@ -207,6 +207,8 @@ public class ReplacementGetMethod implements DAVMethod
             {
                 out.write( buffer, 0, k );
             }
+            
+            out.flush();
         }
         finally
         {
