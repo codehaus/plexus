@@ -44,6 +44,57 @@ public class DefaultExpressionEvaluatorTest
     public void testSimple()
         throws EvaluatorException
     {
+        Properties props = new Properties();
+        props.setProperty( "fruit", "apple" );
+
+        PropertiesExpressionSource propsSource = new PropertiesExpressionSource();
+        propsSource.setProperties( props );
+        evaluator.addExpressionSource( propsSource );
+
+        String expression = "${fruit}";
+        String expected = "apple";
+
+        String actual = evaluator.expand( expression );
+        assertEquals( expected, actual );
+    }
+
+    public void testSimpleStartOfLine()
+        throws EvaluatorException
+    {
+        Properties props = new Properties();
+        props.setProperty( "fruit", "apple" );
+
+        PropertiesExpressionSource propsSource = new PropertiesExpressionSource();
+        propsSource.setProperties( props );
+        evaluator.addExpressionSource( propsSource );
+
+        String expression = "${fruit} is good for you.";
+        String expected = "apple is good for you.";
+
+        String actual = evaluator.expand( expression );
+        assertEquals( expected, actual );
+    }
+
+    public void testSimpleEndOfLine()
+        throws EvaluatorException
+    {
+        Properties props = new Properties();
+        props.setProperty( "fruit", "apple" );
+
+        PropertiesExpressionSource propsSource = new PropertiesExpressionSource();
+        propsSource.setProperties( props );
+        evaluator.addExpressionSource( propsSource );
+
+        String expression = "watch out for the worm in the ${fruit}";
+        String expected = "watch out for the worm in the apple";
+
+        String actual = evaluator.expand( expression );
+        assertEquals( expected, actual );
+    }
+
+    public void testSimpleSystemProperty()
+        throws EvaluatorException
+    {
         evaluator.addExpressionSource( new SystemPropertyExpressionSource() );
 
         String userHome = System.getProperty( "user.home" );
@@ -68,6 +119,32 @@ public class DefaultExpressionEvaluatorTest
         assertEquals( expected, actual );
     }
 
+    /**
+     * This use case was discovered by a user of archiva.
+     * The last expression doesn't get evaluated properly.
+     * 
+     * The result (with the bug) was "2.0.4${prj.ver.suf}"
+     */
+    public void testMultiExpressionVersionBug()
+        throws EvaluatorException
+    {
+        Properties props = new Properties();
+        props.setProperty( "prj.ver.maj", "2" );
+        props.setProperty( "prj.ver.min", "0" );
+        props.setProperty( "prj.ver.inc", "4" );
+        props.setProperty( "prj.ver.suf", "-SNAPSHOT" );
+
+        PropertiesExpressionSource propsSource = new PropertiesExpressionSource();
+        propsSource.setProperties( props );
+        evaluator.addExpressionSource( propsSource );
+
+        String expression = "${prj.ver.maj}.${prj.ver.min}.${prj.ver.inc}${prj.ver.suf}";
+        String expected = "2.0.4-SNAPSHOT";
+
+        String actual = evaluator.expand( expression );
+        assertEquals( expected, actual );
+    }
+
     public void testEscaping()
         throws EvaluatorException
     {
@@ -81,8 +158,9 @@ public class DefaultExpressionEvaluatorTest
         String actual = evaluator.expand( expression );
         assertEquals( expected, actual );
     }
-    
-    public void testRecursiveSimple() throws EvaluatorException
+
+    public void testRecursiveSimple()
+        throws EvaluatorException
     {
         PropertiesExpressionSource propsource = new PropertiesExpressionSource();
         Properties props = new Properties();
@@ -92,10 +170,10 @@ public class DefaultExpressionEvaluatorTest
         props.setProperty( "target.dir", "./target" );
 
         propsource.setProperties( props );
-        
+
         evaluator.addExpressionSource( propsource );
         evaluator.addExpressionSource( new SystemPropertyExpressionSource() );
-        
+
         String expression = "My classes directory is ${main.dir}";
         String expected = "My classes directory is ./target/classes";
 
@@ -111,7 +189,7 @@ public class DefaultExpressionEvaluatorTest
         // Create intentional recursive lookup.
         props.setProperty( "main.dir", "${test.dir}/target/classes" );
         props.setProperty( "test.dir", "${main.dir}/target/test-classes" );
-        
+
         propsource.setProperties( props );
 
         evaluator.addExpressionSource( propsource );
