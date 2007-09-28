@@ -58,7 +58,7 @@ public class DefaultExpressionEvaluator
             throw new EvaluatorException( "Unable to expand expressions with empty ExpressionSource list." );
         }
 
-        Pattern pat = Pattern.compile( "(?:[^$]|^)(\\$\\{[^}]*\\})" );
+        Pattern pat = Pattern.compile( "(?<=[^$]|^)(\\$\\{[^}]*\\})" );
         Matcher mat = pat.matcher( str );
         int offset = 0;
         String expression;
