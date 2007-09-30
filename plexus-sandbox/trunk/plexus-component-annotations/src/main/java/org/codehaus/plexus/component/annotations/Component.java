@@ -1,46 +1,58 @@
+/*
+ * Copyright (C) 2007 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.codehaus.plexus.component.annotations;
 
-import java.lang.annotation.ElementType;
+import java.lang.annotation.Documented;
+import static java.lang.annotation.ElementType.TYPE;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Target;
 
 /**
- * Class-level annotation to mark that class as a component.
+ * Marks a class as a Plexus component.
  *
- * @author <a href="mailto:kenney@neonics.com">Kenney Westerhof</a>
+ * @version $Id$
  */
-@Retention( RetentionPolicy.RUNTIME )
-@Target( ElementType.TYPE )
+@Documented
+@Retention(RUNTIME)
+@Target(TYPE)
+@Inherited
 public @interface Component
 {
-    /**
-     * The role of the component, usually an interface.
-     */
     Class<?> role();
 
-    /**
-     * The hint.
-     */
-    String hint() default "default";
+    String hint() default "";
 
-    /**
-     * Component's version.
-     */
     String version() default "";
 
-    /**
-     * The lifecyclehandler hint for this component.
-     */
-    String lifecycleHandler() default "plexus";
-
-    /**
-     * The instantiation strategy for this component.
-     */
-    InstantiationStrategy instantiationStrategy() default InstantiationStrategy.SINGLETON;
-
-    /**
-     * The component's alias. TODO: what's this?
-     */
     String alias() default "";
+
+    String lifecycleHandler() default "";
+
+    String instantiationStrategy() default "";
+    
+    String factory() default "";
+
+    String type() default "";
+
+    String profile() default "";
+
+    String composer() default "";
+
+    String configurator() default "";
 }

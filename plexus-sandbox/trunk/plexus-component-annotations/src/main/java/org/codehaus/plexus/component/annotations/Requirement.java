@@ -1,34 +1,47 @@
+/*
+ * Copyright (C) 2007 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.codehaus.plexus.component.annotations;
 
-import java.lang.annotation.ElementType;
+import java.lang.annotation.Documented;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Target;
 
 /**
- * Marks the field or method as a requirement. This is similar to the {@link Parameter} annotation, except that one
- * deals with configuration whereas this one deals with injecting required components.
+ * Configures a requirement.
  *
- * @author <a href="mailto:kenney@neonics.com">Kenney Westerhof</a>
+ * @version $Id$
  */
-@Retention( RetentionPolicy.RUNTIME )
-@Target( { ElementType.FIELD, ElementType.METHOD } )
+@Documented
+@Retention(RUNTIME)
+@Target({ FIELD, METHOD })
+@Inherited
 public @interface Requirement
 {
-    /**
-     * The role of the required component. This will be detected by looking at the type of the field or method.
-     */
     Class<?> role() default Object.class;
 
-    /**
-     * The hint of the component. Note that this is not always used, for instance when injecting into
-     * {@link java.util.List}s, {@link java.util.Map}s, {@link java.util.Set}s or {@link java.util.Collection}s.
-     */
-    String hint() default "default";
+    String hint() default "";
 
-    /**
-     * A list of configuration parameters used to configure the required component. Note that when the required
-     * component has {@link InstantiationStrategy#SINGLETON}, this only has effect on the first lookup.
-     */
-    Configuration[] configuration() default {};
+    //
+    // HACK: This is here to support component requirement lists, which can take a list of hints
+    //
+    
+    String[] hints() default {};
 }

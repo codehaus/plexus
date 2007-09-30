@@ -1,53 +1,40 @@
+/*
+ * Copyright (C) 2007 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.codehaus.plexus.component.annotations;
 
-import java.lang.annotation.ElementType;
+import java.lang.annotation.Documented;
+import static java.lang.annotation.ElementType.FIELD;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Target;
 
 /**
- * This annotation is used inside the {@link Requirement} annotation to set configuration parameters for the component.
- * <p>
- * An example:
+ * Marks a field as a configuration element with a default falue.
  *
- * <pre>
- * &#064;Component( role = ComponentA.class )
- * public class ComponentA
- * {
- *   &#064;Parameter
- *   private String foo;
- *
- *   &#064;Parameter
- *   private String[] bar;
- * }
- *
- * &#064;Component( role = Object.class, hint = "b")
- * public class ComponentA
- * {
- *   &#064;Requirement( configuration =
- *     {
- *       &#064;Configuration( key = 'foo', value = 'fooValue' ),
- *       &#064;Configuration( key = 'bar', value = {'barValue1', 'barValue2'} )
- *     } )
- *   private ComponentA a;
- * }
- *</pre>
- *
- * </p>
- *
- * @author <a href="mailto:kenney@neonics.com">Kenney Westerhof</a>
+ * @version $Id$
  */
-@Retention( RetentionPolicy.RUNTIME )
-@Target( ElementType.ANNOTATION_TYPE )
+@Documented
+@Retention(RUNTIME)
+@Target(FIELD)
+@Inherited
 public @interface Configuration
 {
-    /**
-     * The name of the field or method.
-     */
-    String key();
-
-    /**
-     * The value or list of values to configure the field with.
-     */
-    String[] value() default "";
+    String name() default "";
+    
+    String value();
 }
