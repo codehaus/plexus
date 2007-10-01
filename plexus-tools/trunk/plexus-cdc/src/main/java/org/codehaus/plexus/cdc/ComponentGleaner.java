@@ -26,11 +26,14 @@ package org.codehaus.plexus.cdc;
 
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaClassCache;
+import org.codehaus.plexus.cdc.gleaner.SourceComponentGleaner;
 import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @version $Id$
+ *
+ * @deprecated Use {#link ClassComponentGleaner} and {@link SourceComponentGleaner}.
  */
 public interface ComponentGleaner
 {

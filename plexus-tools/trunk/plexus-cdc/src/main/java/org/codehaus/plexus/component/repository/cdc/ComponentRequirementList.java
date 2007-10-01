@@ -1,9 +1,7 @@
 package org.codehaus.plexus.component.repository.cdc;
 
-import org.codehaus.plexus.component.repository.cdc.ComponentRequirement;
-
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.

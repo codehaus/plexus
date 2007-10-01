@@ -24,16 +24,16 @@ package org.codehaus.plexus.cdc.merge.support;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.cdc.merge.MergeException;
-import org.codehaus.plexus.cdc.merge.MergeStrategy;
-import org.jdom.Element;
-import org.jdom.Content;
-
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.HashSet;
+
+import org.codehaus.plexus.cdc.merge.MergeException;
+import org.codehaus.plexus.cdc.merge.MergeStrategy;
+import org.jdom.Content;
+import org.jdom.Element;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>

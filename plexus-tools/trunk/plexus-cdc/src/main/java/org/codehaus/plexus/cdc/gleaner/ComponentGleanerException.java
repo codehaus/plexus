@@ -1,9 +1,9 @@
-package org.codehaus.plexus.cdc.merge;
+package org.codehaus.plexus.cdc.gleaner;
 
 /*
  * The MIT License
  *
- * Copyright (c) 2006, The Codehaus
+ * Copyright (c) 2004, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,43 +24,25 @@ package org.codehaus.plexus.cdc.merge;
  * SOFTWARE.
  */
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
-import org.codehaus.plexus.util.IOUtil;
-import org.jdom.Document;
-import org.jdom.output.XMLOutputter;
-
 /**
- * Base class for common mergers.
- *
- * @author <a href="mailto:brett@codehaus.org">Brett Porter</a>
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
+ * @version $Id$
  */
-public abstract class AbstractMerger
-    implements Merger
+public class ComponentGleanerException
+    extends Exception
 {
-    /**
-     * @see org.codehaus.plexus.cdc.merge.Merger#writeMergedDocument(org.jdom.Document, java.io.File)
-     */
-    public void writeMergedDocument( Document mergedDocument, File file )
-        throws IOException
+    public ComponentGleanerException( String message )
     {
-        if ( !file.getParentFile().exists() )
-        {
-            file.getParentFile().mkdirs();
-        }
+        super( message );
+    }
 
-        XMLOutputter out = new XMLOutputter();
-        FileWriter fw = null;
-        try
-        {
-            fw = new FileWriter( file );
-            out.output( mergedDocument, fw );
-        }
-        finally
-        {
-            IOUtil.close( fw );
-        }
+    public ComponentGleanerException( String message, Throwable cause )
+    {
+        super( message, cause );
+    }
+
+    public ComponentGleanerException( Throwable cause )
+    {
+        super( cause );
     }
 }

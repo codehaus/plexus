@@ -24,6 +24,10 @@ package org.codehaus.plexus.cdc.merge.support;
  * SOFTWARE.
  */
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
 import org.codehaus.plexus.cdc.merge.MergeException;
 import org.codehaus.plexus.cdc.merge.MergeStrategy;
 import org.jdom.Attribute;
@@ -33,10 +37,6 @@ import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.Parent;
 import org.jdom.filter.Filter;
-
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>

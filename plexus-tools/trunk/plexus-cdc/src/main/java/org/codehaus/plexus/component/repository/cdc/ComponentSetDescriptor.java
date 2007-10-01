@@ -1,9 +1,9 @@
 package org.codehaus.plexus.component.repository.cdc;
 
-import org.codehaus.plexus.component.repository.ComponentDependency;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
+import org.codehaus.plexus.component.repository.ComponentDependency;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>

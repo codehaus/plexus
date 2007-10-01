@@ -34,6 +34,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.thoughtworks.qdox.JavaDocBuilder;
+import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.model.JavaSource;
 import org.codehaus.plexus.cdc.merge.MergeException;
 import org.codehaus.plexus.cdc.merge.Merger;
 import org.codehaus.plexus.component.repository.ComponentDependency;
@@ -45,10 +48,6 @@ import org.codehaus.plexus.util.xml.XMLWriter;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-
-import com.thoughtworks.qdox.JavaDocBuilder;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaSource;
 
 /**
  * So, in this case it is easy enough to determine the role and the implementation.
@@ -67,13 +66,14 @@ import com.thoughtworks.qdox.model.JavaSource;
  * <p/>
  * This is for a single project with a single POM, multiple components
  * with all deps in the POM.
+ *
+ * @deprecated Use {#link ComponentDescriptorExtractor}.
  */
 public class DefaultComponentDescriptorCreator
     extends AbstractLogEnabled
     implements ComponentDescriptorCreator
 {
-    // TODO: Make a list
-    private ComponentGleaner gleaner;
+    private List gleaners;
 
     private Merger merger;
 
@@ -108,8 +108,7 @@ public class DefaultComponentDescriptorCreator
 
             if ( !sourceDirectory.isDirectory() )
             {
-                getLogger().debug( "Specified source directory isn't a directory: " +
-                    "'" + sourceDirectory.getAbsolutePath() + "'." );
+                getLogger().debug( "Specified source directory isn't a directory: " + "'" + sourceDirectory.getAbsolutePath() + "'." );
             }
 
             getLogger().debug( " - " + sourceDirectory.getAbsolutePath() );
@@ -137,23 +136,36 @@ public class DefaultComponentDescriptorCreator
 
         for ( int i = 0; i < javaSources.length; i++ )
         {
+            if ("package-info.java".equalsIgnoreCase(javaSources[i].getFile().getName())) {
+                // Skip Java5-style package documentation files
+                continue;
+            }
+
             JavaClass javaClass = getJavaClass( javaSources[i] );
 
-            ComponentDescriptor componentDescriptor = gleaner.glean( builder, javaClass );
-
-            if ( componentDescriptor != null && !javaClass.isAbstract() )
+            for (Iterator iter = gleaners.iterator(); iter.hasNext();)
             {
-                // TODO: better merge, perhaps pass it into glean as the starting point instead
-                if ( defaultsByRole.containsKey( componentDescriptor.getRole() ) )
-                {
-                    ComponentDescriptor desc = (ComponentDescriptor) defaultsByRole.get( componentDescriptor.getRole() );
+                ComponentGleaner gleaner = (ComponentGleaner) iter.next();
+                
+                getLogger().debug("Trying gleaner: " + gleaner);
+                
+                ComponentDescriptor componentDescriptor = gleaner.glean( builder, javaClass );
 
-                    if ( componentDescriptor.getInstantiationStrategy() == null )
+                if ( componentDescriptor != null && !javaClass.isAbstract() )
+                {
+                    // TODO: better merge, perhaps pass it into glean as the starting point instead
+                    if ( defaultsByRole.containsKey( componentDescriptor.getRole() ) )
                     {
-                        componentDescriptor.setInstantiationStrategy( desc.getInstantiationStrategy() );
-		    }
+                        ComponentDescriptor desc = (ComponentDescriptor) defaultsByRole.get( componentDescriptor.getRole() );
+
+                        if ( componentDescriptor.getInstantiationStrategy() == null )
+                        {
+                            componentDescriptor.setInstantiationStrategy( desc.getInstantiationStrategy() );
+                        }
+                    }
+                    
+                    componentDescriptors.add( componentDescriptor );
                 }
-                componentDescriptors.add( componentDescriptor );
             }
         }
 
@@ -199,16 +211,11 @@ public class DefaultComponentDescriptorCreator
             }
         }
 
-
-
         try
         {
-            writer.writeDescriptorSet(
-                new FileWriter( outputFile ),
-                componentSetDescriptor,
-                containerDescriptor );
+            writer.writeDescriptorSet( new FileWriter( outputFile ), componentSetDescriptor, containerDescriptor );
         }
-        catch ( IOException e )
+        catch ( Exception e )
         {
             throw new ComponentDescriptorCreatorException(
                 "Error while writing the component descriptor to: " + "'" + outputFile.getAbsolutePath() + "'.", e );
@@ -261,8 +268,7 @@ public class DefaultComponentDescriptorCreator
             }
             catch ( IOException e )
             {
-                throw new ComponentDescriptorCreatorException( "Error writing merged descriptor: " + outputDescriptor,
-                                                               e );
+                throw new ComponentDescriptorCreatorException( "Error writing merged descriptor: " + outputDescriptor, e );
             }
         }
     }

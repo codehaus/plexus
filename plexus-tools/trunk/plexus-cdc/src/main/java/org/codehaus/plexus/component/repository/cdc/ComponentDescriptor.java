@@ -1,9 +1,10 @@
 package org.codehaus.plexus.component.repository.cdc;
 
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
 /**
  * Component instantiation description.

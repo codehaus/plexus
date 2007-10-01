@@ -24,11 +24,11 @@ package org.codehaus.plexus.cdc.merge.support;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.cdc.merge.MergeException;
-import org.codehaus.plexus.cdc.merge.MergeStrategy;
-
 import java.util.Collections;
 import java.util.List;
+
+import org.codehaus.plexus.cdc.merge.MergeException;
+import org.codehaus.plexus.cdc.merge.MergeStrategy;
 
 /**
  * Collection of available Merge Strategies.<p>
