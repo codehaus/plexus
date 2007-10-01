@@ -42,6 +42,8 @@ public @interface Component
 
     String alias() default "";
 
+    String description() default "";
+
     String lifecycleHandler() default "";
 
     String instantiationStrategy() default "";
@@ -56,7 +58,5 @@ public @interface Component
 
     String configurator() default "";
 
-    // String description() ?
-
-    // boolean isolatedRealm() ?
+    boolean isolatedRealm() default false;
 }
