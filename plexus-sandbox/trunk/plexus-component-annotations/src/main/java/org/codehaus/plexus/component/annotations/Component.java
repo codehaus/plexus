@@ -55,4 +55,8 @@ public @interface Component
     String composer() default "";
 
     String configurator() default "";
+
+    // String description() ?
+
+    // boolean isolatedRealm() ?
 }
