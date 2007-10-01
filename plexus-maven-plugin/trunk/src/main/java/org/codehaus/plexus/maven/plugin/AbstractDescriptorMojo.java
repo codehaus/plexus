@@ -24,17 +24,25 @@ package org.codehaus.plexus.maven.plugin;
  * SOFTWARE.
  */
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
-import org.codehaus.plexus.cdc.ComponentDescriptorCreator;
-import org.codehaus.plexus.cdc.ComponentDescriptorCreatorException;
+import org.codehaus.plexus.cdc.ComponentDescriptorWriter;
 import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
-
-import java.io.File;
-import java.util.Iterator;
-import java.util.List;
+import org.codehaus.plexus.component.repository.cdc.ComponentSetDescriptor;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
@@ -43,15 +51,17 @@ import java.util.List;
 public abstract class AbstractDescriptorMojo
     extends AbstractMojo
 {
-    // -----------------------------------------------------------------------
-    // Parameters
-    // -----------------------------------------------------------------------
+    protected static final String COMPILE_SCOPE = "compile";
 
+    protected static final String TEST_SCOPE = "test";
+
+    protected final Logger log = LoggerFactory.getLogger(getClass());
+    
     /**
      * @parameter expression="META-INF/plexus/components.xml"
      * @required
      */
-    private String fileName;
+    protected String fileName;
 
     /**
      * Whether to generate a Plexus Container descriptor instead of a component descriptor.
@@ -73,9 +83,14 @@ public abstract class AbstractDescriptorMojo
     private ComponentDescriptor[] roleDefaults;
 
     /**
+     * @parameter
+     */
+    private ComponentDescriptorExtractor[] extractors;
+
+    /**
      * @component
      */
-    private ComponentDescriptorCreator cdc;
+    private ComponentDescriptorWriter writer;
 
     /**
      * @component
@@ -96,32 +111,68 @@ public abstract class AbstractDescriptorMojo
     //
     // -----------------------------------------------------------------------
 
-    /**
-     * Create the component set descriptor from the source files.
-     *
-     * @param sourceDirectories
-     * @param outputDirectory
-     * @throws MojoExecutionException
-     */
-    protected void generateDescriptor( List sourceDirectories, File outputDirectory )
-        throws MojoExecutionException
-    {
-        File[] sources = new File[sourceDirectories.size()];
+    protected void generateDescriptor(final String scope, final File outputFile) throws MojoExecutionException {
+        assert scope != null;
+        assert outputFile != null;
 
-        Iterator it = sourceDirectories.iterator();
-
-        for ( int i = 0; i < sources.length; i++ )
-        {
-            sources[i] = new File( (String) it.next() );
+        // If no extractors are configured then use a default (javadoc-style source extraction)
+        if (extractors == null || extractors.length == 0) {
+            extractors = new ComponentDescriptorExtractor[] {
+                new SourceComponentDescriptorExtractor(),
+            };
         }
 
-        try
-        {
-            cdc.processSources( sources, new File( outputDirectory, fileName ), containerDescriptor, roleDefaults );
+        List descriptors = new ArrayList();
+
+        for (int i=0; i<extractors.length; i++) {
+            getLog().debug("Using extractor: " + extractors[i]);
+            
+            try {
+                List list = extractors[i].extract(getMavenProject(), scope, roleDefaults);
+                if (list != null && !list.isEmpty()) {
+                    descriptors.addAll(list);
+                }
+            }
+            catch (Exception e) {
+                throw new MojoExecutionException("Failed to extract descriptors", e);
+            }
         }
-        catch ( ComponentDescriptorCreatorException e )
-        {
-            throw new MojoExecutionException( "Error while executing component descritor creator.", e );
+
+        if (descriptors.size() == 0) {
+            getLog().debug("No components found");
         }
+        else {
+            getLog().info("Discovered " + descriptors.size() + " component descriptors(s)");
+
+            ComponentSetDescriptor set = new ComponentSetDescriptor();
+            set.setComponents(descriptors);
+            set.setDependencies(Collections.EMPTY_LIST);
+
+            try {
+                writeDescriptor(set, outputFile);
+            }
+            catch (Exception e) {
+                throw new MojoExecutionException("Failed to write output file", e);
+            }
+        }
+    }
+
+    private void writeDescriptor(final ComponentSetDescriptor desc, final File outputFile) throws Exception {
+        assert desc != null;
+        assert outputFile != null;
+
+        FileUtils.forceMkdir(outputFile.getParentFile());
+
+        BufferedWriter output = new BufferedWriter(new FileWriter(outputFile));
+
+        try {
+            writer.writeDescriptorSet(output, desc, containerDescriptor);
+            output.flush();
+        }
+        finally {
+            IOUtil.close(output);
+        }
+
+        getLog().debug("Wrote: " + outputFile);
     }
 }

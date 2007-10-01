@@ -22,8 +22,8 @@ package org.codehaus.plexus.maven.plugin;
  * SOFTWARE.
  */
 
-import java.util.List;
 import java.io.File;
+import java.util.List;
 
 /**
  * @goal test-merge-descriptors

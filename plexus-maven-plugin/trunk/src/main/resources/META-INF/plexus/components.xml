@@ -1,9 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
 <component-set>
-  <components>
-    <component>
-      <role>org.apache.maven.reporting.MavenReport</role>
-      <role-hint>plexus-components</role-hint>
-      <implementation>org.codehaus.plexus.maven.plugin.PlexusComponentsReport</implementation>
-    </component>
-  </components>
+    <components>
+        <component>
+            <role>org.apache.maven.reporting.MavenReport</role>
+            <role-hint>plexus-components</role-hint>
+            <implementation>org.codehaus.plexus.maven.plugin.PlexusComponentsReport</implementation>
+        </component>
+
+        <component>
+            <role>org.codehaus.plexus.maven.plugin.ComponentDescriptorExtractor</role>
+            <role-hint>source</role-hint>
+            <implementation>org.codehaus.plexus.maven.plugin.SourceComponentDescriptorExtractor</implementation>
+            <requirements>
+                <requirement>
+                    <role>org.codehaus.plexus.cdc.gleaner.SourceComponentGleaner</role>
+                    <field-name>gleaner</field-name>
+                </requirement>
+            </requirements>
+        </component>
+
+        <component>
+            <role>org.codehaus.plexus.maven.plugin.ComponentDescriptorExtractor</role>
+            <role-hint>class</role-hint>
+            <implementation>org.codehaus.plexus.maven.plugin.ClassComponentDescriptorExtractor</implementation>
+            <requirements>
+                <requirement>
+                    <role>org.codehaus.plexus.cdc.gleaner.ClassComponentGleaner</role>
+                    <field-name>gleaner</field-name>
+                </requirement>
+            </requirements>
+        </component>
+    </components>
 </component-set>

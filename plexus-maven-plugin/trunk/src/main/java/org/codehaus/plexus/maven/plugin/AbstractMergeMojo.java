@@ -22,19 +22,19 @@ package org.codehaus.plexus.maven.plugin;
  * SOFTWARE.
  */
 
-import org.apache.maven.model.Resource;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.codehaus.plexus.cdc.ComponentDescriptorCreator;
-import org.codehaus.plexus.cdc.ComponentDescriptorCreatorException;
-import org.codehaus.plexus.util.FileUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
+import org.apache.maven.model.Resource;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.codehaus.plexus.cdc.ComponentDescriptorCreator;
+import org.codehaus.plexus.cdc.ComponentDescriptorCreatorException;
+import org.codehaus.plexus.util.FileUtils;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>

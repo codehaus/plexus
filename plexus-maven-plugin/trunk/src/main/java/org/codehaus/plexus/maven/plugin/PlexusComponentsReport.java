@@ -24,6 +24,10 @@ package org.codehaus.plexus.maven.plugin;
  * SOFTWARE.
  */
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Locale;
+
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.reporting.AbstractMavenReport;
 import org.apache.maven.reporting.MavenReportException;
@@ -33,10 +37,6 @@ import org.codehaus.plexus.maven.plugin.report.ComponentSet;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Locale;
 
 /**
  * @goal components-report
