@@ -22,6 +22,7 @@
   </dependencies>
   <modules>
     <module>plexus-cdc</module>
+    <module>plexus-cdc-anno</module>
     <module>plexus-cli</module>
     <module>plexus-javadoc</module>
   </modules>
