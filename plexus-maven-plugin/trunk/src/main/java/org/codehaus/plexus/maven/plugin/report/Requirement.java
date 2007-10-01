@@ -24,9 +24,9 @@
 
 package org.codehaus.plexus.maven.plugin.report;
 
-import org.jdom.Element;
 import org.codehaus.doxia.sink.Sink;
 import org.codehaus.plexus.util.StringUtils;
+import org.jdom.Element;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>

@@ -22,18 +22,18 @@ package org.codehaus.plexus.maven.plugin;
  * SOFTWARE.
  */
 
-import org.apache.maven.plugin.MojoExecutionException;
-
-import java.util.List;
-import java.util.Collections;
 import java.io.File;
+import java.util.Collections;
+
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.artifact.handler.ArtifactHandler;
 
 /**
+ * Generates a Plexus <tt>components.xml</tt> component descriptor file from source (javadoc) or class annotations.
+ *
  * @goal descriptor
- *
- * @phase process-sources
- *
- * @description Processes the specificed list of Java source directories and builds a Plexus descriptor.
+ * @phase process-classes
+ * @requiresDependencyResolution compile
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
@@ -41,38 +41,36 @@ import java.io.File;
 public class PlexusDescriptorMojo
     extends AbstractDescriptorMojo
 {
-    // ----------------------------------------------------------------------
-    // Parameters
-    // ----------------------------------------------------------------------
+    //
+    // FIXME: When running as process-classes, which is required to deal with the class-based annotation gleaning
+    //        we can't put the generated file into resources, as it will never make it to the correct directory
+    //
+    //        expression="${project.build.directory}/generated-resources/plexus/"
+    //
 
     /**
      * The output directory where the descriptor is written.
      *
-     * @parameter expression="${project.build.directory}/generated-resources/plexus/"
+     * @parameter expression="${project.build.outputDirectory}"
      * @required
      */
     private File outputDirectory;
 
-    /**
-     * List of Java source directories to process.
-     *
-     * @parameter expression="${project.compileSourceRoots}"
-     * @required
-     */
-    private List sourceDirectories;
+    public void execute() throws MojoExecutionException {
+        // Only execute if the current project looks like its got Java bits in it
+        ArtifactHandler artifactHandler = getMavenProject().getArtifact().getArtifactHandler();
 
-    // -----------------------------------------------------------------------
-    // Mojo Implementation
-    // -----------------------------------------------------------------------
+        if (!"java".equals(artifactHandler.getLanguage())) {
+            log.debug("Not executing on non-Java project");
+        }
+        else {
 
-    public void execute()
-        throws MojoExecutionException
-    {
-        generateDescriptor( sourceDirectories, outputDirectory );
+            generateDescriptor(COMPILE_SCOPE, new File(outputDirectory, fileName));
 
-        getMavenProjectHelper().addResource( getMavenProject(),
-                                             outputDirectory.getAbsolutePath(),
-                                             Collections.EMPTY_LIST,
-                                             Collections.EMPTY_LIST );
+            getMavenProjectHelper().addResource( getMavenProject(),
+                                                 outputDirectory.getAbsolutePath(),
+                                                 Collections.EMPTY_LIST,
+                                                 Collections.EMPTY_LIST );
+        }
     }
 }

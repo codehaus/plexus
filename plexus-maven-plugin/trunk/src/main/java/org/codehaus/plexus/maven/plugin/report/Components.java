@@ -15,8 +15,6 @@ package org.codehaus.plexus.maven.plugin.report;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import org.codehaus.doxia.sink.Sink;
-import org.jdom.Element;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,6 +24,9 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+
+import org.codehaus.doxia.sink.Sink;
+import org.jdom.Element;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>

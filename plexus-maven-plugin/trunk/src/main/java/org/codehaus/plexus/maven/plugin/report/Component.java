@@ -16,12 +16,12 @@ package org.codehaus.plexus.maven.plugin.report;
  * limitations under the License.
  */
 
-import org.jdom.Element;
-import org.codehaus.doxia.sink.Sink;
-import org.codehaus.plexus.util.StringUtils;
-
 import java.util.Iterator;
 import java.util.List;
+
+import org.codehaus.doxia.sink.Sink;
+import org.codehaus.plexus.util.StringUtils;
+import org.jdom.Element;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>

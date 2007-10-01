@@ -24,12 +24,12 @@
 
 package org.codehaus.plexus.maven.plugin.report;
 
-import org.jdom.Element;
-import org.codehaus.doxia.sink.Sink;
-
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
+
+import org.codehaus.doxia.sink.Sink;
+import org.jdom.Element;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
