@@ -24,10 +24,10 @@ package org.codehaus.plexus.cdc.merge.support;
  * SOFTWARE.
  */
 
-import org.jdom.Element;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.jdom.Element;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>

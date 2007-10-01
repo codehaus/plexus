@@ -57,8 +57,8 @@ public class ComponentsXmlMergerTest
     public void testComponentsXmlFileMerge()
         throws Exception
     {
-        File dominantXml = getTestFile( "src/test/merge/dominant.xml" );
-        File recessiveXml = getTestFile( "src/test/merge/recessive.xml" );
+        File dominantXml = getTestFile( "src/test/resources/org/codehaus/plexus/cdc/merge/dominant.xml" );
+        File recessiveXml = getTestFile( "src/test/resources/org/codehaus/plexus/cdc/merge/recessive.xml" );
         Document dDoc = new SAXBuilder().build( dominantXml );
         Document rDoc = new SAXBuilder().build( recessiveXml );
         // ComponentsXmlMerger merger = new ComponentsXmlMerger (dDoc);

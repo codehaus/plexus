@@ -27,6 +27,8 @@ package org.codehaus.plexus.cdc;
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
+ *
+ * @deprecated Use {#link ComponentDescriptorExtractor}.
  */
 public class ComponentDescriptorCreatorException
     extends Exception

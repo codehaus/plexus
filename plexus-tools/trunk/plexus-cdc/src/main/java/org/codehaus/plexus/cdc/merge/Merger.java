@@ -24,10 +24,10 @@ package org.codehaus.plexus.cdc.merge;
  * SOFTWARE.
  */
 
-import org.jdom.Document;
-
 import java.io.File;
 import java.io.IOException;
+
+import org.jdom.Document;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>

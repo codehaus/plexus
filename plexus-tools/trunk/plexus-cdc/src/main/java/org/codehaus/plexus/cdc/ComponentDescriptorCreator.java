@@ -24,15 +24,17 @@ package org.codehaus.plexus.cdc;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
-
 import java.io.File;
 import java.util.List;
+
+import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
+ *
+ * @deprecated Use {#link ComponentDescriptorExtractor}.
  */
 public interface ComponentDescriptorCreator
 {

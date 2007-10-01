@@ -35,6 +35,5 @@ import org.codehaus.plexus.component.repository.cdc.ComponentSetDescriptor;
 public interface ComponentDescriptorWriter
 {
     void writeDescriptorSet( Writer writer, ComponentSetDescriptor componentSetDescriptor, boolean containerDescriptor )
-        throws ComponentDescriptorCreatorException,
-            IOException;
+        throws ComponentDescriptorWriteException, IOException;
 }

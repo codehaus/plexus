@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cdc;
+package org.codehaus.plexus.cdc.gleaner;
 
 /*
  * The MIT License
@@ -41,7 +41,6 @@ import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.cdc.ComponentRequirement;
 import org.codehaus.plexus.component.repository.cdc.ComponentRequirementList;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Configurable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
@@ -53,20 +52,20 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Suspendable;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
+ * A source component gleaner which uses QDox to discover Javadoc annotations.
+ * 
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
- *
- * @deprecated Use {#link ComponentDescriptorExtractor}.
  */
-public class PlexusDefaultComponentGleaner
-    extends AbstractLogEnabled
-    implements ComponentGleaner
+public class QDoxComponentGleaner
+    extends ComponentGleanerSupport
+    implements SourceComponentGleaner
 {
     public static final String PLEXUS_COMPONENT_TAG = "plexus.component";
 
     public static final String PLEXUS_REQUIREMENT_TAG = "plexus.requirement";
 
-    private static final String PLEXUS_CONFIGURATION_TAG = "plexus.configuration";
+    public static final String PLEXUS_CONFIGURATION_TAG = "plexus.configuration";
 
     public static final String PLEXUS_VERSION_PARAMETER = "version";
 
@@ -78,11 +77,11 @@ public class PlexusDefaultComponentGleaner
 
     public static final String PLEXUS_ALIAS_PARAMETER = "alias";
 
-    private static final String PLEXUS_DEFAULT_VALUE_PARAMETER = "default-value";
+    public static final String PLEXUS_DEFAULT_VALUE_PARAMETER = "default-value";
 
-    private static final String PLEXUS_LIFECYCLE_HANDLER_PARAMETER = "lifecycle-handler";
+    public static final String PLEXUS_LIFECYCLE_HANDLER_PARAMETER = "lifecycle-handler";
 
-    private static final String PLEXUS_INSTANTIATION_STARTEGY_PARAMETER = "instantiation-strategy";
+    public static final String PLEXUS_INSTANTIATION_STARTEGY_PARAMETER = "instantiation-strategy";
 
     // XXX This is a duplicate of the constant in PlexusConstants, as we do not want to be tied to a
     // particular container API
@@ -93,8 +92,12 @@ public class PlexusDefaultComponentGleaner
     // ----------------------------------------------------------------------
 
     public ComponentDescriptor glean( JavaClassCache classCache, JavaClass javaClass )
-        throws ComponentDescriptorCreatorException
+        throws ComponentGleanerException
     {
+        if (javaClass.isAbstract()) {
+            return null;
+        }
+        
         DocletTag tag = javaClass.getTagByName( PLEXUS_COMPONENT_TAG );
 
         if ( tag == null )
@@ -110,7 +113,7 @@ public class PlexusDefaultComponentGleaner
 
         String fqn = javaClass.getFullyQualifiedName();
 
-        getLogger().debug( "Creating descriptor for component: " + fqn );
+        log.debug( "Creating descriptor for component: {}", fqn );
 
         ComponentDescriptor componentDescriptor = new ComponentDescriptor();
 
@@ -128,7 +131,7 @@ public class PlexusDefaultComponentGleaner
 
             if ( role == null )
             {
-                getLogger().warn( "Could not figure out a role for the component '" + fqn + "'. " +
+                log.warn( "Could not figure out a role for the component '" + fqn + "'. " +
                     "Please specify a role with a parameter '" + PLEXUS_ROLE_PARAMETER + "' " + "on the @" +
                     PLEXUS_COMPONENT_TAG + " tag." );
 
@@ -136,7 +139,7 @@ public class PlexusDefaultComponentGleaner
             }
         }
 
-        getLogger().debug( " Role: " + role );
+        // getLogger().debug( " Role: " + role );
 
         componentDescriptor.setRole( role );
 
@@ -148,7 +151,7 @@ public class PlexusDefaultComponentGleaner
 
         if ( roleHint != null )
         {
-            getLogger().debug( " Role hint: " + roleHint );
+            // getLogger().debug( " Role hint: " + roleHint );
         }
 
         componentDescriptor.setRoleHint( roleHint );
@@ -313,9 +316,8 @@ public class PlexusDefaultComponentGleaner
             {
                 if ( role != null )
                 {
-                    getLogger().warn( "Found several possible roles for component " + "'" +
-                        javaClass.getFullyQualifiedName() + "', " + "will use '" + role + "', found: " + ifc.getName() +
-                        "." );
+                    log.warn( "Found several possible roles for component " + "'" +
+                        javaClass.getFullyQualifiedName() + "', " + "will use '" + role + "', found: " + ifc.getName() + "." );
                 }
 
                 role = fqn;
@@ -427,7 +429,7 @@ public class PlexusDefaultComponentGleaner
             {
                 if ( hint != null )
                 {
-                    getLogger().warn( "Field: '" + field.getName() + "': A role hint cannot be specified if the " +
+                    log.warn( "Field: '" + field.getName() + "': A role hint cannot be specified if the " +
                         "field is a java.util.Map or a java.util.List" );
 
                     continue;
@@ -435,7 +437,7 @@ public class PlexusDefaultComponentGleaner
 
                 if ( role == null )
                 {
-                    getLogger().warn( "Field: '" + field.getName() + "': A java.util.Map or java.util.List " +
+                    log.warn( "Field: '" + field.getName() + "': A java.util.Map or java.util.List " +
                         "requirement has to specify a '" + PLEXUS_ROLE_PARAMETER + "' parameter on " + "the @" +
                         PLEXUS_REQUIREMENT_TAG + " tag so Plexus can know which components to " +
                         "put in the map or list." );
@@ -464,7 +466,7 @@ public class PlexusDefaultComponentGleaner
     }
 
     private void findConfiguration( XmlPlexusConfiguration configuration, JavaClass javaClass )
-        throws ComponentDescriptorCreatorException
+        throws ComponentGleanerException
     {
         JavaField[] fields = javaClass.getFields();
 
@@ -499,7 +501,7 @@ public class PlexusDefaultComponentGleaner
 
             if ( defaultValue == null )
             {
-                getLogger().warn( "Component: " + javaClass.getName() + ", field name: '" + field.getName() + "': " +
+                log.warn( "Component: " + javaClass.getName() + ", field name: '" + field.getName() + "': " +
                     "Currently configurable fields will not be written to the descriptor " +
                     "without a default value." );
 
@@ -514,7 +516,7 @@ public class PlexusDefaultComponentGleaner
 
             c.setValue( defaultValue );
 
-            getLogger().debug( " Configuration: " + name + "=" + defaultValue );
+            log.debug( " Configuration: {}={}", name, defaultValue );
 
             configuration.addChild( c );
 
@@ -526,30 +528,13 @@ public class PlexusDefaultComponentGleaner
     //
     // ----------------------------------------------------------------------
 
-    private String deHump( String string )
-    {
-        StringBuffer sb = new StringBuffer();
-
-        for ( int i = 0; i < string.length(); i++ )
-        {
-            if ( i != 0 && Character.isUpperCase( string.charAt( i ) ) )
-            {
-                sb.append( '-' );
-            }
-
-            sb.append( string.charAt( i ) );
-        }
-
-        return sb.toString().trim().toLowerCase();
-    }
-
     private void findExtraParameters( String tagName, Map parameters )
     {
         for ( Iterator it = parameters.keySet().iterator(); it.hasNext(); )
         {
             String s = (String) it.next();
 
-            getLogger().warn( "Extra parameter on the '" + tagName + "' tag: '" + s + "'." );
+            log.warn( "Extra parameter on the '" + tagName + "' tag: '" + s + "'." );
         }
     }
 

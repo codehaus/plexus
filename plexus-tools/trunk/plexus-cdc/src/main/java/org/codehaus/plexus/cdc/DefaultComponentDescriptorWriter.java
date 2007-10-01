@@ -51,10 +51,8 @@ public class DefaultComponentDescriptorWriter
 {
     private static final String LS = System.getProperty( "line.separator" );
 
-    public void writeDescriptorSet( Writer writer, ComponentSetDescriptor componentSetDescriptor,
-        boolean containerDescriptor )
-        throws ComponentDescriptorCreatorException,
-            IOException
+    public void writeDescriptorSet( Writer writer, ComponentSetDescriptor componentSetDescriptor, boolean containerDescriptor )
+        throws ComponentDescriptorWriteException, IOException
     {
         try
         {
@@ -75,14 +73,13 @@ public class DefaultComponentDescriptorWriter
         }
         catch ( PlexusConfigurationException e )
         {
-            throw new ComponentDescriptorCreatorException( "Internal error while writing out the configuration", e );
+            throw new ComponentDescriptorWriteException( "Internal error while writing out the configuration", e );
         }
 
     }
 
     private void writeComponents( XMLWriter w, List componentDescriptors )
-        throws ComponentDescriptorCreatorException,
-            PlexusConfigurationException
+        throws ComponentDescriptorWriteException, PlexusConfigurationException
     {
         if ( componentDescriptors == null )
         {
@@ -97,8 +94,6 @@ public class DefaultComponentDescriptorWriter
 
             ComponentDescriptor cd = (ComponentDescriptor) i.next();
 
-            element( w, "alias", cd.getAlias() );
-
             element( w, "role", cd.getRole() );
 
             element( w, "role-hint", cd.getRoleHint() );
@@ -107,13 +102,11 @@ public class DefaultComponentDescriptorWriter
 
             element( w, "version", cd.getVersion() );
 
+            element( w, "component-type", cd.getComponentType() );
+
             element( w, "instantiation-strategy", cd.getInstantiationStrategy() );
 
             element( w, "lifecycle-handler", cd.getLifecycleHandler() );
-
-            element( w, "component-factory", cd.getComponentFactory() );
-
-            element( w, "component-type", cd.getComponentType() );
 
             element( w, "component-profile", cd.getComponentProfile() );
 
@@ -121,7 +114,13 @@ public class DefaultComponentDescriptorWriter
 
             element( w, "component-configurator", cd.getComponentConfigurator() );
 
+            element( w, "component-factory", cd.getComponentFactory() );
+
             element( w, "description", cd.getDescription() );
+
+            element( w, "alias", cd.getAlias() );
+
+            element( w, "isolated-realm", Boolean.toString(cd.isIsolatedRealm()) );
 
             writeRequirements( w, cd.getRequirements() );
 
@@ -217,8 +216,7 @@ public class DefaultComponentDescriptorWriter
     }
 
     private void writeConfiguration( XMLWriter w, PlexusConfiguration configuration )
-        throws ComponentDescriptorCreatorException,
-            PlexusConfigurationException
+        throws ComponentDescriptorWriteException, PlexusConfigurationException
     {
         if ( configuration == null || configuration.getChildCount() == 0 )
         {
@@ -227,8 +225,7 @@ public class DefaultComponentDescriptorWriter
 
         if ( !configuration.getName().equals( "configuration" ) )
         {
-            throw new ComponentDescriptorCreatorException( "The root node of the configuration must be "
-                + "'configuration'." );
+            throw new ComponentDescriptorWriteException( "The root node of the configuration must be 'configuration'.");
         }
 
         writePlexusConfiguration( w, configuration );
