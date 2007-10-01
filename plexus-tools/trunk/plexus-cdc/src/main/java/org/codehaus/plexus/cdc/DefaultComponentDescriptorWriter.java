@@ -70,7 +70,8 @@ public class DefaultComponentDescriptorWriter
 
             writer.write( LS );
 
-            writer.close();
+            // Flush, but don't close the writer... we are not its owner
+            writer.flush();
         }
         catch ( PlexusConfigurationException e )
         {
@@ -109,6 +110,16 @@ public class DefaultComponentDescriptorWriter
             element( w, "instantiation-strategy", cd.getInstantiationStrategy() );
 
             element( w, "lifecycle-handler", cd.getLifecycleHandler() );
+
+            element( w, "component-factory", cd.getComponentFactory() );
+
+            element( w, "component-type", cd.getComponentType() );
+
+            element( w, "component-profile", cd.getComponentProfile() );
+
+            element( w, "component-composer", cd.getComponentComposer() );
+
+            element( w, "component-configurator", cd.getComponentConfigurator() );
 
             element( w, "description", cd.getDescription() );
 
