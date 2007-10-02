@@ -1,0 +1,132 @@
+== 'Apache Composer' Proposal ==
+
+Apache Composer is an embeddable Inversion of Control (IoC) container for general components (Java initially).  Its characterizing elements are that it is small, favors Dependency Injection (over other IoC variants) and tries to remain agnostic when it comes to the need for its components to honor abstractions.  
+
+It is the merger of two existing projects - PicoContainer (http://picocontainer.codehaus.org) and Plexus (http://plexus.codehaus.org).  Plexus was started in 2002, and PicoContainer in 2003.  Both projects have committers who are experienced in open source software development, as well as existing Apache committers and members on board.  
+ 
+== Rationale ==
+The project is interested in moving to Apache for the following reasons:  
+
+  * Apache technologies like Maven depend on Plexus and bringing this core technology to Apache is a homecoming of sorts.
+  * Plexus and PicoContainer developers see a large overlap of their two projects. Indeed over time the two have increasingly converged.  It makes sense to combine forces.
+  * There is much industry focus on Inversion of Control per se, and Dependency Injection in particular these days.
+ 
+== Meritocracy ==
+The PicoContainer and Plexus projects have fostered a development community based around meritocracy backed by very benevolent dictators. Many of the committers already work on other Apache projects and understand the Apache way. The committers understand that they will collectively be responsible for the code and community, and that going forward the decision making will be based on merit only (as defined by the Apache way).
+
+== Community ==
+The 'Apache Composer' Community will bring together two already successful communities - Plexus and PicoContainer. Both projects have active users and contributors on the mailing lists.
+
+== Core Developers ==
+The 'Apache Composer' projects initial committers include a diverse set of individuals. All are active in the software industry. 
+
+== Alignment ==
+'Apache Composer' currently uses and integrates with a few of Apache's projects but has no hard dependencies on them: 
+ * Maven 2: The build system for the both Plexus and PicoContainer. 
+ * Struts 1 & 2: IoC Enablers for them
+ * BSH (optional usages)
+ * Axis 1 (optional usages)
+ * Commons Logging, Log4J (optional usages)
+ 
+== Avoiding the Warning Signs ==
+
+=== Orphaned products ===
+'Apache Composer' is a merging of two successful open source projects, Plexus and PicoContainer. Both have active communities and developers. Both are used by other open source and commercial products. 
+
+=== Inexperience with open source ===
+The authors of the existing code already have extensive open source experience.  The initial list of committers includes thirteen Apache Committers.  
+
+=== Homogeneous developers ===
+The project's initial committers include individuals that are employed by a diverse set of companies, including Sonatype and ThoughtWorks, DevZeus 
+
+=== Reliance on Salaried Developers ===
+In two cases there is a company with more than one employee coming forward.  ThoughtWorks brings a few staff (all of which have day to day duties that only occasionally include open source).  Sonatype brings two staff (both work on open source during the working day). Mostly though PicoContainer and Plexus are contributed after hours.
+
+=== No ties to other Apache products ===
+Both Plexus and PicoContainer currently use many Apache projects. These have been outlined in the alignment section.
+ 
+=== A fascination with the Apache brand ===
+While we expect the Apache brand may help attract more contributors, our interests in starting this project is based on the factors mentioned in the Rationale section.  However, we will be sensitive to inadvertent abuse of the Apache brand and will work with the Incubator PMC to ensure the brand policies are respected.  
+
+=== Scope of Subprojects ===
+No subprojects proposed.
+
+== Initial Source ==
+The copyright for Plexus is assigned to Codehaus.  PicoContainer by its committers. 
+
+The applicable code will be relicensed under the Apache Software License 2.0. The dependencies all have Apache compatible licenses. These include BSD, ..... licensed dependencies.
+
+== ASF Resources to be Created ==
+ * Mailing lists 
+   * composer-dev
+   * composer-user
+   * composer-commits
+ * SVN Repository https://svn.apache.org/repos/asf/incubator/composer
+ * JIRA Composer (Composer) 
+
+== Initial Committers ==
+
+From the Plexus project -
+* Jason van Zyl (Sonatype, Apache Committer - 'jvanzyl' )
+* John Casey (Sonatype, Apache Committer - 'jdcasey' )
+* Trygve Laugstol (Apache Committer - 'trygvis' )
+* Brett Porter (DevZuz, Apache Committer - 'brett' )
+* Carlos Sanchez (DevZuz, Apache Committer - 'carlos' )
+* Emmanuel Venisse (DevZuz, Apache Committer - 'evenisse' )
+* Jesse McConnell (DevZuz, Apache Committer - 'jmconnell' )
+* Joakim Erdfelt (DevZuz, Apache Committer - 'joakime' )
+* Kenney Westerhof (Neonics, Apache Committer - 'kenney' )
+* Jason Dillon (IBM, Apache Committer)
+* Andrew Williams (Apache Committer)
+* Jochen Wiedmann (Apache Committer)
+* Olivier Lamy (Apache Committer)
+* Oleg Gusakov (eBay)
+* Frankie Wu (eBay)
+* Durai Arasan (E*Trade)
+* Piotr Tabor
+* Rahul Thakur
+* Eirik Bjorsnos
+* Eric Redmond
+* Herve Boutemy
+
+
+From the PicoContainer project -
+ * Paul Hammant (ThoughtWorks, Apache Committer - 'hammant')
+ * Mauro Telavi (Agilesque, Apache Committer - 'mauro')
+ * Peter Royal (Radar Networks, Apache Member - 'proyal')
+ * Jorg Schaible (Elsag Solutions AG, Apache Committer - 'joehni' )
+ * Michael Rimov (Centerline Computers)
+ * Mike Ward (ThoughtWorks)
+ * Konstantin Priblouda (J Tec Team GbR)
+ * Aslak Hellesoy (Bekk)
+ * Jon Tirsen (ThoughtWorks)
+ * Joe Walnes (Google)
+ * Jose Peleterio
+ * Dan North (ThoughtWorks)
+ * Chris Stevenson (ThoughtWorks)
+ * Kent Spillner (ThoughtWorks)
+ * Pawel Kozlowski
+
+PicoContainer's committers yet to advise us -
+ * Steve Molitor
+ * Mike Hogan
+
+Approving of PicoContainer migration, but not joining as Committer -
+ * James Strachan
+ * Leo Simmons
+ * Gregory Joseph
+
+ some 20 more to add ?
+
+== Sponsor ==
+We kindly request the Incubator PMC to accept sponsorship for this proposal. 
+
+== Champion ==
+
+ * Paul Hammant ?
+  
+== Mentors ==  
+
+ * Peter Royal
+ * who else ?
+
