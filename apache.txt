@@ -73,7 +73,7 @@ From the Plexus project -
 * Brett Porter (DevZuz, Apache Committer - 'brett' )
 * Carlos Sanchez (DevZuz, Apache Committer - 'carlos' )
 * Emmanuel Venisse (DevZuz, Apache Committer - 'evenisse' )
-* Jesse McConnell (DevZuz, Apache Committer - 'jmconnell' )
+* Jesse McConnell (DevZuz, Apache Committer - 'jmcconnell' )
 * Joakim Erdfelt (DevZuz, Apache Committer - 'joakime' )
 * Kenney Westerhof (Neonics, Apache Committer - 'kenney' )
 * Jason Dillon (IBM, Apache Committer)
