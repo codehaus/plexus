@@ -92,7 +92,7 @@ From the Plexus project -
 
 From the PicoContainer project -
  * Paul Hammant (ThoughtWorks, Apache Committer - 'hammant')
- * Mauro Telavi (Agilesque, Apache Committer - 'mauro')
+ * Mauro Talevi (Agilesque, Apache Committer - 'mauro')
  * Peter Royal (Radar Networks, Apache Member - 'proyal')
  * Jorg Schaible (Elsag Solutions AG, Apache Committer - 'joehni' )
  * Michael Rimov (Centerline Computers)
