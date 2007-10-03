@@ -79,7 +79,7 @@ From the Plexus project -
 * Jason Dillon (IBM, Apache Committer)
 * Andrew Williams (Apache Committer)
 * Jochen Wiedmann (Apache Committer)
-* Olivier Lamy (Apache Committer)
+* Olivier Lamy (Apache Committer - 'olamy' )
 * Oleg Gusakov (eBay)
 * Frankie Wu (eBay)
 * Durai Arasan (E*Trade)
