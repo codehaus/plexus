@@ -64,7 +64,7 @@ public class ClassComponentDescriptorExtractor
         File classesDir;
 
         if (COMPILE_SCOPE.equals(scope)) {
-            classpath = project.getCompileClasspathElements();
+            classpath =  project.getCompileClasspathElements();
             classesDir = new File(project.getBuild().getOutputDirectory());
         }
         else if (TEST_SCOPE.equals(scope)) {
@@ -141,16 +141,21 @@ public class ClassComponentDescriptorExtractor
 
             log.debug("Loading class: " + className);
 
-            Class type = cl.loadClass(className);
+            try {
+                Class type = cl.loadClass(className);
 
-            log.debug("Gleaning from: " + type);
-            
-            ComponentDescriptor descriptor = gleaner.glean(type);
+                log.debug("Gleaning from: " + type);
 
-            if (descriptor != null) {
-                applyDefaults(descriptor, defaultsByRole);
-                
-                descriptors.add(descriptor);
+                ComponentDescriptor descriptor = gleaner.glean(type);
+
+                if (descriptor != null) {
+                    applyDefaults(descriptor, defaultsByRole);
+
+                    descriptors.add(descriptor);
+                }
+            }
+            catch (VerifyError e) {
+                log.error("Failed to load class: " + className + "; cause: " + e);
             }
         }
 
