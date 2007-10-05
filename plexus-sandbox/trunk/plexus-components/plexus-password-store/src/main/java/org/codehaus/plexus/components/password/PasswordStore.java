@@ -91,6 +91,16 @@ public interface PasswordStore
         throws PasswordStoreException;
 
     /**
+     * Create an empty keystore at the specified location.
+     * @param keystoreLocation the master password required to unlock the store
+     * @param masterPassword the master password required to unlock the store
+     * @param ignoreExisting do not throw PasswordStoreException when keystore file exists
+     * @throws PasswordStoreException if there was a problem creating the store
+     */
+    void create( String keystoreFile, String masterPassword, boolean ignoreExisting )
+    throws PasswordStoreException;
+
+    /**
      * Unlock the store to authorise further actions.
      * @param masterPassword the master password required to unlock the store
      */
