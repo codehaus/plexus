@@ -41,15 +41,8 @@ import org.apache.maven.artifact.handler.ArtifactHandler;
 public class PlexusDescriptorMojo
     extends AbstractDescriptorMojo
 {
-    //
-    // FIXME: When running as process-classes, which is required to deal with the class-based annotation gleaning
-    //        we can't put the generated file into resources, as it will never make it to the correct directory
-    //
-    //        expression="${project.build.directory}/generated-resources/plexus/"
-    //
-
     /**
-     * The output directory where the descriptor is written.
+     * The directory where the descriptor is written.
      *
      * @parameter expression="${project.build.outputDirectory}"
      * @required
@@ -64,13 +57,7 @@ public class PlexusDescriptorMojo
             log.debug("Not executing on non-Java project");
         }
         else {
-
             generateDescriptor(COMPILE_SCOPE, new File(outputDirectory, fileName));
-
-            getMavenProjectHelper().addResource( getMavenProject(),
-                                                 outputDirectory.getAbsolutePath(),
-                                                 Collections.EMPTY_LIST,
-                                                 Collections.EMPTY_LIST );
         }
     }
 }
