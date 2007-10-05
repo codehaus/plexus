@@ -26,7 +26,14 @@ package org.codehaus.plexus.components.password;
 
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.util.StringUtils;
 
+import sun.security.action.GetLongAction;
+
+import com.ibm.crypto.tools.KeyTool;
+
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,6 +43,7 @@ import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 
@@ -89,15 +97,7 @@ public class JksPasswordStore
                 return new String( key.getEncoded() );
             }
         }
-        catch ( KeyStoreException e )
-        {
-            throw new PasswordStoreException( "Error retrieving password", e );
-        }
-        catch ( NoSuchAlgorithmException e )
-        {
-            throw new PasswordStoreException( "Error retrieving password", e );
-        }
-        catch ( UnrecoverableKeyException e )
+        catch ( Exception e )
         {
             throw new PasswordStoreException( "Error retrieving password", e );
         }
@@ -210,8 +210,60 @@ public class JksPasswordStore
             }
         }
     }
+    
+    
+    public void create(String keystoreFile
+    				, String masterPassword
+					, boolean ignoreExisting
+			)
+    throws PasswordStoreException
+	{
+    	if( StringUtils.isEmpty( keystoreFile ) ) {
+			throw new PasswordStoreException("Supplied keystore file location string is empty");
+    	}
 
-    public void unlock( String masterPassword )
+    	keystoreLocation = new File(keystoreFile);
+	    this.masterPassword = masterPassword;
+
+	    if( keystoreLocation.exists() ) {
+			if( ignoreExisting ) {
+				reloadKeyStore();
+				return;
+			}
+			throw new PasswordStoreException("Keystore file "+keystoreFile+" already exists");
+		}
+
+		try {
+		    // get user password and file input stream
+		    char[] password = masterPassword.toCharArray();
+
+		    // new store: keystore instance already created by the initialize()
+		    keystore = KeyStore.getInstance( KEYSTORE_TYPE );
+		    keystore.load( null, password );
+		    
+		    // save my secret key
+            SecretKey key = new SecretKeySpec( "init".getBytes(), ALGORITHM );
+            keystore.setKeyEntry( "init", key, password, null );
+
+		    // persist the new keystore
+		    java.io.FileOutputStream fos = null;
+		    try {
+		        fos = new java.io.FileOutputStream( keystoreFile );
+		        keystore.store( fos, password );
+		        fos.flush();
+		    } finally {
+		        if( fos != null ) {
+		            fos.close();
+		        }
+		    }
+
+		} catch (Exception e) {
+			throw new PasswordStoreException( e.getMessage() );
+		}
+		this.masterPassword = masterPassword;
+	}
+
+	public void unlock( String masterPassword )
     {
         // TODO: maybe this is preferred to initializable?
     }

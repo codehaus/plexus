@@ -38,12 +38,12 @@ import java.io.File;
 public class JksPasswordStoreTest
     extends TestCase
 {
-    private String masterPassword = "foo";
+	private static final String masterPassword = "foofoo";// since java5 should be at least 6 characters
 
+    private static final String KEYSTORE_FILE_NAME = "target/test.jceks";
     private File keystoreFile;
-
+    private JksPasswordStore passwordStore;
     private static final String KNOWN_ID = "id";
-
     private static final String KNOWN_PASSWORD = "newPassword";
 
     private String basedir;
@@ -53,48 +53,62 @@ public class JksPasswordStoreTest
     {
         super.setUp();
 
+        // TODO: use a resource URL instead
         basedir = System.getProperty( "basedir" );
-    }
+        if( basedir == null )
+        	basedir = ".";
+        keystoreFile = new File( basedir, KEYSTORE_FILE_NAME );
 
-    public void testCreation()
+        keystoreFile.delete();
+        passwordStore = new JksPasswordStore( new File(KEYSTORE_FILE_NAME), masterPassword );
+        passwordStore.create( KEYSTORE_FILE_NAME, masterPassword, false );
+        passwordStore.setPassword( KNOWN_ID, KNOWN_PASSWORD );
+    }
+    
+    protected void tearDown()
+    throws Exception
+	{
+		super.tearDown();
+        new File(KEYSTORE_FILE_NAME).delete();
+	}
+    //-----------------------------------------------------------------------------------
+    /**
+     * test empty store creation
+     * 
+     */
+	public void testCreation()
         throws Exception
     {
-        createTestKeystore();
+		String tempName = basedir+"/" + KEYSTORE_FILE_NAME+".temp"; 
+        new File(tempName).delete();
+        
+    	PasswordStore ps = new JksPasswordStore();
+    	assertNotNull("Cannot create temporary keystore instance", ps );
 
-        assertFalse( "Keystore should not yet be created", keystoreFile.exists() );
+    	ps.create( tempName, masterPassword, true );
+    	assertTrue("Cannot create temporary keystore file", new File(tempName).exists() );
 
-        initPasswordStore();
-
-        assertTrue( "Keystore was not created", keystoreFile.exists() );
+    	File storeFile = new File(tempName);
+    	assertTrue("Newly created store file does not exist - "+tempName, storeFile.exists() );
+    	
+        storeFile.delete();
     }
 
     public void testGetPassword()
         throws Exception
     {
-        // TODO: use a resource URL instead
-        keystoreFile = new File( basedir, "target/test-classes/test.keystore" );
-
-        PasswordStore passwordStore = initPasswordStore();
         assertEquals( "Password was not found", KNOWN_PASSWORD, passwordStore.getPassword( KNOWN_ID ) );
     }
 
     public void testGetPasswordDoesNotExist()
         throws Exception
     {
-        // TODO: use a resource URL instead
-        keystoreFile = new File( basedir, "target/test-classes/test.keystore" );
-
-        PasswordStore passwordStore = initPasswordStore();
         assertNull( "Password should not be found", passwordStore.getPassword( "foo" ) );
     }
 
     public void testCheckPassword()
         throws Exception
     {
-        // TODO: use a resource URL instead
-        keystoreFile = new File( basedir, "target/test-classes/test.keystore" );
-
-        PasswordStore passwordStore = initPasswordStore();
         assertTrue( "Password check failed on good password", passwordStore.checkPassword( KNOWN_ID, KNOWN_PASSWORD ) );
         assertFalse( "Password check succeeded on bad password", passwordStore.checkPassword( KNOWN_ID, "foo" ) );
         assertFalse( "Password check succeeded on bad password ID", passwordStore.checkPassword( "foo", "bar" ) );
@@ -103,9 +117,6 @@ public class JksPasswordStoreTest
     public void testSetPassword()
         throws Exception
     {
-        createTestKeystore();
-        PasswordStore passwordStore = initPasswordStore();
-
         String password = "setPassword";
         String id = "newId";
         passwordStore.setPassword( id, password );
@@ -115,60 +126,17 @@ public class JksPasswordStoreTest
     public void testChangePassword()
         throws Exception
     {
-        createTestKeystore();
-        FileUtils.copyFile( new File( basedir, "target/test-classes/test.keystore" ), keystoreFile );
-
-        PasswordStore passwordStore = initPasswordStore();
         assertEquals( "Password was not set correctly", KNOWN_PASSWORD, passwordStore.getPassword( KNOWN_ID ) );
         passwordStore.setPassword( KNOWN_ID, KNOWN_PASSWORD, "foo" );
         assertEquals( "Password was not set correctly", "foo", passwordStore.getPassword( KNOWN_ID ) );
     }
 
-    public void testReload()
-        throws Exception
-    {
-        createTestKeystore();
-        FileUtils.copyFile( new File( basedir, "target/test-classes/test.keystore" ), keystoreFile );
-
-        PasswordStore originalPasswordStore = initPasswordStore();
-        assertEquals( "Password was not set correctly", KNOWN_PASSWORD, originalPasswordStore.getPassword( KNOWN_ID ) );
-        PasswordStore newPasswordStore = initPasswordStore();
-        originalPasswordStore.setPassword( KNOWN_ID, KNOWN_PASSWORD, "foo" );
-        assertEquals( "Password was not set correctly", "foo", originalPasswordStore.getPassword( KNOWN_ID ) );
-        //TODO: check this as it was failing
-        //assertEquals( "Password was not set correctly", "foo", newPasswordStore.getPassword( KNOWN_ID ) );
-    }
-
     public void testRemovePassword()
-        throws Exception
-    {
-        createTestKeystore();
-        FileUtils.copyFile( new File( basedir, "target/test-classes/test.keystore" ), keystoreFile );
-
-        PasswordStore passwordStore = initPasswordStore();
-        assertEquals( "Password was not set correctly", KNOWN_PASSWORD, passwordStore.getPassword( KNOWN_ID ) );
-        passwordStore.removePassword( KNOWN_ID );
-        assertNull( "Password was not removed", passwordStore.getPassword( KNOWN_ID ) );
-    }
-
-    // ------------------------------------------------------------
-    // HELPERS
-    // ------------------------------------------------------------
-
-    private void createTestKeystore()
-        throws Exception
-    {
-        this.keystoreFile = File.createTempFile( "test", getClass().getName() );
-        this.keystoreFile.delete(); // delete the one just created
-        this.keystoreFile.deleteOnExit(); // ensure it is deleted at the end
-    }
-
-    private PasswordStore initPasswordStore()
-        throws Exception
-    {
-        JksPasswordStore passwordStore = new JksPasswordStore( keystoreFile, masterPassword );
-        passwordStore.initialize();
-        return passwordStore;
-    }
+    throws Exception
+	{
+	    assertEquals( "Password was not set correctly", KNOWN_PASSWORD, passwordStore.getPassword( KNOWN_ID ) );
+	    passwordStore.removePassword( KNOWN_ID );
+	    assertNull( "Password was not removed", passwordStore.getPassword( KNOWN_ID ) );
+	}
 
 }
