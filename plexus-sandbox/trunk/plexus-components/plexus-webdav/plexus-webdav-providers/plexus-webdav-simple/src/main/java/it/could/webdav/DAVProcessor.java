@@ -34,7 +34,7 @@ public class DAVProcessor {
                                          "OPTIONS,PROPFIND,PROPPATCH,PUT";
 
     /** <p>A static map of all known webdav methods.</p> */
-    private static final Map INSTANCES = new HashMap();
+    private static Map INSTANCES = new HashMap();
     static {
         /* Load and verify all the known methods */
         final String thisName = DAVProcessor.class.getName();
@@ -84,5 +84,9 @@ public class DAVProcessor {
         } catch (DAVException exception) {
             exception.write(transaction);
         }
+    }
+    
+    public void setMethod( String methodKey, DAVMethod method ) {
+        INSTANCES.put( methodKey, method );
     }
 }

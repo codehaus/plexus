@@ -22,7 +22,6 @@ import org.codehaus.plexus.webdav.DavServerException;
 import org.codehaus.plexus.webdav.servlet.DavServerRequest;
 
 import it.could.webdav.DAVListener;
-import it.could.webdav.DAVMethod;
 import it.could.webdav.DAVProcessor;
 import it.could.webdav.DAVRepository;
 import it.could.webdav.DAVResource;
@@ -30,8 +29,6 @@ import it.could.webdav.DAVTransaction;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Map;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -113,6 +110,10 @@ public class SimpleDavServerComponent
     private void hackDavProcessor( DAVProcessor davProcessor )
         throws DavServerException
     {
+        davProcessor.setMethod( "MOVE", new HackedMoveMethod() );
+        davProcessor.setMethod( "GET", methodGet );
+        
+        /* Reflection based technique.
         try
         {
             Field fldInstance = davProcessor.getClass().getDeclaredField( "INSTANCES" );
@@ -131,6 +132,7 @@ public class SimpleDavServerComponent
         {
             throw new DavServerException( "Unable to twiddle DAVProcessor.INSTANCES field.", e );
         }
+        */
     }
 
     public void process( DavServerRequest request, HttpServletResponse response )
