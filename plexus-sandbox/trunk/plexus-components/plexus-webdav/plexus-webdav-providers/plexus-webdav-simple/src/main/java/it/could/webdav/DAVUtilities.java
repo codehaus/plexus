@@ -60,18 +60,20 @@ public final class DAVUtilities {
         String file = '/' + clazz.getPackage().getName().replace('.','/');
 
         /* Load up the properties file */
-        InputStream prop = loader.getResourceAsStream(file + "/webdav.props");
+        String webdavPropResource = file + "/webdav.props";
+        InputStream prop = loader.getResourceAsStream(webdavPropResource);
         if (prop != null) try {
             DAVUtilities.PROPERTIES.load(prop);
             prop.close();
         } catch (Exception exception) {
             exception.printStackTrace();
         } else {
-            System.err.println("Invalid resource: " + file + "/webdav.props");
+            System.err.println("Invalid resource: " + webdavPropResource);
         }
 
         /* Load up the mime types table */
-        InputStream mime = loader.getResourceAsStream(file + "/mime.types");
+        String mimeTypeResource = file + "/mime.types";
+        InputStream mime = loader.getResourceAsStream(mimeTypeResource);
         if (mime != null) try {
             InputStreamReader read = new InputStreamReader(mime);
             BufferedReader buff = new BufferedReader(read);
@@ -95,7 +97,7 @@ public final class DAVUtilities {
         } catch (Exception exception) {
             exception.printStackTrace();
         } else {
-            System.err.println("Invalid resource: " + file + "/mime.types");
+            System.err.println("Invalid resource: " + mimeTypeResource);
         }
     }
 
