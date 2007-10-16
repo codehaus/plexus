@@ -112,7 +112,7 @@ public abstract class AbstractWebApplicationRuntimePopulatorMojo
             }
             else
             {
-                generateApplicationFileWithInterpolation( confDir, war, context );
+                generateApplicationFileWithInterpolation( confDir, war, warName, context );
             }
 
             try
@@ -179,22 +179,22 @@ public abstract class AbstractWebApplicationRuntimePopulatorMojo
         }
     }
 
-    private void generateApplicationFileWithInterpolation(File confDir, File war, String context)
+    private void generateApplicationFileWithInterpolation(File confDir, File war, String warName, String context)
         throws IOException
     {
-
         BufferedWriter out = null;
         InterpolationFilterReader interpolationFilterReader = null;
         try
         {
-            Map interpolationDatas = new HashMap();
-            interpolationDatas.put( "webappPort", Integer.toString( webappPort ) );
-            interpolationDatas.put( "warFilePath", "${plexus.home}/lib/" + war.getName() );
-            interpolationDatas.put( "contextPath", context );
+            Map interpolationData = new HashMap();
+            interpolationData.put( "name", warName );
+            interpolationData.put( "webappPort", Integer.toString( webappPort ) );
+            interpolationData.put( "warFilePath", "${plexus.home}/lib/" + war.getName() );
+            interpolationData.put( "contextPath", context );
             getLog().info( "Use applicationProperties " +  applicationProperties == null ? "empty" : applicationProperties.toString() );
-            interpolationDatas.putAll( this.applicationProperties == null ? Collections.EMPTY_MAP : applicationProperties );
+            interpolationData.putAll( this.applicationProperties == null ? Collections.EMPTY_MAP : applicationProperties );
             interpolationFilterReader =
-                new InterpolationFilterReader( new FileReader( this.applicationFile), interpolationDatas );
+                new InterpolationFilterReader( new FileReader( this.applicationFile), interpolationData );
             File appConf = new File( confDir, PlexusApplicationConstants.METADATA_FILE );
             out = new BufferedWriter( new FileWriter( appConf ) );
             out.write( IOUtil.toString( interpolationFilterReader ) );
