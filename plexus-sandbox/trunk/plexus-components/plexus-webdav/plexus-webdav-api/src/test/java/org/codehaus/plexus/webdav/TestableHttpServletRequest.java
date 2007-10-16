@@ -1,4 +1,4 @@
-package org.codehaus.plexus.webdav.servlet.multiplexed;
+package org.codehaus.plexus.webdav;
 
 /*
  * Copyright 2001-2007 The Codehaus.
@@ -45,6 +45,21 @@ import javax.servlet.http.HttpSession;
 public class TestableHttpServletRequest
     implements HttpServletRequest
 {
+
+    public TestableHttpServletRequest()
+    {
+        setDefaults();
+    }
+
+    public void setDefaults()
+    {
+        authType = null;
+        scheme = "http";
+        protocol = "HTTP/1.1";
+        serverName = "localhost";
+        serverPort = 80;
+        remoteHost = "localhost";
+    }
 
     private String authType;
 
@@ -434,9 +449,8 @@ public class TestableHttpServletRequest
         throws MalformedURLException
     {
         URL url = new URL( urlString );
-        this.requestURL = new StringBuffer( urlString );
         this.queryString = url.getQuery();
-        this.protocol = url.getProtocol();
+        this.scheme = url.getProtocol();
         this.serverName = url.getHost();
         this.serverPort = url.getPort();
 
@@ -448,6 +462,7 @@ public class TestableHttpServletRequest
         }
 
         this.pathInfo = path.substring( this.servletPath.length() );
+        this.requestURL = new StringBuffer( this.pathInfo );
     }
 
     private String notImplemented( String msg )
