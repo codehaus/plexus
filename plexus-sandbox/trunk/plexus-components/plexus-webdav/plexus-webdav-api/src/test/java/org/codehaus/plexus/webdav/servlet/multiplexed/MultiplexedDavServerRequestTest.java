@@ -16,6 +16,7 @@ package org.codehaus.plexus.webdav.servlet.multiplexed;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.webdav.TestableHttpServletRequest;
 import org.codehaus.plexus.webdav.util.WrappedRepositoryRequest;
 
 import java.net.MalformedURLException;
