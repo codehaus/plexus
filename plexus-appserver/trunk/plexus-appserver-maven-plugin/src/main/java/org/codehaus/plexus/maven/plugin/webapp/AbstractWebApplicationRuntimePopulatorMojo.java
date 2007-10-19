@@ -61,6 +61,7 @@ public abstract class AbstractWebApplicationRuntimePopulatorMojo
     /**
      * Will be interpolated Map containing :
      * <ul>
+     *   <li>name = war file name without trailing .war</li>
      *   <li>webappPort = webappPort</li>
      *   <li>warFilePath = ${plexus.home}/lib/ + war.getName</li>
      *   <li>contextPath= webAppMappings groupId:artifactId -> value webApp context</li>
