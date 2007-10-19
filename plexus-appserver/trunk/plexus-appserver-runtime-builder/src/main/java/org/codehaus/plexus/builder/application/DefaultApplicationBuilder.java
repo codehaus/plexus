@@ -107,7 +107,7 @@ public class DefaultApplicationBuilder
 
             new FileWriter( new File( logsDir, "foo" ) ).close();
 
-            processConfigurations( confDir, appserverXmlFile, configurationProperties, configurationsDirectory );
+            processConfigurations( confDir, configurationProperties, configurationsDirectory );
 
             if ( applicationXmlFile != null )
             {
@@ -123,6 +123,11 @@ public class DefaultApplicationBuilder
                     PlexusApplicationConstants.PLEXUS_XML_FILE ) ), configurationProperties );
             }
 
+            if ( appserverXmlFile != null )
+            {
+                tools.filterCopy( appserverXmlFile, new File( confDir,
+                    PlexusApplicationConstants.METADATA_FILE ), configurationProperties );
+            }
         }
         catch ( IOException e )
         {
@@ -271,8 +276,8 @@ public class DefaultApplicationBuilder
     //
     // ----------------------------------------------------------------------
 
-    private void processConfigurations( File confDir, File applicationConfiguration,
-        Properties configurationProperties, File configurationsDirectory )
+    private void processConfigurations( File confDir, Properties configurationProperties,
+                                        File configurationsDirectory )
         throws IOException,
             ApplicationBuilderException
     {
