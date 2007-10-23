@@ -1,0 +1,181 @@
+package org.codehaus.plexus.component.collections;
+
+/*
+ * Copyright 2001-2006 Codehaus Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
+/**
+ * @author Jason van Zyl
+ */
+public class ComponentList
+    extends AbstractComponentCollection
+    implements List
+{
+    public ComponentList( PlexusContainer container,
+                          ClassRealm realm,
+                          String role,
+                          List roleHints
+    )
+    {
+        super( container, realm, role, roleHints );
+    }
+
+    public int size()
+    {
+        return getList().size() ;
+    }
+
+    public boolean isEmpty()
+    {
+        return getList().isEmpty() ;
+    }
+
+    public boolean contains( Object object )
+    {
+        return getList().contains( object ) ;
+    }
+
+    public Iterator iterator()
+    {
+        return getList().iterator() ;
+    }
+
+    public Object[] toArray()
+    {
+        return getList().toArray() ;
+    }
+
+    public Object[] toArray( Object[] ts )
+    {
+        return getList().toArray( ts ) ;
+    }
+
+    public boolean add( Object object )
+    {
+        return getList().add( object ) ;
+    }
+
+    public boolean remove( Object object )
+    {
+        return getList().isEmpty() ;
+    }
+
+    public boolean containsAll( Collection collection )
+    {
+        return getList().containsAll( collection ) ;
+    }
+
+    public boolean addAll( Collection collection )
+    {
+        return getList().addAll( collection ) ;
+    }
+
+    public boolean addAll( int i, Collection collection )
+    {
+        return getList().addAll( i, collection ) ;
+    }
+
+    public boolean removeAll( Collection collection )
+    {
+        return getList().removeAll( collection ) ;
+    }
+
+    public boolean retainAll( Collection collection )
+    {
+        return getList().retainAll( collection ) ;
+    }
+
+    public void clear()
+    {
+        getList().clear() ;
+    }
+
+    public boolean equals( Object object )
+    {
+        return getList().equals( object ) ;
+    }
+
+    public int hashCode()
+    {
+        return getList().hashCode() ;
+    }
+
+    public Object get( int i )
+    {
+        return getList().get( i ) ;
+    }
+
+    public Object set( int i, Object object )
+    {
+        return getList().set( i, object ) ;
+    }
+
+    public void add( int i, Object object )
+    {
+        getList().add( i, object ) ;
+    }
+
+    public Object remove( int i )
+    {
+        return getList().remove( i ) ;
+    }
+
+    public int indexOf( Object object )
+    {
+        return getList().indexOf( object ) ;
+    }
+
+    public int lastIndexOf( Object object )
+    {
+        return getList().lastIndexOf( object ) ;
+    }
+
+    public ListIterator listIterator()
+    {
+        return getList().listIterator() ;
+    }
+
+    public ListIterator listIterator( int i )
+    {
+        return getList().listIterator( i ) ;
+    }
+
+    public List subList( int i, int i1 )
+    {
+        return getList().subList( i, i1 ) ;
+    }
+
+    private List getList()
+    {
+        try
+        {
+            return container.lookupList( role, roleHints, realm );
+        }
+        catch ( ComponentLookupException e )
+        {
+            return Collections.EMPTY_LIST;
+        }
+    }
+}
