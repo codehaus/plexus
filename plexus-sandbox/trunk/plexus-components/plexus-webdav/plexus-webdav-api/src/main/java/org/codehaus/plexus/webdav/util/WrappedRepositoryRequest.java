@@ -46,20 +46,17 @@ public class WrappedRepositoryRequest
     /**
      * The Date Formats most commonly seen in Request Headers.
      */
-    private static SimpleDateFormat dateFormats[];
-
-    static
-    {
-        dateFormats = new SimpleDateFormat[] {
-            new SimpleDateFormat( "EEE, dd MMM yyyy HH:mm:ss zzz" ),
-            new SimpleDateFormat( "EEE, dd-MMM-yy HH:mm:ss" ),
-            new SimpleDateFormat( "EEE MMM dd HH:mm:ss yyyy" ) };
-    }
+    private SimpleDateFormat dateFormats[];
 
     public WrappedRepositoryRequest( HttpServletRequest request )
     {
         super( request );
 
+        dateFormats = new SimpleDateFormat[] {
+            new SimpleDateFormat( "EEE, dd MMM yyyy HH:mm:ss zzz" ),
+            new SimpleDateFormat( "EEE, dd-MMM-yy HH:mm:ss" ),
+            new SimpleDateFormat( "EEE MMM dd HH:mm:ss yyyy" ) };
+        
         headers = new HashMap();
 
         Enumeration enHeaders = request.getHeaderNames();
