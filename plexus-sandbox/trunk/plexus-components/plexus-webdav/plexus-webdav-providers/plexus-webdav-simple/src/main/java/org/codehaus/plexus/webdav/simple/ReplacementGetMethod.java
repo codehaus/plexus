@@ -38,7 +38,6 @@ import it.could.webdav.DAVNotModified;
 import it.could.webdav.DAVResource;
 import it.could.webdav.DAVTransaction;
 import it.could.webdav.DAVUtilities;
-import it.could.webdav.methods.GET;
 
 /**
  * ReplacementGetMethod 
@@ -147,7 +146,7 @@ public class ReplacementGetMethod implements DAVMethod
             }
             else
             {
-                transaction.setContentType( GET.COLLECTION_MIME_TYPE );
+                transaction.setContentType( COLLECTION_MIME_TYPE );
                 transaction.setHeader( CONTENT_DISPOSITION, INLINE_INDEX_HTML );
                 sendFancyIndex( transaction, resource, current, parent );
             }
