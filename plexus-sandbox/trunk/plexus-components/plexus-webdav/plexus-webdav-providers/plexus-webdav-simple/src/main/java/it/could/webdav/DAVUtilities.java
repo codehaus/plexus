@@ -57,10 +57,9 @@ public final class DAVUtilities {
     static {
         Class clazz = DAVUtilities.class;
         ClassLoader loader = clazz.getClassLoader();
-        String file = '/' + clazz.getPackage().getName().replace('.','/');
 
         /* Load up the properties file */
-        String webdavPropResource = file + "/webdav.props";
+        String webdavPropResource = "plexus-webdav/webdav.props";
         InputStream prop = loader.getResourceAsStream(webdavPropResource);
         if (prop != null) try {
             DAVUtilities.PROPERTIES.load(prop);
@@ -72,7 +71,7 @@ public final class DAVUtilities {
         }
 
         /* Load up the mime types table */
-        String mimeTypeResource = file + "/mime.types";
+        String mimeTypeResource = "plexus-webdav/mime.types";
         InputStream mime = loader.getResourceAsStream(mimeTypeResource);
         if (mime != null) try {
             InputStreamReader read = new InputStreamReader(mime);
