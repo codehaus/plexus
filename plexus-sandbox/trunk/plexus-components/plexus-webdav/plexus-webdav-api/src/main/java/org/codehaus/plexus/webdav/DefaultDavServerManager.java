@@ -119,7 +119,7 @@ public class DefaultDavServerManager
             }
             catch ( ComponentLifecycleException e )
             {
-                /* ignore */
+                e.printStackTrace( System.err );
             }
         }
     }
