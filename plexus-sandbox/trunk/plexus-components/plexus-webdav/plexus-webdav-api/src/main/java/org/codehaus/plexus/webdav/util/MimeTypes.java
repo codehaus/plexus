@@ -27,6 +27,9 @@ import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -43,10 +46,15 @@ import java.util.StringTokenizer;
  * 
  * @plexus.component role="org.codehaus.plexus.webdav.util.MimeTypes"
  */
-public class MimeTypes extends AbstractLogEnabled implements Initializable
+public class MimeTypes
+    extends AbstractLogEnabled
+    implements Initializable
 {
-    private static final String MIME_TYPES_RESOURCE = "org/codehaus/plexus/webdav/util/mime-types.txt";
-
+    /**
+     * @plexus.configuration default-value="org/codehaus/plexus/webdav/util/mime-types.txt"
+     */
+    private String resource = "org/codehaus/plexus/webdav/util/mime-types.txt";
+    
     private Map mimeMap = new HashMap();
 
     /**
@@ -72,33 +80,75 @@ public class MimeTypes extends AbstractLogEnabled implements Initializable
         return (String) mimeMap.get( ext.toLowerCase() );
     }
 
-    public void initialize() throws InitializationException
+    public void initialize()
+        throws InitializationException
     {
-        load();
+        load( resource );
     }
 
-    public void load()
+    public void load( File file )
+    {
+        if ( !file.exists() || !file.isFile() || !file.canRead() )
+        {
+            getLogger().error( "Unable to load mime types from file " + file.getAbsolutePath() + " : not a readable file." );
+            return;
+        }
+
+        FileInputStream fis = null;
+
+        try
+        {
+            fis = new FileInputStream( file );
+        }
+        catch ( FileNotFoundException e )
+        {
+            getLogger().error( "Unable to load mime types from file " + file.getAbsolutePath() + " : " + e.getMessage(), e );
+        }
+        finally
+        {
+            IOUtil.close( fis );
+        }
+    }
+
+    public void load( String resourceName )
     {
         ClassLoader cloader = this.getClass().getClassLoader();
 
         /* Load up the mime types table */
-        URL mimeURL = cloader.getResource( MIME_TYPES_RESOURCE );
+        URL mimeURL = cloader.getResource( resourceName );
 
         if ( mimeURL == null )
         {
-            throw new IllegalStateException( "Unable to find resource " + MIME_TYPES_RESOURCE );
+            throw new IllegalStateException( "Unable to find resource " + resourceName );
         }
 
+        InputStream mimeStream = null;
+
+        try
+        {
+            mimeStream = mimeURL.openStream();
+            load( mimeStream );
+        }
+        catch ( IOException e )
+        {
+            getLogger().error( "Unable to load mime map " + resourceName + " : " + e.getMessage(), e );
+        }
+        finally
+        {
+            IOUtil.close( mimeStream );
+        }
+    }
+
+    public void load( InputStream mimeStream )
+    {
         mimeMap.clear();
 
-        InputStream mimeStream = null;
         InputStreamReader reader = null;
         BufferedReader buf = null;
 
         try
         {
-            mimeStream = mimeURL.openStream();
-            reader = new InputStreamReader( mimeURL.openStream() );
+            reader = new InputStreamReader( mimeStream );
             buf = new BufferedReader( reader );
             String line = null;
 
@@ -132,13 +182,12 @@ public class MimeTypes extends AbstractLogEnabled implements Initializable
         }
         catch ( IOException e )
         {
-            getLogger().error( "Unable to load mime map " + MIME_TYPES_RESOURCE + " : " + e.getMessage(), e );
+            getLogger().error( "Unable to read mime types from input stream : " + e.getMessage(), e );
         }
         finally
         {
             IOUtil.close( buf );
             IOUtil.close( reader );
-            IOUtil.close( mimeStream );
         }
     }
 }
