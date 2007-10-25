@@ -30,6 +30,7 @@ import org.codehaus.plexus.webdav.DavServerManager;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletConfig;
@@ -54,6 +55,8 @@ public abstract class AbstractWebDavServlet
 
     protected DavServerManager davManager;
 
+    private boolean selfCreatedContainer = false;
+
     public void destroy()
     {
         if ( davManager != null )
@@ -69,6 +72,18 @@ public abstract class AbstractWebDavServlet
             catch ( ComponentLifecycleException e )
             {
                 log( "Unable to release DavServerManager.", e );
+            }
+        }
+        
+        if( selfCreatedContainer )
+        {
+            try
+            {
+                getPlexusContainer().dispose();
+            }
+            catch ( ServletException e )
+            {
+                log( "Unable to release PlexusContainer created by WebDavServlet.", e );
             }
         }
     }
@@ -175,6 +190,60 @@ public abstract class AbstractWebDavServlet
             throw new ServletException( "Unable to lookup role [" + role + "] hint [" + hint + "]", e );
         }
     }
+    
+    public void release( Object o )
+        throws ServletException
+    {
+        if ( o == null )
+        {
+            return;
+        }
+
+        try
+        {
+            getPlexusContainer().release( o );
+        }
+        catch ( ComponentLifecycleException e )
+        {
+            throw new ServletException( "Unable to release object (" + o.getClass().getName() + ")", e );
+        }
+    }
+    
+    public void releaseAll( List list )
+        throws ServletException
+    {
+        if ( list == null )
+        {
+            return;
+        }
+
+        try
+        {
+            getPlexusContainer().releaseAll( list );
+        }
+        catch ( ComponentLifecycleException e )
+        {
+            throw new ServletException( "Unable to release all objects in list (" + list.getClass().getName() + ")", e );
+        }
+    }
+    
+    public void releaseAll( Map map )
+        throws ServletException
+    {
+        if ( map == null )
+        {
+            return;
+        }
+
+        try
+        {
+            getPlexusContainer().releaseAll( map );
+        }
+        catch ( ComponentLifecycleException e )
+        {
+            throw new ServletException( "Unable to release all objects in map (" + map.getClass().getName() + ")", e );
+        }
+    }
 
     public void setDavManager( DavServerManager davManager )
     {
@@ -219,6 +288,7 @@ public abstract class AbstractWebDavServlet
         PlexusContainer pc;
         try
         {
+            this.selfCreatedContainer = true;
             pc = new DefaultPlexusContainer( "default", keys, "META-INF/plexus/application.xml",
                                              new ClassWorld( "plexus.core", getClass().getClassLoader() ) );
 
@@ -230,7 +300,7 @@ public abstract class AbstractWebDavServlet
         }
     }
 
-    private PlexusContainer getPlexusContainer()
+    public PlexusContainer getPlexusContainer()
         throws ServletException
     {
         PlexusContainer container = (PlexusContainer) getServletContext().getAttribute( PlexusConstants.PLEXUS_KEY );
