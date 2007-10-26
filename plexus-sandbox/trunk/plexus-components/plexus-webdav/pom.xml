@@ -22,7 +22,7 @@
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-sandbox/trunk/plexus-components/plexus-webdav</connection>
     <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-sandbox/trunk/plexus-components/plexus-webdav</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-components/tags/plexus-components-1.1.8/plexus-webdav-parent</url>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-sandbox/trunk/plexus-components/plexus-webdav</url>
   </scm>
 
   <reporting>
