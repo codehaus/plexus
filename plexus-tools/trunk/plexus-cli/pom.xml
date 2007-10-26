@@ -9,23 +9,23 @@
   <artifactId>plexus-cli</artifactId>
   <name>Plexus CLI</name>
   <description>Easily create CLIs with Plexus components</description>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.1-SNAPSHOT</version>
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-classworlds</artifactId>
-      <version>1.2-alpha-5</version>
+      <groupId>classworlds</groupId>
+      <artifactId>classworlds</artifactId>
+      <version>1.1</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-14</version>
+      <version>1.0-alpha-34</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>1.1</version>
+      <version>1.4.5</version>
     </dependency>
     <dependency>
       <groupId>commons-cli</groupId>
