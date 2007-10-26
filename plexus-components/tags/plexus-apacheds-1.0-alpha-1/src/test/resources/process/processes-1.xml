@@ -1,0 +1,13 @@
+<processes>
+  <process>
+    <id>hello-world</id>
+    <actions>
+      <action>
+        <id>echo-message</id>
+        <configuration>
+          <message>Hello World!</message>
+        </configuration>
+      </action>
+    </actions>
+  </process>
+</processes>
