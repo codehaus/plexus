@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-apacheds</artifactId>
   <name>Plexus Apache Directory Server Components</name>
-  <version>1.0-alpha-1</version>
+  <version>1.0-alpha-2-SNAPSHOT</version>
   <dependencies>
     <dependency>
       <groupId>org.apache.directory.server</groupId>
@@ -130,10 +130,4 @@
   <properties>
     <apacheds.version>1.5.1</apacheds.version>
   </properties>
-
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-components/tags/plexus-apacheds-1.0-alpha-1</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-components/tags/plexus-apacheds-1.0-alpha-1</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-components/tags/plexus-apacheds-1.0-alpha-1</url>
-  </scm>
 </project>
