@@ -9,7 +9,7 @@
   <artifactId>plexus-cli</artifactId>
   <name>Plexus CLI</name>
   <description>Easily create CLIs with Plexus components</description>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.2</version>
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
@@ -38,4 +38,10 @@
       </exclusions>
     </dependency>
   </dependencies>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-tools/tags/plexus-cli-1.2</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-tools/tags/plexus-cli-1.2</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-tools/tags/plexus-cli-1.2</url>
+  </scm>
 </project>
