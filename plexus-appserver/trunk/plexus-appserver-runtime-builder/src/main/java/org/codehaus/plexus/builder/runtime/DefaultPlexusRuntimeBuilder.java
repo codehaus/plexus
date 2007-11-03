@@ -439,6 +439,7 @@ public class DefaultPlexusRuntimeBuilder
         StringWriter buffer = new StringWriter( 100 * FileUtils.ONE_KB );
 
         File tmpFile = File.createTempFile( outputFileName.getName(), null );
+        tmpFile.deleteOnExit();
 
         //noinspection OverlyBroadCatchBlock
         try
