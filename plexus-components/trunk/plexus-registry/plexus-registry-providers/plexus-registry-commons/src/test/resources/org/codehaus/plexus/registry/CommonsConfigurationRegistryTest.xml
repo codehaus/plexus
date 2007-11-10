@@ -38,8 +38,29 @@
       <role-hint>test-save</role-hint>
       <configuration>
         <properties>
-          <xml fileName="${basedir}/target/test-classes/test-save.xml" config-name="org.codehaus.plexus.registry"
+          <system/>
+          <xml fileName="${basedir}/target/test-classes/test-save.xml" 
+               config-name="org.codehaus.plexus.registry"
                config-at="org.codehaus.plexus.registry"/>
+          <jndi prefix="java:comp/env" config-optional="true"/>
+          <xml fileName="${basedir}/target/conf/continuum.xml" config-optional="true"
+               config-at="org.apache.maven.continuum" config-forceCreate="true"/>
+          <xml fileName="${basedir}/target/conf/shared.xml" config-optional="true"
+               config-name="org.apache.maven.shared.app.user" config-at="org.apache.maven.shared.app"
+               config-forceCreate="true"/>
+          <xml fileName="${basedir}/target/conf/shared.xml" config-optional="true"
+               config-name="org.apache.maven.shared.app.base" config-at="org.apache.maven.shared.app"/>
+          <xml fileName="${basedir}/target/conf/common.xml" config-optional="true"/>
+          <properties fileName="${basedir}/conf/security.properties" config-optional="true"
+                      config-at="org.codehaus.plexus.redback"/>
+          <xml fileName="${basedir}/target/conf/continuum.xml" config-optional="true"
+               config-at="org.apache.maven.continuum" config-name="org.apache.maven.continuum.user"
+               config-forceCreate="true"/>
+          <xml fileName="${basedir}/target/conf/shared.xml" config-optional="true"
+               config-at="org.apache.maven.shared.app" />
+          <xml fileName="${basedir}/target/conf/common.xml" config-optional="true"/>
+          <properties fileName="${basedir}/conf/security.properties" config-optional="true"
+                      config-at="org.codehaus.plexus.redback"/>
         </properties>
       </configuration>
     </component>

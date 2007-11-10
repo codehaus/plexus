@@ -329,7 +329,18 @@ public class CommonsConfigurationRegistryTest
         registry.remove( "listElements.listElement(1)" );
         registry.save();
 
+        
+        
         XMLConfiguration configuration = new XMLConfiguration( dest );
         assertEquals( Arrays.asList( new String[]{"1", "3"} ), configuration.getList( "listElements.listElement" ) );
+        
+        // file in ${basedir}/target/conf/shared.xml
+        Registry section = this.registry.getSection( "org.apache.maven.shared.app.user" );
+        section.setString( "foo", "zloug" );
+        section.save();
+        
+        configuration = new XMLConfiguration( new File("target/conf/shared.xml") );
+        assertNotNull( configuration.getString( "foo" ) );
+        
     }
 }
