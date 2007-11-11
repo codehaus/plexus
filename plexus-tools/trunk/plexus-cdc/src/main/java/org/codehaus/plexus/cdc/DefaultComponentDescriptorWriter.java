@@ -196,11 +196,23 @@ public class DefaultComponentDescriptorWriter
             {
                 List hints = ( (ComponentRequirementList) cr ).getRoleHints();
 
-                w.startElement( "role-hints" );
+                if ( hints != null )
+                {
+                    w.startElement( "role-hints" );
 
-                // TODO add the hints
+                    for ( Iterator k = hints.iterator(); k.hasNext(); )
+                    {
+                        String roleHint = (String) k.next();
 
-                w.endElement();
+                        w.startElement( "role-hint" );
+
+                        w.writeText( roleHint );
+
+                        w.endElement();
+                    }
+
+                    w.endElement();
+                }
             }
             else
             {

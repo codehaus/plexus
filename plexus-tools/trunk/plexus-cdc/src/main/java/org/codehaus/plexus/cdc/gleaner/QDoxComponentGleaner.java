@@ -94,10 +94,6 @@ public class QDoxComponentGleaner
     public ComponentDescriptor glean( JavaClassCache classCache, JavaClass javaClass )
         throws ComponentGleanerException
     {
-        if (javaClass.isAbstract()) {
-            return null;
-        }
-        
         DocletTag tag = javaClass.getTagByName( PLEXUS_COMPONENT_TAG );
 
         if ( tag == null )
@@ -138,8 +134,6 @@ public class QDoxComponentGleaner
                 return null;
             }
         }
-
-        // getLogger().debug( " Role: " + role );
 
         componentDescriptor.setRole( role );
 

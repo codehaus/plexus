@@ -46,6 +46,8 @@ public class ComponentDescriptor
 
     private String description;
 
+    private boolean abstractComponent;
+
     // ----------------------------------------------------------------------
     // These two fields allow for the specification of an isolated class realm
     // and dependencies that might be specified in a component configuration
@@ -330,4 +332,13 @@ public class ComponentDescriptor
         return result;
     }
 
+    public void setAbstractComponent( boolean abstractComponent )
+    {
+        this.abstractComponent = abstractComponent;        
+    }
+
+    public boolean isAbstractComponent()
+    {
+        return abstractComponent;
+    }
 }

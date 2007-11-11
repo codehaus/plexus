@@ -99,10 +99,12 @@ public class QDoxComponentGleanerTest
         assertNull(component);
     }
 
+    /*
     public void testAbstractWithAnnoClass() throws Exception {
         ComponentDescriptor component = glean("AbstractWithAnnoClass.java");
         assertNull(component);
     }
+    */
 
     public void testNoAnnotationsIntf() throws Exception {
         ComponentDescriptor component = glean("NoAnnotationsIntf.java");

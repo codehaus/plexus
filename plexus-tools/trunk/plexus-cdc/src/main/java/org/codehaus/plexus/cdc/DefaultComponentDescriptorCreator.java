@@ -24,6 +24,22 @@ package org.codehaus.plexus.cdc;
  * SOFTWARE.
  */
 
+import com.thoughtworks.qdox.JavaDocBuilder;
+import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.model.JavaSource;
+import org.codehaus.plexus.cdc.merge.MergeException;
+import org.codehaus.plexus.cdc.merge.Merger;
+import org.codehaus.plexus.component.repository.ComponentDependency;
+import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.cdc.ComponentRequirement;
+import org.codehaus.plexus.component.repository.cdc.ComponentSetDescriptor;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.xml.XMLWriter;
+import org.jdom.Document;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -33,21 +49,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import com.thoughtworks.qdox.JavaDocBuilder;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaSource;
-import org.codehaus.plexus.cdc.merge.MergeException;
-import org.codehaus.plexus.cdc.merge.Merger;
-import org.codehaus.plexus.component.repository.ComponentDependency;
-import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
-import org.codehaus.plexus.component.repository.cdc.ComponentSetDescriptor;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.xml.XMLWriter;
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
 
 /**
  * So, in this case it is easy enough to determine the role and the implementation.
@@ -123,6 +124,7 @@ public class DefaultComponentDescriptorCreator
         javaSources = builder.getSources();
 
         Map defaultsByRole = new HashMap();
+
         if ( roleDefaults != null )
         {
             for ( int i = 0; i < roleDefaults.length; i++ )
@@ -134,6 +136,8 @@ public class DefaultComponentDescriptorCreator
 
         List componentDescriptors = new ArrayList();
 
+        Map abstractComponentMap = new HashMap();
+
         for ( int i = 0; i < javaSources.length; i++ )
         {
             if ("package-info.java".equalsIgnoreCase(javaSources[i].getFile().getName())) {
@@ -143,15 +147,19 @@ public class DefaultComponentDescriptorCreator
 
             JavaClass javaClass = getJavaClass( javaSources[i] );
 
-            for (Iterator iter = gleaners.iterator(); iter.hasNext();)
+            for (Iterator j = gleaners.iterator(); j.hasNext();)
             {
-                ComponentGleaner gleaner = (ComponentGleaner) iter.next();
+                ComponentGleaner gleaner = (ComponentGleaner) j.next();
                 
                 getLogger().debug("Trying gleaner: " + gleaner);
                 
                 ComponentDescriptor componentDescriptor = gleaner.glean( builder, javaClass );
 
-                if ( componentDescriptor != null && !javaClass.isAbstract() )
+                if ( javaClass.isAbstract() )
+                {
+                    abstractComponentMap.put( javaClass, componentDescriptor );
+                }
+                else if ( componentDescriptor != null )
                 {
                     // TODO: better merge, perhaps pass it into glean as the starting point instead
                     if ( defaultsByRole.containsKey( componentDescriptor.getRole() ) )
@@ -163,7 +171,19 @@ public class DefaultComponentDescriptorCreator
                             componentDescriptor.setInstantiationStrategy( desc.getInstantiationStrategy() );
                         }
                     }
-                    
+
+                    // Look at the abstract component of this component and grab all its requirements
+
+                    ComponentDescriptor abstractComponent = (ComponentDescriptor) abstractComponentMap.get( javaClass.getSuperJavaClass() );
+
+                    if ( abstractComponent != null )
+                    {
+                        for ( Iterator k = abstractComponent.getRequirements().iterator(); k.hasNext(); )
+                        {
+                            componentDescriptor.addRequirement( ( ComponentRequirement) k.next() );
+                        }
+                    }
+
                     componentDescriptors.add( componentDescriptor );
                 }
             }
