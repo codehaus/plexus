@@ -14,7 +14,7 @@
 
     <artifactId>plexus-cdc</artifactId>
     <name>Plexus Component Descriptor Creator</name>
-    <version>1.0-alpha-11</version>
+    <version>1.0-alpha-12-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
@@ -51,8 +51,8 @@
     </dependencies>
 
     <scm>
-        <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-tools/tags/plexus-cdc-1.0-alpha-11</connection>
-        <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-tools/tags/plexus-cdc-1.0-alpha-11</developerConnection>
-        <url>http://fisheye.codehaus.org/browse/plexus/plexus-tools/tags/plexus-cdc-1.0-alpha-11</url>
+        <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-tools/trunk/plexus-cdc</connection>
+        <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-tools/trunk/plexus-cdc</developerConnection>
+        <url>http://fisheye.codehaus.org/browse/plexus/plexus-tools/tags/plexus-cdc</url>
     </scm>
 </project>
