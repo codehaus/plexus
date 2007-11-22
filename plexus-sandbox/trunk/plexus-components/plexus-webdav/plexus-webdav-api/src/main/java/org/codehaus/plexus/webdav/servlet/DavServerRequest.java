@@ -19,7 +19,7 @@ package org.codehaus.plexus.webdav.servlet;
 import org.codehaus.plexus.webdav.util.WrappedRepositoryRequest;
 
 /**
- * DavServerRequest 
+ * DavServerRequest
  *
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
@@ -29,6 +29,8 @@ public interface DavServerRequest
     public String getPrefix();
 
     public String getLogicalResource();
+
+    public void setLogicalResource( String logicalResource );
 
     public WrappedRepositoryRequest getRequest();
 }

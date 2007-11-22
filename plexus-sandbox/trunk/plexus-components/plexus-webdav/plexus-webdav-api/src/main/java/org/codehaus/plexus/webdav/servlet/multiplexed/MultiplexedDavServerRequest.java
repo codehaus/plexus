@@ -22,12 +22,12 @@ import org.codehaus.plexus.webdav.servlet.DavServerRequest;
 import org.codehaus.plexus.webdav.util.WrappedRepositoryRequest;
 
 /**
- * <p>
- * MultiplexedDavServerRequest - For requests that contain the server prefix information within the requested 
+ * <p/>
+ * MultiplexedDavServerRequest - For requests that contain the server prefix information within the requested
  * servlet's pathInfo parameter (as the first path entry).
- * </p> 
- * 
- * <p>
+ * </p>
+ * <p/>
+ * <p/>
  * You would use this dav server request object when you are working with a single servlet that is handling
  * multiple dav server components.
  * </p>
@@ -72,7 +72,7 @@ public class MultiplexedDavServerRequest
              * This is to prevent requests for information outside of the root directory.
              */
             this.logicalResource = FileUtils.normalize( logicalResource );
-            
+
             if ( this.logicalResource == null )
             {
                 this.logicalResource = "/";
@@ -85,6 +85,12 @@ public class MultiplexedDavServerRequest
         }
 
         this.request = request;
+        this.request.setPathInfo( logicalResource );
+    }
+
+    public void setLogicalResource( String logicalResource )
+    {
+        this.logicalResource = logicalResource;
         this.request.setPathInfo( logicalResource );
     }
 
