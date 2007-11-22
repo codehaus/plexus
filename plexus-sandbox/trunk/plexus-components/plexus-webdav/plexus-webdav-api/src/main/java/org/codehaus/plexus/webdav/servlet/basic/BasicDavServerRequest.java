@@ -42,6 +42,12 @@ public class BasicDavServerRequest
         this.logicalResource = request.getPathInfo();
     }
 
+    public void setLogicalResource( String logicalResource )
+    {
+        this.logicalResource = logicalResource;
+        this.request.setPathInfo( logicalResource );
+    }
+
     public String getLogicalResource()
     {
         return this.logicalResource;
