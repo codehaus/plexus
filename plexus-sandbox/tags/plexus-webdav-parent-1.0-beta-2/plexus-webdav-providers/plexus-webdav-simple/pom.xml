@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.plexus.webdav</groupId>
+    <artifactId>plexus-webdav-providers-parent</artifactId>
+    <version>1.0-beta-2</version>
+  </parent>
+
+  <artifactId>plexus-webdav-simple</artifactId>
+  <name>Plexus WebDAV Provider :: Simple</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.1</version>
+    </dependency>
+<!-- We import these classes directly to be able to patch them, since this library hasn't been released in some time
+    <dependency>
+      <groupId>it.could</groupId>
+      <artifactId>webdav</artifactId>
+      <version>0.4</version>
+    </dependency>
+-->
+  
+    <!-- Required by it.could classes -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.3</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <!-- Required by it.could classes -->
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>${project.build.sourceDirectory}</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+          <exclude>**/package.html</exclude>
+          <exclude>**/url.gif</exclude>
+          <exclude>**/url.pdf</exclude>
+        </excludes>
+      </resource>
+    </resources>
+  </build>
+</project>

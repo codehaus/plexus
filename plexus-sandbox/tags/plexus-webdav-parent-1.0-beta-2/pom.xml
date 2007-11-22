@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.plexus</groupId>
+    <artifactId>plexus-components</artifactId>
+    <version>1.1.12</version>
+  </parent>
+
+  <groupId>org.codehaus.plexus.webdav</groupId>
+  <artifactId>plexus-webdav-parent</artifactId>
+  <name>Plexus WebDAV Component Parent</name>
+  <version>1.0-beta-2</version>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>plexus-webdav-api</module>
+    <module>plexus-webdav-test</module>
+    <module>plexus-webdav-providers</module>
+  </modules>
+
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-sandbox/tags/plexus-webdav-parent-1.0-beta-2</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-sandbox/tags/plexus-webdav-parent-1.0-beta-2</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-sandbox/tags/plexus-webdav-parent-1.0-beta-2</url>
+  </scm>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <aggregate>true</aggregate>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-jxr-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>
