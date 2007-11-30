@@ -171,7 +171,7 @@ public class SimpleDavServerComponent
                 triggerResourceRemoved( resource.getRelativePath() );
                 break;
             case DAVListener.RESOURCE_MODIFIED:
-                triggerResourceRemoved( resource.getRelativePath() );
+                triggerResourceModified( resource.getRelativePath() );
                 break;
         }
     }
