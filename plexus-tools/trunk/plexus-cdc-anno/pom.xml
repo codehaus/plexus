@@ -20,13 +20,15 @@
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-component-annotations</artifactId>
-            <version>1.0-alpha-1-SNAPSHOT</version>
+            <version>1.0-alpha-9</version>
         </dependency>
+        
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-cdc</artifactId>
             <version>1.0-alpha-11</version>
         </dependency>
+        
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
