@@ -10,7 +10,7 @@
 
     <artifactId>plexus-cdc-anno</artifactId>
     <name>Plexus Component Descriptor Creator by Annotation</name>
-    <version>1.0-alpha-1</version>
+    <version>1.0-alpha-2-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
@@ -79,10 +79,4 @@
         </profile>
     </profiles>
 
-
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-tools/tags/plexus-cdc-anno-1.0-alpha-1</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-tools/tags/plexus-cdc-anno-1.0-alpha-1</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-tools/tags/plexus-cdc-anno-1.0-alpha-1</url>
-  </scm>
 </project>
