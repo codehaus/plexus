@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<component-set>
+    <components>
+        <component>
+            <role>org.codehaus.plexus.cdc.gleaner.SourceComponentGleaner</role>
+            <role-hint>qdox</role-hint>
+            <implementation>org.codehaus.plexus.cdc.gleaner.QDoxComponentGleaner</implementation>
+        </component>
+
+        <component>
+            <role>org.codehaus.plexus.cdc.ComponentDescriptorWriter</role>
+            <implementation>org.codehaus.plexus.cdc.DefaultComponentDescriptorWriter</implementation>
+        </component>
+
+        <component>
+            <role>org.codehaus.plexus.cdc.merge.Merger</role>
+            <role-hint>componentsXml</role-hint>
+            <implementation>org.codehaus.plexus.cdc.merge.ComponentsXmlMerger</implementation>
+        </component>
+
+        <component>
+            <role>org.codehaus.plexus.cdc.merge.Merger</role>
+            <role-hint>plexusXml</role-hint>
+            <implementation>org.codehaus.plexus.cdc.merge.PlexusXmlMerger</implementation>
+        </component>
+
+        <!-- Deprecated -->
+
+        <component>
+            <role>org.codehaus.plexus.cdc.ComponentDescriptorCreator</role>
+            <implementation>org.codehaus.plexus.cdc.DefaultComponentDescriptorCreator</implementation>
+            <requirements>
+                <requirement>
+                    <role>org.codehaus.plexus.cdc.ComponentGleaner</role>
+                    <field-name>gleaners</field-name>
+                </requirement>
+                <requirement>
+                    <role>org.codehaus.plexus.cdc.merge.Merger</role>
+                    <role-hint>plexusXml</role-hint>
+                </requirement>
+                <requirement>
+                    <role>org.codehaus.plexus.cdc.ComponentDescriptorWriter</role>
+                </requirement>
+            </requirements>
+        </component>
+    </components>
+</component-set>
