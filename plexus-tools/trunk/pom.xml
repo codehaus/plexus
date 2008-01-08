@@ -1,4 +1,7 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
     <artifactId>plexus</artifactId>
     <groupId>org.codehaus.plexus</groupId>
@@ -8,7 +11,7 @@
   <artifactId>plexus-tools</artifactId>
   <packaging>pom</packaging>
   <name>Plexus Tools Parent Project</name>
-  <version>1.0.9</version>
+  <version>1.0.9-SNAPSHOT</version>
   <url>http://plexus.codehaus.org/plexus-tools</url>
   <dependencies>
     <dependency>
@@ -21,13 +24,11 @@
     <module>plexus-cdc</module>
     <module>plexus-cdc-anno</module>
     <module>plexus-cli</module>
-    <!-- Commenting this out so I can release the rest. I'll try to release this one separately later.
     <module>plexus-javadoc</module>
-    -->
   </modules>
   <scm> 
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-tools/tags/plexus-tools-1.0.9</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-tools/tags/plexus-tools-1.0.9</developerConnection> 
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-tools/tags/plexus-tools-1.0.9</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-tools/trunk</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-tools/trunk</developerConnection> 
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-tools/trunk</url>
   </scm>
 </project>
