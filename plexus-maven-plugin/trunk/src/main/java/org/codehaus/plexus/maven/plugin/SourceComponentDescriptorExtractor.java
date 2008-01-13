@@ -48,7 +48,9 @@ public class SourceComponentDescriptorExtractor
     public List extract(final MavenProject project, final String scope, final ComponentDescriptor[] roleDefaults) throws Exception {
         assert project != null;
         assert scope != null;
-        assert roleDefaults != null;
+// getDefaultsByRole() seems to check for null and maven-artifact project works fine when
+// assertions are disabled.        
+//        assert roleDefaults != null;
 
         // Use a default source gleaner if none was configured
         if (gleaner == null) {
