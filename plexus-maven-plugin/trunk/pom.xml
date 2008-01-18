@@ -63,7 +63,7 @@
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-cdc</artifactId>
-            <version>1.0-alpha-12</version>
+            <version>1.0-alpha-13</version>
         </dependency>
     </dependencies>
 
