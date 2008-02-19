@@ -7,7 +7,7 @@
   </parent>
 
   <artifactId>plexus-active-collections</artifactId>
-  <version>1.0-beta-2</version>
+  <version>1.0-beta-3-SNAPSHOT</version>
   <name>Plexus Container-Backed Active Collections</name>
 
   <dependencies>
@@ -73,9 +73,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/tags/plexus-active-collections-1.0-beta-2</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-active-collections-1.0-beta-2</developerConnection>
-  </scm>
 </project>
