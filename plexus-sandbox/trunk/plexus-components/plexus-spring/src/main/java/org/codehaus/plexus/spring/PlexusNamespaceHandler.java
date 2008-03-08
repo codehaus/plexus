@@ -87,7 +87,7 @@ public class PlexusNamespaceHandler
             builder.addPropertyValue( "role", element.getAttribute( "role" ) );
             String implementation = element.getAttribute( "implementation" );
             builder.addPropertyValue( "implementation", implementation );
-            builder.addPropertyValue( "instanciationStrategy", element.getAttribute( "instantiation-strategy" ) );
+            builder.addPropertyValue( "instantiationStrategy", element.getAttribute( "instantiation-strategy" ) );
 
             Map dependencies = new HashMap();
 

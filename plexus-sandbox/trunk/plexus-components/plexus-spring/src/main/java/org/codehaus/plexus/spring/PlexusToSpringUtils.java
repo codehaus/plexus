@@ -106,7 +106,17 @@ public class PlexusToSpringUtils
     {
         return buildSpringId( role.getName(), roleHint );
     }
+    
+    public static String buildSpringId( Class role )
+    {
+        return buildSpringId( role.getName(), PlexusConstants.PLEXUS_DEFAULT_HINT );
+    }
 
+    public static String buildSpringId( String role )
+    {
+        return buildSpringId( role, PlexusConstants.PLEXUS_DEFAULT_HINT );
+    }
+    
     public static String buildSpringId( String role, String roleHint )
     {
         int i = role.lastIndexOf( '.' ) + 1;
@@ -120,7 +130,7 @@ public class PlexusToSpringUtils
 
     private static boolean isDefaultHint( String roleHint )
     {
-        return roleHint == null || roleHint.length() == 0 || "default".equals( roleHint );
+        return roleHint == null || roleHint.length() == 0 || PlexusConstants.PLEXUS_DEFAULT_HINT.equals( roleHint );
     }
 
     public static Map lookupMap( String role, ListableBeanFactory beanFactory )
