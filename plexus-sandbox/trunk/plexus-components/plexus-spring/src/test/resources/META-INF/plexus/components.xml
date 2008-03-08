@@ -1,0 +1,24 @@
+<plexus>
+
+  <components>
+
+    <component>
+      <role>org.codehaus.plexus.spring.Wine</role>
+      <implementation>org.codehaus.plexus.spring.DefaultWine</implementation>
+      <role-hint>default</role-hint>
+      <!--requirements>
+        <requirement>
+          <role>org.codehaus.plexus.hibernate.HibernateSessionService</role>
+        </requirement>
+      </requirements-->          
+    </component>
+        
+    <component>
+      <role>org.codehaus.plexus.spring.Wine</role>
+      <implementation>org.codehaus.plexus.spring.SaumurWine</implementation>
+      <instantiation-strategy>per-lookup</instantiation-strategy>
+      <role-hint>saumur</role-hint>
+    </component>
+
+  </components>
+</plexus>
