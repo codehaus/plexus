@@ -1,0 +1,13 @@
+<projectDescription>
+  <name>plexus-spring</name>
+  <comment>Bridge utility to use plexus components in a SpringFramework context.</comment>
+  <projects/>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>
