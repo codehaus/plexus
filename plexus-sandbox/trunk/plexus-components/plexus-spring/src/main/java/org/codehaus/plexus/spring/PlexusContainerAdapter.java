@@ -536,7 +536,6 @@ public class PlexusContainerAdapter
     public void release( Object component )
         throws ComponentLifecycleException
     {
-        throw new UnsupportedOperationException();
     }
 
     /**
