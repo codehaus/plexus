@@ -49,7 +49,7 @@ public class PlexusApplicationContextDelegate
     protected void loadBeanDefinitions( XmlBeanDefinitionReader reader )
         throws BeansException, IOException
     {
-        logger.info( "Registering plexus to spring XML translation" );
+        logger.info( "Registering Plexus to Spring XML translation" );
         reader.setDocumentReaderClass( PlexusBeanDefinitionDocumentReader.class );
         reader.setValidationMode( XmlBeanDefinitionReader.VALIDATION_NONE );
     }

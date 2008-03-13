@@ -48,7 +48,7 @@ import org.springframework.util.ReflectionUtils;
  * <li>Support for plexus.requirement to get a Map<role-hint, component> for a
  * role
  * </ul>
- * If not set, the beanFActory will auto-detect the loggerManager to use by
+ * If not set, the beanFactory will auto-detect the loggerManager to use by
  * searching for the adequate bean in the spring context.
  * <p>
  *
@@ -113,7 +113,7 @@ public class PlexusComponentFactoryBean
     public Object createInstance()
         throws Exception
     {
-        logger.debug( "Creating plexus component " + implementation );
+        logger.debug( "Creating Plexus component " + implementation );
         final Object component = implementation.newInstance();
         if ( requirements != null )
         {
