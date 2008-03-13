@@ -545,7 +545,6 @@ public class PlexusContainerAdapter
     public void releaseAll( Map components )
         throws ComponentLifecycleException
     {
-        throw new UnsupportedOperationException();
     }
 
     /**
@@ -555,7 +554,6 @@ public class PlexusContainerAdapter
     public void releaseAll( List components )
         throws ComponentLifecycleException
     {
-        throw new UnsupportedOperationException();
     }
 
     /**
