@@ -129,6 +129,8 @@ public class PlexusNamespaceHandler
                 }
                 value = StringUtils.replace( value, "${basedir}", PlexusToSpringUtils.getBasedir() );
                 dependencies.put( name, value );
+                
+                builder.addPropertyValue( "configuration", new SpringPlexusConfiguration( child ) );
             }
 
             builder.addPropertyValue( "requirements", dependencies );
