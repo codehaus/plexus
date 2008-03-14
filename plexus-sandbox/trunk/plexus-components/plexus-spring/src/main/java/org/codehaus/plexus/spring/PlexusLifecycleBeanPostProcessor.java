@@ -33,6 +33,8 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -142,7 +144,7 @@ public class PlexusLifecycleBeanPostProcessor
             }
         }
 
-        // TODO add support for Startable, Stopable -> LifeCycle ?
+        // TODO add support for Stopable -> LifeCycle ?
 
         if ( bean instanceof Initializable )
         {
@@ -156,6 +158,19 @@ public class PlexusLifecycleBeanPostProcessor
                 throw new BeanInitializationException( "Failed to invoke plexus lifecycle Initializable.initialize on "
                     + beanName, e );
             }
+        }
+
+        if ( bean instanceof Startable )
+        {
+            try
+            {
+                logger.trace( "Start plexus bean " + beanName );
+                ( (Startable) bean ).start();
+            }
+            catch (StartingException e) {
+                throw new BeanInitializationException( "Failed to invoke plexus lifecycle Startable.start on "
+                        + beanName, e );
+			}
         }
 
         if ( bean instanceof Disposable )
