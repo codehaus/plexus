@@ -24,8 +24,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
-
-
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Configurable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.SimpleTypeConverter;
@@ -80,6 +80,8 @@ public class PlexusComponentFactoryBean
 
     /** The plexus component requirements and configurations */
     private Map requirements;
+    
+    private PlexusConfiguration configuration;
 
     private Object singletonInstance;
 
@@ -162,6 +164,11 @@ public class PlexusComponentFactoryBean
                 }
             }
         }
+        if ( component instanceof Configurable )
+        {
+            ( (Configurable) component ).configure( configuration );
+        }
+
         return component;
     }
 
@@ -293,5 +300,13 @@ public class PlexusComponentFactoryBean
     {
         this.beanFactory = beanFactory;
     }
+
+	public PlexusConfiguration getConfiguration() {
+		return configuration;
+	}
+
+	public void setConfiguration(PlexusConfiguration configuration) {
+		this.configuration = configuration;
+	}
 
 }
