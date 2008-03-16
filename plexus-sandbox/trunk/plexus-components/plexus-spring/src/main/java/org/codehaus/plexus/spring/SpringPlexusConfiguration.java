@@ -125,7 +125,7 @@ public class SpringPlexusConfiguration
 		{
 			return null;
 		}
-		return element.getTextContent();
+		return DOM2Utils.getTextContext( element );
 	}
 
 	public String getValue(String defaultValue) {

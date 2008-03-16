@@ -117,7 +117,7 @@ public class PlexusNamespaceHandler
                 String value;
                 if ( child.getChildNodes().getLength() == 1 )
                 {
-                    value = child.getTextContent();
+                    value = DOM2Utils.getTextContext( child );
                 }
                 else
                 {
@@ -161,7 +161,7 @@ public class PlexusNamespaceHandler
             Node node = childNodes.item( i );
             if (node.getNodeType() == Node.TEXT_NODE )
             {
-                out.print( node.getTextContent() );
+                out.print( DOM2Utils.getTextContext( node ) );
             }
             else if (node.getNodeType() == Node.ELEMENT_NODE )
             {
@@ -184,7 +184,7 @@ public class PlexusNamespaceHandler
             out.print( " ");
             out.print( attribute.getLocalName() );
             out.print( "=\"" );
-            out.print( attribute.getTextContent() );
+            out.print( attribute.getNodeValue() );
             out.print( "\"" );
         }
         if (el.getChildNodes().getLength() == 0)

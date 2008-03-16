@@ -96,7 +96,8 @@ public class PlexusBeanDefinitionDocumentReader
             Transformer t = tf.newTransformer( xsltSource );
             t.transform( xmlSource, transResult );
 
-            logger.debug( doc.getDocumentURI() + " successfully translated to Spring" );
+            // DOM3 Only - logger.debug( doc.getDocumentURI() + " successfully translated to Spring" );
+            logger.debug( "Plexus Bean Definition Document successfully translated to Spring" );
             return (Document) transResult.getNode();
         }
         catch ( Exception e )
