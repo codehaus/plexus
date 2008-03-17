@@ -145,4 +145,10 @@ public class PlexusInSpringTestCase
     {
         return applicationContext;
     }
+    
+    protected void release( Object component )
+        throws Exception
+    {
+        // nothing 
+    }
 }
