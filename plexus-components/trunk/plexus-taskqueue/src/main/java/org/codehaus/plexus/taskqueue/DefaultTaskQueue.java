@@ -79,34 +79,52 @@ public class DefaultTaskQueue
     public void configure( PlexusConfiguration config )
         throws PlexusConfigurationException
     {
-        PlexusConfiguration[] entryEvaluators = config.getChild( "task-entry-evaluators" )
-            .getChildren( "task-entry-evaluator" );
-
+        
+        PlexusConfiguration entryEvaluatorsConfiguration = config.getChild( "task-entry-evaluators" );
+        
         taskEntryEvaluators = new ArrayList();
-
-        for ( int i = 0; i < entryEvaluators.length; i++ )
+        
+        if ( entryEvaluatorsConfiguration != null )
         {
-            configureEntryEvaluator( entryEvaluators[i] );
-        }
+            PlexusConfiguration[] entryEvaluators = entryEvaluatorsConfiguration.getChildren( "task-entry-evaluator" );
 
-        PlexusConfiguration[] exitEvaluators = config.getChild( "task-exit-evaluators" )
-            .getChildren( "task-exit-evaluator" );
+            for ( int i = 0; i < entryEvaluators.length; i++ )
+            {
+                configureEntryEvaluator( entryEvaluators[i] );
+            }
+
+        }
+        
+        PlexusConfiguration exitEvaluatorsConfiguration = config.getChild( "task-exit-evaluators" );
 
         taskExitEvaluators = new ArrayList();
 
-        for ( int i = 0; i < entryEvaluators.length; i++ )
+        if ( exitEvaluatorsConfiguration != null )
         {
-            configureExitEvaluator( exitEvaluators[i] );
-        }
+            PlexusConfiguration[] exitEvaluators = exitEvaluatorsConfiguration.getChildren( "task-exit-evaluator" );
 
-        PlexusConfiguration[] viabilityEvaluators = config.getChild( "task-viability-evaluators" )
-            .getChildren( "task-viability-evaluator" );
+            for ( int i = 0; i < exitEvaluators.length; i++ )
+            {
+                configureExitEvaluator( exitEvaluators[i] );
+            }
+        }
+        
+        
+        PlexusConfiguration viabilityEvaluatorsConfiguration = config.getChild( "task-viability-evaluators" );
 
         taskViabilityEvaluators = new ArrayList();
 
-        for ( int i = 0; i < viabilityEvaluators.length; i++ )
+        if ( taskViabilityEvaluators != null )
         {
-            configureViabilityEvaluator( viabilityEvaluators[i] );
+
+            PlexusConfiguration[] viabilityEvaluators = viabilityEvaluatorsConfiguration
+                .getChildren( "task-viability-evaluator" );
+
+            for ( int i = 0; i < viabilityEvaluators.length; i++ )
+            {
+                configureViabilityEvaluator( viabilityEvaluators[i] );
+            }
+
         }
     }
 
@@ -303,6 +321,9 @@ public class DefaultTaskQueue
         catch ( ComponentLookupException e )
         {
             throw new PlexusConfigurationException( "Couldn't look up task viability evaluator '" + name + "'.", e );
+        } catch (NullPointerException e)
+        {
+            throw new PlexusConfigurationException( "NullPointerException look up task viability evaluator '" + name + "'.", e );
         }
 
         taskViabilityEvaluators.add( taskViabilityEvaluator );
