@@ -25,7 +25,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Configurable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.SimpleTypeConverter;
@@ -71,6 +70,9 @@ public class PlexusComponentFactoryBean
 
     /** The plexus component role */
     private Class role;
+    
+    /** The Spring bean reference */
+    private String beanRef;
 
     /** The plexus component implementation class */
     private Class implementation;
@@ -115,7 +117,10 @@ public class PlexusComponentFactoryBean
     public Object createInstance()
         throws Exception
     {
-        logger.debug( "Creating Plexus component " + implementation );
+        if (logger.isDebugEnabled())
+        {
+            logger.debug( "Creating Plexus component " + implementation );
+        }
         final Object component = implementation.newInstance();
         if ( requirements != null )
         {
@@ -164,11 +169,12 @@ public class PlexusComponentFactoryBean
                 }
             }
         }
-        if ( component instanceof Configurable )
-        {
-            ( (Configurable) component ).configure( configuration );
-        }
 
+        // saving the configuration in the container adapter for reuse in the PlexusLifecycleBeanPostProcessor
+        PlexusContainerAdapter plexusContainerAdapter = (PlexusContainerAdapter) beanFactory
+            .getBean( "plexusContainer" );
+        plexusContainerAdapter.getPlexusConfigurationPerComponent().put( beanRef, configuration );
+        
         return component;
     }
 
@@ -301,12 +307,19 @@ public class PlexusComponentFactoryBean
         this.beanFactory = beanFactory;
     }
 
-	public PlexusConfiguration getConfiguration() {
-		return configuration;
-	}
+	public PlexusConfiguration getConfiguration()
+    {
+        return configuration;
+    }
 
-	public void setConfiguration(PlexusConfiguration configuration) {
-		this.configuration = configuration;
-	}
+    public void setConfiguration( PlexusConfiguration configuration )
+    {
+        this.configuration = configuration;
+    }
+
+    public void setBeanRef( String beanRef )
+    {
+        this.beanRef = beanRef;
+    }
 
 }

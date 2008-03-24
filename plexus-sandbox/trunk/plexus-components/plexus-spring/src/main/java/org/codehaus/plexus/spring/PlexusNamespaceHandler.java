@@ -19,7 +19,9 @@ package org.codehaus.plexus.spring;
  * under the License.
  */
 
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,6 +29,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
@@ -52,6 +59,9 @@ import org.w3c.dom.NodeList;
 public class PlexusNamespaceHandler
     extends NamespaceHandlerSupport
 {
+    
+    private Logger log = LoggerFactory.getLogger( getClass() );
+    
     public void init()
     {
         registerBeanDefinitionParser( "component", new PlexusComponentBeanDefinitionParser() );
@@ -85,6 +95,8 @@ public class PlexusNamespaceHandler
         protected void doParse( Element element, BeanDefinitionBuilder builder )
         {
             builder.addPropertyValue( "role", element.getAttribute( "role" ) );
+            String beanRef = PlexusToSpringUtils.buildSpringId( element.getAttribute( "role" ), element.getAttribute( "role-hint" ) );
+            builder.addPropertyValue( "beanRef", beanRef );
             String implementation = element.getAttribute( "implementation" );
             builder.addPropertyValue( "implementation", implementation );
             builder.addPropertyValue( "instantiationStrategy", element.getAttribute( "instantiation-strategy" ) );
@@ -110,14 +122,16 @@ public class PlexusNamespaceHandler
             }
 
             List configurations = DomUtils.getChildElementsByTagName( element, "configuration" );
+            StringBuffer value = new StringBuffer();
             for ( Iterator iterator = configurations.iterator(); iterator.hasNext(); )
             {
                 Element child = (Element) iterator.next();
                 String name = child.getAttribute( "name" );
-                String value;
+                
+                
                 if ( child.getChildNodes().getLength() == 1 )
                 {
-                    value = DOM2Utils.getTextContext( child );
+                    value.append( DOM2Utils.getTextContext( child ));
                 }
                 else
                 {
@@ -125,14 +139,33 @@ public class PlexusNamespaceHandler
                     xml.write( '<' + name + '>' );
                     flatten( child.getChildNodes(), new PrintWriter( xml ) );
                     xml.write( "</" + name + '>' );
-                    value = xml.toString();
-                }
-                value = StringUtils.replace( value, "${basedir}", PlexusToSpringUtils.getBasedir() );
-                dependencies.put( name, value );
-                
-                builder.addPropertyValue( "configuration", new SpringPlexusConfiguration( child ) );
-            }
+                    value.append( xml.toString());
 
+                }
+                String dependenciesValue = StringUtils.replace( value.toString(), "${basedir}", PlexusToSpringUtils.getBasedir() );
+                dependencies.put( name, dependenciesValue );
+            }
+            
+            if ( value.length() > 0 )
+            {
+                try
+                {
+                    StringBuffer configurationContent = new StringBuffer("<configuration>");
+                    configurationContent.append( value.toString() ).append( "</configuration>");
+                    Xpp3Dom plexusConfiguration = Xpp3DomBuilder.build( new StringReader( configurationContent.toString() ) );
+                    builder.addPropertyValue( "configuration", new Xpp3DomPlexusConfiguration( plexusConfiguration ) );
+                }
+                catch ( XmlPullParserException e )
+                {
+                    log.error( e.getMessage(), e );
+                    throw new RuntimeException( e.getMessage(), e );
+                }
+                catch ( IOException e )
+                {
+                    log.error( e.getMessage(), e );
+                    throw new RuntimeException( e.getMessage(), e );
+                }
+            }
             builder.addPropertyValue( "requirements", dependencies );
         }
 

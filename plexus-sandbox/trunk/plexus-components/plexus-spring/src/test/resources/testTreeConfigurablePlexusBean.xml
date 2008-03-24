@@ -1,0 +1,24 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.spring.ConfigurablePlexusBean</role>
+      <implementation>org.codehaus.plexus.spring.ConfigurablePlexusBean</implementation>
+      <role-hint>configurable</role-hint>
+      <configuration>
+        <task-entry-evaluators>
+	      <task-entry-evaluator>first</task-entry-evaluator>
+		  <task-entry-evaluator>second</task-entry-evaluator>
+        </task-entry-evaluators>
+		<wines>
+		  <wine>saumur</wine>	
+		</wines>
+      </configuration>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.spring.Wine</role>
+      <implementation>org.codehaus.plexus.spring.SaumurWine</implementation>
+      <instantiation-strategy>per-lookup</instantiation-strategy>
+      <role-hint>saumur</role-hint>
+    </component>	  
+  </components>
+</component-set>

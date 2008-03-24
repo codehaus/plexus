@@ -21,117 +21,157 @@ package org.codehaus.plexus.spring;
 
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
+import org.codehaus.plexus.util.StringUtils;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/**
+ * @author <a href="mailto:nicolas@apache.org">Nicolas De Loof</a>
+ * @version $Id: PlexusConfigurationPropertyEditor.java 7230 2008-03-08 18:21:22Z olamy $
+ */
 public class SpringPlexusConfiguration
 	implements PlexusConfiguration
 {
 
 	private Element element;
 
-	public SpringPlexusConfiguration(Element child) {
-		this.element = child;
-	}
+    public SpringPlexusConfiguration( Element child )
+    {
+        this.element = child;
+    }
 
-	public void addChild(PlexusConfiguration configuration) {
-		throw new UnsupportedOperationException( "immutable" );
-	}
+    public void addChild( PlexusConfiguration configuration )
+    {
+        throw new UnsupportedOperationException( "immutable" );
+    }
 
-	public String getAttribute(String paramName)
-			throws PlexusConfigurationException {
-		throw new UnsupportedOperationException( "not done yet" );
-	}
+    public String getAttribute( String paramName )
+        throws PlexusConfigurationException
+    {
+        throw new UnsupportedOperationException( "not done yet" );
+    }
 
-	public String getAttribute(String name, String defaultValue) {
-		throw new UnsupportedOperationException( "not done yet" );
-	}
+    public String getAttribute( String name, String defaultValue )
+    {
+        throw new UnsupportedOperationException( "not done yet" );
+    }
 
-	public String[] getAttributeNames() {
-		throw new UnsupportedOperationException( "not done yet" );
-	}
+    public String[] getAttributeNames()
+    {
+        throw new UnsupportedOperationException( "not done yet" );
+    }
 
-	public PlexusConfiguration getChild(String child) {
-		if ( element == null )
-		{
-			return null;
-		}
-		
-		return new SpringPlexusConfiguration( (Element) element.getElementsByTagName(child).item(0) );
-	}
+    public PlexusConfiguration getChild( String child )
+    {
 
-	public PlexusConfiguration getChild(int i) {
-		if ( element == null )
-		{
-			return null;
-		}
-		
-		return new SpringPlexusConfiguration( (Element) element.getChildNodes().item(i) );
-	}
+        if ( element == null )
+        {
+            return null;
+        }
 
-	public PlexusConfiguration getChild(String child, boolean createChild) {
-		throw new UnsupportedOperationException( "immutable" );
-	}
+        if ( StringUtils.equals( element.getNodeName(), child ) )
+        {
+            return this;
+        }
 
-	public int getChildCount() {
-		if ( element == null )
-		{
-			return 0;
-		}
-		
-		return element.getChildNodes().getLength();
-	}
+        NodeList childNodes = element.getChildNodes();
+        String xmlElement = DOM2Utils.getTextContext( element );
+        if ( childNodes == null )
+        {
+            return null;
+        }
+        for ( int i = 0, size = childNodes.getLength(); i < size; i++ )
+        {
+            Node tempChild = childNodes.item( i );
+            if ( StringUtils.equals( tempChild.getNodeName(), child ) )
+            {
+                return new SpringPlexusConfiguration( (Element) tempChild );
+            }
+        }
+        return null;
+    }
 
-	public PlexusConfiguration[] getChildren() {
-		if ( element == null )
-		{
-			return new PlexusConfiguration[0];
-		}
-		
-		NodeList l = element.getChildNodes();
-		PlexusConfiguration[] value = new PlexusConfiguration[l.getLength()];
-		for ( int i = 0; i < l.getLength(); i++ )
-		{
-			value[i] = new SpringPlexusConfiguration((Element) l.item(i));
-		}
-		return value;
-	}
+    public PlexusConfiguration getChild( int i )
+    {
+        if ( element == null )
+        {
+            return null;
+        }
 
-	public PlexusConfiguration[] getChildren(String name) {
-		if ( element == null )
-		{
-			return new PlexusConfiguration[0];
-		}
-		
-		NodeList l = element.getElementsByTagName(name);
-		PlexusConfiguration[] value = new PlexusConfiguration[l.getLength()];
-		for ( int i = 0; i < l.getLength(); i++ )
-		{
-			value[i] = new SpringPlexusConfiguration((Element) l.item(i));
-		}
-		return value;
-	}
+        return new SpringPlexusConfiguration( (Element) element.getChildNodes().item( i ) );
+    }
 
-	public String getName() {
-		if ( element == null )
-		{
-			return null;
-		}
-		return element.getLocalName();
-	}
+    public PlexusConfiguration getChild( String child, boolean createChild )
+    {
+        throw new UnsupportedOperationException( "immutable" );
+    }
 
-	public String getValue() {
-		if ( element == null )
-		{
-			return null;
-		}
-		return DOM2Utils.getTextContext( element );
-	}
+    public int getChildCount()
+    {
+        if ( element == null )
+        {
+            return 0;
+        }
 
-	public String getValue(String defaultValue) {
-		String value = getValue();
+        return element.getChildNodes().getLength();
+    }
 
-		return value != null ? value : defaultValue;
-	}
-	
+    public PlexusConfiguration[] getChildren()
+    {
+        if ( element == null )
+        {
+            return new PlexusConfiguration[0];
+        }
+
+        NodeList l = element.getChildNodes();
+        PlexusConfiguration[] value = new PlexusConfiguration[l.getLength()];
+        for ( int i = 0; i < l.getLength(); i++ )
+        {
+            value[i] = new SpringPlexusConfiguration( (Element) l.item( i ) );
+        }
+        return value;
+    }
+
+    public PlexusConfiguration[] getChildren( String name )
+    {
+        if ( element == null )
+        {
+            return new PlexusConfiguration[0];
+        }
+
+        NodeList l = element.getElementsByTagName( name );
+        PlexusConfiguration[] value = new PlexusConfiguration[l.getLength()];
+        for ( int i = 0; i < l.getLength(); i++ )
+        {
+            value[i] = new SpringPlexusConfiguration( (Element) l.item( i ) );
+        }
+        return value;
+    }
+
+    public String getName()
+    {
+        if ( element == null )
+        {
+            return null;
+        }
+        return element.getLocalName();
+    }
+
+    public String getValue()
+    {
+        if ( element == null )
+        {
+            return null;
+        }
+        return DOM2Utils.getTextContext( element );
+    }
+
+    public String getValue( String defaultValue )
+    {
+        String value = getValue();
+
+        return value != null ? value : defaultValue;
+    }
+
 }

@@ -58,6 +58,8 @@ public class PlexusContainerAdapter
 
     private String name = "plexus-spring adapter";
 
+    /** key : component key , value : PlexusConfiguration */
+    private Map plexusConfigurationPerComponent = new HashMap();
 
     public PlexusContainerAdapter()
     {
@@ -710,5 +712,15 @@ public class PlexusContainerAdapter
             map.put( key, value );
         }
 
+    }
+
+    public Map getPlexusConfigurationPerComponent()
+    {
+        return plexusConfigurationPerComponent;
+    }
+
+    public void setPlexusConfigurationPerComponent( Map plexusConfigurationPerComponent )
+    {
+        this.plexusConfigurationPerComponent = plexusConfigurationPerComponent;
     }
 }
