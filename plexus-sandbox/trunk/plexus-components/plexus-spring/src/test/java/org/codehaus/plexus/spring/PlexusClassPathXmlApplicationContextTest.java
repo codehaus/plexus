@@ -21,6 +21,7 @@ package org.codehaus.plexus.spring;
 
 import junit.framework.TestCase;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 
 public class PlexusClassPathXmlApplicationContextTest
@@ -40,6 +41,8 @@ public class PlexusClassPathXmlApplicationContextTest
     public void testInjectSpringBeansInPlexusComponent()
         throws Exception
     {
+        try
+        {
         ConfigurableApplicationContext applicationContext =
             new PlexusClassPathXmlApplicationContext( new String[] {
                 "testInjectSpringBeansInPlexusComponent.xml",
@@ -47,6 +50,11 @@ public class PlexusClassPathXmlApplicationContextTest
         PlexusBean plexusBean = (PlexusBean) applicationContext.getBean( "plexusBean" );
         assertEquals( "field injection failed", "expected SpringBean", plexusBean.describe() );
         applicationContext.close();
+        } catch (Exception e)
+        {
+            LoggerFactory.getLogger( getClass() ).error( e.getMessage(), e );
+            throw e;
+        }
     }
 
     public void testPlexusLifecycleSupport()

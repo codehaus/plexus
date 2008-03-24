@@ -24,11 +24,15 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.configuration.PlexusConfigurationException;
+import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.logging.LoggerManager;
 import org.codehaus.plexus.logging.console.ConsoleLoggerManager;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Configurable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
@@ -44,13 +48,15 @@ import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 /**
  * @author <a href="mailto:nicolas@apache.org">Nicolas De Loof</a>
  * @version $Id$
  */
 public class PlexusLifecycleBeanPostProcessor
-    implements BeanPostProcessor, BeanFactoryAware, DisposableBean
+    implements BeanPostProcessor, BeanFactoryAware, DisposableBean, ApplicationContextAware
 {
     private Logger logger = LoggerFactory.getLogger( getClass() );
 
@@ -62,7 +68,9 @@ public class PlexusLifecycleBeanPostProcessor
 
     /** The plexus Disposable components */
     private Map disposables = new HashMap();
-
+    
+    private ApplicationContext applicationContext;
+    
     protected Context getContext()
     {
         if ( context == null )
@@ -126,7 +134,10 @@ public class PlexusLifecycleBeanPostProcessor
 
         if ( bean instanceof LogEnabled )
         {
-            logger.trace( "Enable Logging on plexus bean " + beanName );
+            if ( logger.isTraceEnabled() )
+            {
+                logger.trace( "Enable Logging on plexus bean " + beanName );
+            }
             ( (LogEnabled) bean ).enableLogging( getLoggerManager().getLoggerForComponent( beanName ) );
         }
 
@@ -134,7 +145,10 @@ public class PlexusLifecycleBeanPostProcessor
         {
             try
             {
-                logger.trace( "Contextualize plexus bean " + beanName );
+                if ( logger.isTraceEnabled() )
+                {
+                    logger.trace( "Contextualize plexus bean " + beanName );
+                }
                 ( (Contextualizable) bean ).contextualize( getContext() );
             }
             catch ( ContextException e )
@@ -144,13 +158,48 @@ public class PlexusLifecycleBeanPostProcessor
             }
         }
 
+        
+        if ( bean instanceof Configurable )
+        {
+            try
+            {
+                if ( logger.isTraceEnabled() )
+                {
+                    logger.trace( "Configurable plexus bean " + beanName );
+                }
+                PlexusContainerAdapter plexusContainerAdapter = (PlexusContainerAdapter) beanFactory
+                    .getBean( "plexusContainer" );
+                Map plexusConfigurationPerComponent = plexusContainerAdapter.getPlexusConfigurationPerComponent();
+                PlexusConfiguration plexusConfiguration = (PlexusConfiguration) plexusConfigurationPerComponent
+                    .get( beanName );
+                if ( plexusConfiguration == null )
+                {
+                    // prevent NPE 
+                    ( (Configurable) bean ).configure( new XmlPlexusConfiguration( "configuration" ) );
+                }
+                else
+                {
+                    ( (Configurable) bean ).configure( plexusConfiguration );
+                }
+            }
+            catch ( PlexusConfigurationException e )
+            {
+                throw new BeanInitializationException( "Failed to invoke plexus lifecycle Configurable.configure on "
+                    + beanName, e );
+            }
+        }
+          
+        
         // TODO add support for Stopable -> LifeCycle ?
 
         if ( bean instanceof Initializable )
         {
             try
             {
-                logger.trace( "Initialize plexus bean " + beanName );
+                if ( logger.isTraceEnabled() )
+                {
+                    logger.trace( "Initialize plexus bean " + beanName );
+                }
                 ( (Initializable) bean ).initialize();
             }
             catch ( InitializationException e )
@@ -164,7 +213,10 @@ public class PlexusLifecycleBeanPostProcessor
         {
             try
             {
-                logger.trace( "Start plexus bean " + beanName );
+                if ( logger.isTraceEnabled() )
+                {
+                    logger.trace( "Start plexus bean " + beanName );
+                }
                 ( (Startable) bean ).start();
             }
             catch (StartingException e) {
@@ -205,6 +257,16 @@ public class PlexusLifecycleBeanPostProcessor
                 ( (Disposable) entry.getValue() ).dispose();
             }
         }
+    }
+
+    public ApplicationContext getApplicationContext()
+    {
+        return applicationContext;
+    }
+
+    public void setApplicationContext( ApplicationContext applicationContext )
+    {
+        this.applicationContext = applicationContext;
     }
 
 }

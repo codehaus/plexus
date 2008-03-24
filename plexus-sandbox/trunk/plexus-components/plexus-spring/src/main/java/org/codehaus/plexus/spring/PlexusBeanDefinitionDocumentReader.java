@@ -20,6 +20,7 @@ package org.codehaus.plexus.spring;
  */
 
 import java.io.InputStream;
+import java.io.StringWriter;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -27,6 +28,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.dom4j.io.DOMReader;
@@ -97,7 +99,13 @@ public class PlexusBeanDefinitionDocumentReader
             t.transform( xmlSource, transResult );
 
             // DOM3 Only - logger.debug( doc.getDocumentURI() + " successfully translated to Spring" );
-            logger.debug( "Plexus Bean Definition Document successfully translated to Spring" );
+            if (logger.isDebugEnabled())
+            {
+                logger.debug( "Plexus Bean Definition Document successfully translated to Spring" );
+                StringWriter stringWriter = new StringWriter();
+                t.transform( xmlSource, new StreamResult(stringWriter) );
+                logger.debug( "result " + stringWriter.toString() );
+            }
             return (Document) transResult.getNode();
         }
         catch ( Exception e )

@@ -69,7 +69,7 @@ public class PlexusApplicationContextDelegate
         lifecycleBeanPostProcessor.setBeanFactory( context );
         beanFactory.addBeanPostProcessor( lifecycleBeanPostProcessor );
 
-        // Register a PorpertyEditor to support plexus XML <configuration> set as CDATA in
+        // Register a PropertyEditor to support plexus XML <configuration> set as CDATA in
         // a spring context XML file.
         beanFactory.addPropertyEditorRegistrar( new PlexusConfigurationPropertyEditor() );
         beanFactory.addPropertyEditorRegistrar( new PropertiesPropertyEditor() );
