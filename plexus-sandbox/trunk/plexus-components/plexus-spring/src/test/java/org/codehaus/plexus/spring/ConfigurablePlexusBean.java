@@ -24,6 +24,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
+import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
+import org.apache.maven.project.MavenProjectBuilder;
+import org.apache.maven.settings.MavenSettingsBuilder;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
@@ -51,6 +55,31 @@ public class ConfigurablePlexusBean
     private Wine wine;
 
     private PlexusContainer container;
+    
+    /**
+     * @plexus.requirement
+     */
+    private MavenProjectBuilder projectBuilder;
+
+    /**
+     * @plexus.requirement
+     */
+    private ArtifactRepositoryFactory artifactRepositoryFactory;
+
+    /**
+     * @plexus.requirement
+     */
+    private ArtifactRepositoryLayout repositoryLayout;
+
+    /**
+     * @plexus.requirement
+     */
+    private MavenSettingsBuilder mavenSettingsBuilder;
+
+    /**
+     * @plexus.configuration default-value="${plexus.home}/local-repository"
+     */
+    private String localRepository;
 
     public void contextualize( Context context )
         throws ContextException

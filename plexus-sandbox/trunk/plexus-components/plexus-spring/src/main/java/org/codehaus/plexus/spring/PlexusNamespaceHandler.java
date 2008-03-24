@@ -131,7 +131,10 @@ public class PlexusNamespaceHandler
                 
                 if ( child.getChildNodes().getLength() == 1 )
                 {
-                    value.append( DOM2Utils.getTextContext( child ));
+                    String dependencyValue = DOM2Utils.getTextContext( child );
+                    value.append( dependencyValue );
+                    dependencyValue = StringUtils.replace( dependencyValue, "${basedir}", PlexusToSpringUtils.getBasedir() );
+                    dependencies.put( name, dependencyValue );                    
                 }
                 else
                 {
@@ -140,18 +143,19 @@ public class PlexusNamespaceHandler
                     flatten( child.getChildNodes(), new PrintWriter( xml ) );
                     xml.write( "</" + name + '>' );
                     value.append( xml.toString());
-
+                    String dependencyValue = StringUtils.replace( xml.toString(), "${basedir}", PlexusToSpringUtils.getBasedir() );
+                    dependencies.put( name, dependencyValue );
                 }
-                String dependenciesValue = StringUtils.replace( value.toString(), "${basedir}", PlexusToSpringUtils.getBasedir() );
-                dependencies.put( name, dependenciesValue );
+
             }
             
             if ( value.length() > 0 )
             {
                 try
                 {
+                    String fullConfigurationValue = StringUtils.replace( value.toString(), "${basedir}", PlexusToSpringUtils.getBasedir() );
                     StringBuffer configurationContent = new StringBuffer("<configuration>");
-                    configurationContent.append( value.toString() ).append( "</configuration>");
+                    configurationContent.append( fullConfigurationValue ).append( "</configuration>");
                     Xpp3Dom plexusConfiguration = Xpp3DomBuilder.build( new StringReader( configurationContent.toString() ) );
                     builder.addPropertyValue( "configuration", new Xpp3DomPlexusConfiguration( plexusConfiguration ) );
                 }

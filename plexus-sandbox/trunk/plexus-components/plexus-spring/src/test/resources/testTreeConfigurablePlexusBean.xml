@@ -4,7 +4,26 @@
       <role>org.codehaus.plexus.spring.ConfigurablePlexusBean</role>
       <implementation>org.codehaus.plexus.spring.ConfigurablePlexusBean</implementation>
       <role-hint>configurable</role-hint>
+	  <!--requirements>
+        <requirement>
+          <role>org.apache.maven.project.MavenProjectBuilder</role>
+          <field-name>projectBuilder</field-name>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.repository.ArtifactRepositoryFactory</role>
+          <field-name>artifactRepositoryFactory</field-name>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout</role>
+          <field-name>repositoryLayout</field-name>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.settings.MavenSettingsBuilder</role>
+          <field-name>mavenSettingsBuilder</field-name>
+        </requirement>
+      </requirements-->
       <configuration>
+		<local-repository>${plexus.home}/local-repository</local-repository>
         <task-entry-evaluators>
 	      <task-entry-evaluator>first</task-entry-evaluator>
 		  <task-entry-evaluator>second</task-entry-evaluator>
