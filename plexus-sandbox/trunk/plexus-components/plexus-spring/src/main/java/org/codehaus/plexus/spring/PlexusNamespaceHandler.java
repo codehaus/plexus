@@ -122,7 +122,7 @@ public class PlexusNamespaceHandler
             }
 
             List configurations = DomUtils.getChildElementsByTagName( element, "configuration" );
-            StringBuffer value = new StringBuffer();
+            StringBuilder value = new StringBuilder();
             for ( Iterator iterator = configurations.iterator(); iterator.hasNext(); )
             {
                 Element child = (Element) iterator.next();
@@ -132,7 +132,7 @@ public class PlexusNamespaceHandler
                 if ( child.getChildNodes().getLength() == 1 )
                 {
                     String dependencyValue = DOM2Utils.getTextContext( child );
-                    value.append( dependencyValue );
+                    value.append( DOM2Utils.escapeText( dependencyValue ) );
                     dependencyValue = StringUtils.replace( dependencyValue, "${basedir}", PlexusToSpringUtils.getBasedir() );
                     dependencies.put( name, dependencyValue );                    
                 }
@@ -151,16 +151,18 @@ public class PlexusNamespaceHandler
             
             if ( value.length() > 0 )
             {
+                String fullConfigurationValue = StringUtils.replace( value.toString(), "${basedir}", PlexusToSpringUtils.getBasedir() );
+                StringBuilder configurationContent = new StringBuilder();
+                configurationContent.append( "<configuration>" );
+                configurationContent.append( fullConfigurationValue ).append( "</configuration>");
                 try
                 {
-                    String fullConfigurationValue = StringUtils.replace( value.toString(), "${basedir}", PlexusToSpringUtils.getBasedir() );
-                    StringBuffer configurationContent = new StringBuffer("<configuration>");
-                    configurationContent.append( fullConfigurationValue ).append( "</configuration>");
                     Xpp3Dom plexusConfiguration = Xpp3DomBuilder.build( new StringReader( configurationContent.toString() ) );
                     builder.addPropertyValue( "configuration", new Xpp3DomPlexusConfiguration( plexusConfiguration ) );
                 }
                 catch ( XmlPullParserException e )
                 {
+                    log.error( "configuration Content: " + configurationContent );
                     log.error( e.getMessage(), e );
                     throw new RuntimeException( e.getMessage(), e );
                 }
@@ -198,7 +200,7 @@ public class PlexusNamespaceHandler
             Node node = childNodes.item( i );
             if (node.getNodeType() == Node.TEXT_NODE )
             {
-                out.print( DOM2Utils.getTextContext( node ) );
+                out.print( DOM2Utils.escapeText( DOM2Utils.getTextContext( node ) ) );
             }
             else if (node.getNodeType() == Node.ELEMENT_NODE )
             {
@@ -221,7 +223,7 @@ public class PlexusNamespaceHandler
             out.print( " ");
             out.print( attribute.getLocalName() );
             out.print( "=\"" );
-            out.print( attribute.getNodeValue() );
+            out.print( DOM2Utils.escapeAttributeValue( attribute.getNodeValue() ) );
             out.print( "\"" );
         }
         if (el.getChildNodes().getLength() == 0)

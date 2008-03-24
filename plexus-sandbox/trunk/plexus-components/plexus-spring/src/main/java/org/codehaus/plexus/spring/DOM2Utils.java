@@ -19,6 +19,7 @@ package org.codehaus.plexus.spring;
  * under the License.
  */
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -63,5 +64,15 @@ public class DOM2Utils
                 appendTextNodes( nodes.item( i ), txt );
             }
         }
+    }
+    
+    public static String escapeAttributeValue( String value )
+    {
+        return StringEscapeUtils.escapeJavaScript( value );
+    }
+
+    public static String escapeText( String text )
+    {
+        return StringEscapeUtils.escapeXml( text );
     }
 }
