@@ -20,6 +20,7 @@ package org.codehaus.plexus.spring;
 
 import junit.framework.TestCase;
 
+import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -39,7 +40,9 @@ public class ConfigurableTreePlexusBeanTest
     {
         try
         {
-            String[] confLocations = new String[] { "testTreeConfigurablePlexusBean.xml" };
+            String[] confLocations = new String[] {
+                "testTreeConfigurablePlexusBean.xml",
+                "classpath*:META-INF/plexus/components.xml" };
             ConfigurableApplicationContext applicationContext = new PlexusClassPathXmlApplicationContext( confLocations );
             ConfigurablePlexusBean plexusBean = (ConfigurablePlexusBean) applicationContext
                 .getBean( "configurablePlexusBean#configurable" );
@@ -49,6 +52,8 @@ public class ConfigurableTreePlexusBeanTest
             assertEquals( "second", plexusBean.getTaskEntryEvaluators().get( 1 ) );
             
             assertNotNull( plexusBean.getContainer() );
+            
+            ArtifactHandler artifactHandler = (ArtifactHandler) applicationContext.getBean( "artifactHandler#ejb" );
         }
         catch ( Throwable e )
         {

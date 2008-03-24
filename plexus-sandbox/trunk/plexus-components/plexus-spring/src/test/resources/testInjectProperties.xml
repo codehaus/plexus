@@ -6,12 +6,12 @@
       <configuration>
         <properties>
             <property>
-                <name>test</name>
-                <value>expected</value>
+              <name>test</name>
+              <value>expected</value>
             </property>
             <property>
-                <name>other</name>
-                <value>value</value>
+              <name>other</name>
+              <value>value</value>
             </property>
         </properties>
       </configuration>
