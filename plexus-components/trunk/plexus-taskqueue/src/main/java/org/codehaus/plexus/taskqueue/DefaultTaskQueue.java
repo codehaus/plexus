@@ -114,7 +114,7 @@ public class DefaultTaskQueue
 
         taskViabilityEvaluators = new ArrayList();
 
-        if ( taskViabilityEvaluators != null )
+        if ( viabilityEvaluatorsConfiguration != null )
         {
 
             PlexusConfiguration[] viabilityEvaluators = viabilityEvaluatorsConfiguration
