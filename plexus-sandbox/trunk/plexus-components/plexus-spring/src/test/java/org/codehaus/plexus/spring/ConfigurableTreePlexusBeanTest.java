@@ -58,6 +58,8 @@ public class ConfigurableTreePlexusBeanTest
             assertNotNull( plexusBean.getExecutableResolver() );
             
             assertNotNull( plexusBean.getMavenSettingsBuilder() );
+            
+            assertNotNull( plexusBean.getServiceLocator() );
         }
         catch ( Throwable e )
         {

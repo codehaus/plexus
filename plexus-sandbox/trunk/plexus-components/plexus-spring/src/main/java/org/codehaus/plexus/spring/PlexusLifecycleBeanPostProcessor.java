@@ -19,6 +19,7 @@ package org.codehaus.plexus.spring;
  * under the License.
  */
 
+import java.awt.Container;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -37,6 +38,8 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Disposable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.ServiceLocator;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Serviceable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.StartingException;
 import org.slf4j.Logger;
@@ -71,11 +74,14 @@ public class PlexusLifecycleBeanPostProcessor
     
     private ApplicationContext applicationContext;
     
+    private ServiceLocator serviceLocator;
+    
     protected Context getContext()
     {
         if ( context == null )
         {
             PlexusContainer container = (PlexusContainer) beanFactory.getBean( "plexusContainer" );
+            serviceLocator = (ServiceLocator) container;
             context = container.getContext();
         }
         return context;
@@ -189,6 +195,15 @@ public class PlexusLifecycleBeanPostProcessor
             }
         }
           
+        if ( bean instanceof Serviceable )
+        {
+            if ( logger.isTraceEnabled() )
+            {
+                logger.trace( "Serviceable plexus bean " + beanName );
+            }
+            ( (Serviceable) bean ).service( serviceLocator );
+
+        }
         
         // TODO add support for Stopable -> LifeCycle ?
 
