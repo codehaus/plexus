@@ -24,6 +24,8 @@ import org.apache.maven.settings.MavenSettingsBuilder;
 import org.codehaus.plexus.commandline.ExecutableResolver;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.ServiceLocator;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Serviceable;
 
 /**
  * @author <a href="mailto:olamy@apache.org">olamy</a>
@@ -31,7 +33,7 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationExce
  * @version $Id$
  */
 public abstract class AbstractConfigurablePlexusBean
-  implements Initializable
+  implements Initializable, Serviceable 
 {
     
     /**
@@ -43,6 +45,8 @@ public abstract class AbstractConfigurablePlexusBean
      * @plexus.requirement
      */
     private MavenSettingsBuilder mavenSettingsBuilder;    
+    
+    private ServiceLocator serviceLocator;
 
     public void initialize()
         throws InitializationException
@@ -59,6 +63,16 @@ public abstract class AbstractConfigurablePlexusBean
     public MavenSettingsBuilder getMavenSettingsBuilder()
     {
         return mavenSettingsBuilder;
+    }
+
+    public void service( ServiceLocator serviceLocator )
+    {
+        this.serviceLocator = serviceLocator;
+    }
+
+    public ServiceLocator getServiceLocator()
+    {
+        return serviceLocator;
     }
 
 }

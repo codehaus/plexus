@@ -39,6 +39,7 @@ import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.LoggerManager;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.ServiceLocator;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -50,7 +51,7 @@ import org.springframework.context.ApplicationContextAware;
  * @version $Id$
  */
 public class PlexusContainerAdapter
-    implements PlexusContainer, ApplicationContextAware
+    implements PlexusContainer, ApplicationContextAware, ServiceLocator
 {
     private Context context = new SimpleContext();
 

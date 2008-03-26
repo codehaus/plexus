@@ -9,8 +9,8 @@
           <role>org.apache.maven.settings.MavenSettingsBuilder</role>
           <field-name>mavenSettingsBuilder</field-name>
         </requirement>
-		<requirement>
-		  <role>org.codehaus.plexus.commandline.ExecutableResolver</role>	
+        <requirement>
+          <role>org.codehaus.plexus.commandline.ExecutableResolver</role>	
 		</requirement>
       </requirements>
       <configuration>
