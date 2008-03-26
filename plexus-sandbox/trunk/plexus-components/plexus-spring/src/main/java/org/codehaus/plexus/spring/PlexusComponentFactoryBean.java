@@ -19,11 +19,16 @@ package org.codehaus.plexus.spring;
  * under the License.
  */
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
+import org.codehaus.plexus.component.composition.CompositionException;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -135,13 +140,12 @@ public class PlexusComponentFactoryBean
                     // specified in the plexus descriptor as only one filed
                     // matches Dependency type
 
-                    RuntimeBeanReference ref = (RuntimeBeanReference) requirement.getValue();
+                    PlexusRuntimeBeanReference ref = (PlexusRuntimeBeanReference) requirement.getValue();
                     Object dependency = beanFactory.getBean( ref.getBeanName() );
-
-                    Field[] fields = implementation.getDeclaredFields();
-                    for ( int i = 0; i < fields.length; i++ )
+                    List fields = getFieldsIncludingSuperclasses( implementation );
+                    for ( Iterator fieldIterator = fields.iterator(); fieldIterator.hasNext(); )
                     {
-                        Field field = fields[i];
+                        Field field = (Field) fieldIterator.next();
                         if ( ReflectionUtils.COPYABLE_FIELDS.matches( field )
                             && field.getType().isAssignableFrom( dependency.getClass() ) )
                         {
@@ -158,7 +162,7 @@ public class PlexusComponentFactoryBean
                 {
                     // explicit field injection
                     fieldName = PlexusToSpringUtils.toCamelCase( fieldName );
-                    Field field = findField( fieldName );
+                    Field field = findField( fieldName, implementation );
                     Object dependency = resolveRequirement( field, requirement.getValue() );
                     if ( logger.isTraceEnabled() )
                     {
@@ -178,7 +182,29 @@ public class PlexusComponentFactoryBean
         return component;
     }
 
-    private Field findField( String fieldName )
+    protected List /* Field */ getFieldsIncludingSuperclasses( Class type )
+    {
+
+        Field[] fields = type.getDeclaredFields();
+
+        List foundFields = new ArrayList();
+
+        for ( int i = 0, size = fields.length; i < size; i++ )
+        {
+            foundFields.add( fields[i] );
+        }
+
+        if ( type.getSuperclass() != Object.class )
+        {
+            List superFields = getFieldsIncludingSuperclasses( type.getSuperclass() );
+
+            foundFields.addAll( superFields );
+        }
+
+        return foundFields;
+    }
+    
+    private Field findField( String fieldName, Class type )
     {
         Class clazz = implementation;
         while ( clazz != Object.class )

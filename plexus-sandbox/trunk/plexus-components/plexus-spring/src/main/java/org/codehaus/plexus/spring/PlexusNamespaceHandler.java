@@ -117,7 +117,8 @@ public class PlexusNamespaceHandler
                 String role = child.getAttribute( "role" );
                 String roleHint = child.getAttribute( "role-hint" );
                 String ref = PlexusToSpringUtils.buildSpringId( role, roleHint );
-                dependencies.put( name, new RuntimeBeanReference( ref ) );
+                PlexusRuntimeBeanReference runtimeBeanReference = new PlexusRuntimeBeanReference( ref, role, roleHint );
+                dependencies.put( name, runtimeBeanReference );
 
             }
 
