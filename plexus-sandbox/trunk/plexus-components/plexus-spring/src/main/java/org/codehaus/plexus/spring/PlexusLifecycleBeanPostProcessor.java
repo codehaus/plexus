@@ -19,7 +19,6 @@ package org.codehaus.plexus.spring;
  * under the License.
  */
 
-import java.awt.Container;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
