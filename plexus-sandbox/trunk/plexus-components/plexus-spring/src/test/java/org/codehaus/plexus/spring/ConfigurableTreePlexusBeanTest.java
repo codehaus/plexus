@@ -54,6 +54,10 @@ public class ConfigurableTreePlexusBeanTest
             assertNotNull( plexusBean.getContainer() );
             
             ArtifactHandler artifactHandler = (ArtifactHandler) applicationContext.getBean( "artifactHandler#ejb" );
+            
+            assertNotNull( plexusBean.getExecutableResolver() );
+            
+            assertNotNull( plexusBean.getMavenSettingsBuilder() );
         }
         catch ( Throwable e )
         {

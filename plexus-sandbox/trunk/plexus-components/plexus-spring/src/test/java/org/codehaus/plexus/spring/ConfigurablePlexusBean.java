@@ -18,8 +18,6 @@
  */
 package org.codehaus.plexus.spring;
 
-
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +28,7 @@ import org.apache.maven.project.MavenProjectBuilder;
 import org.apache.maven.settings.MavenSettingsBuilder;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.commandline.ExecutableResolver;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
@@ -38,14 +37,13 @@ import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Configurable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 
-
-
 /**
  * A plexus component implements Configurable
  *
  * @author <a href="mailto:olamy@apache.org">Olivier Lamy</a>
  */
 public class ConfigurablePlexusBean
+    extends AbstractConfigurablePlexusBean
     implements Configurable, Contextualizable
 {
     private List taskEntryEvaluators;
@@ -71,11 +69,8 @@ public class ConfigurablePlexusBean
      */
     private ArtifactRepositoryLayout repositoryLayout;
 
-    /**
-     * @plexus.requirement
-     */
-    private MavenSettingsBuilder mavenSettingsBuilder;
 
+    
     /**
      * @plexus.configuration default-value="${plexus.home}/local-repository"
      */
@@ -125,6 +120,8 @@ public class ConfigurablePlexusBean
     {
         return wine;
     }
+
+
 
 
 
