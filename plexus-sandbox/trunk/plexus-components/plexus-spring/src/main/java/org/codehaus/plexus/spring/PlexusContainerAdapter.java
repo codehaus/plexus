@@ -39,7 +39,9 @@ import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.LoggerManager;
+import org.codehaus.plexus.logging.console.ConsoleLoggerManager;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.ServiceLocator;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -53,11 +55,16 @@ import org.springframework.context.ApplicationContextAware;
 public class PlexusContainerAdapter
     implements PlexusContainer, ApplicationContextAware, ServiceLocator
 {
+    
+    private org.slf4j.Logger logger = LoggerFactory.getLogger( getClass() );
+
     private Context context = new SimpleContext();
 
     private ApplicationContext applicationContext;
 
     private String name = "plexus-spring adapter";
+
+    private Date creationDate = new Date();
 
     /** key : component key , value : PlexusConfiguration */
     private Map plexusConfigurationPerComponent = new HashMap();
@@ -74,7 +81,7 @@ public class PlexusContainerAdapter
     public void addComponentDescriptor( ComponentDescriptor componentDescriptor )
         throws ComponentRepositoryException
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "addComponentDescriptor( ComponentDescriptor componentDescriptor )" );
     }
 
     /**
@@ -92,7 +99,7 @@ public class PlexusContainerAdapter
      */
     public void addJarRepository( File repository )
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "addJarRepository( File repository )" );
     }
 
     /**
@@ -102,7 +109,7 @@ public class PlexusContainerAdapter
     public void addJarResource( File resource )
         throws PlexusContainerException
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "addJarResource( File resource )" );
     }
 
     /**
@@ -112,7 +119,7 @@ public class PlexusContainerAdapter
     public Object autowire( Object component )
         throws CompositionException
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "autowire( Object component )" );
     }
 
     /**
@@ -122,7 +129,7 @@ public class PlexusContainerAdapter
     public Object createAndAutowire( String clazz )
         throws CompositionException, ClassNotFoundException, InstantiationException, IllegalAccessException
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "createAndAutowire( String clazz )" );
     }
 
     /**
@@ -132,7 +139,7 @@ public class PlexusContainerAdapter
     public PlexusContainer createChildContainer( String name, List classpathJars, Map context )
         throws PlexusContainerException
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "createChildContainer( String name, List classpathJars, Map context )" );
     }
 
     /**
@@ -142,7 +149,8 @@ public class PlexusContainerAdapter
     public PlexusContainer createChildContainer( String name, List classpathJars, Map context, List discoveryListeners )
         throws PlexusContainerException
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException(
+                                                 "createChildContainer( String name, List classpathJars, Map context, List discoveryListeners )" );
     }
 
     /**
@@ -152,7 +160,7 @@ public class PlexusContainerAdapter
     public ClassRealm createComponentRealm( String id, List jars )
         throws PlexusContainerException
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "createComponentRealm( String id, List jars )" );
     }
 
     /**
@@ -161,7 +169,7 @@ public class PlexusContainerAdapter
      */
     public void dispose()
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "dispose()" );
     }
 
     /**
@@ -170,7 +178,7 @@ public class PlexusContainerAdapter
      */
     public PlexusContainer getChildContainer( String name )
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "getChildContainer( String name )" );
     }
 
     /**
@@ -179,7 +187,7 @@ public class PlexusContainerAdapter
      */
     public ComponentDescriptor getComponentDescriptor( String role )
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "getComponentDescriptor( String role )" );
     }
 
     /**
@@ -188,7 +196,7 @@ public class PlexusContainerAdapter
      */
     public ComponentDescriptor getComponentDescriptor( String role, String roleHint )
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "getComponentDescriptor( String role, String roleHint )" );
     }
 
     /**
@@ -197,7 +205,7 @@ public class PlexusContainerAdapter
      */
     public ComponentDescriptor getComponentDescriptor( String role, ClassRealm realm )
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "getComponentDescriptor( String role, ClassRealm realm )" );
     }
 
     /**
@@ -206,7 +214,8 @@ public class PlexusContainerAdapter
      */
     public ComponentDescriptor getComponentDescriptor( String role, String roleHint, ClassRealm realm )
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException(
+                                                 "getComponentDescriptor( String role, String roleHint, ClassRealm realm )" );
     }
 
     /**
@@ -215,7 +224,7 @@ public class PlexusContainerAdapter
      */
     public List getComponentDescriptorList( String role )
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "getComponentDescriptorList( String role )" );
     }
 
     /**
@@ -224,7 +233,7 @@ public class PlexusContainerAdapter
      */
     public List getComponentDescriptorList( String role, ClassRealm componentRealm )
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "getComponentDescriptorList( String role, ClassRealm componentRealm )" );
     }
 
     /**
@@ -233,7 +242,7 @@ public class PlexusContainerAdapter
      */
     public Map getComponentDescriptorMap( String role )
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "getComponentDescriptorMap( String role )" );
     }
 
     /**
@@ -242,7 +251,7 @@ public class PlexusContainerAdapter
      */
     public Map getComponentDescriptorMap( String role, ClassRealm componentRealm )
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "getComponentDescriptorMap( String role, ClassRealm componentRealm )" );
     }
 
     /**
@@ -251,7 +260,7 @@ public class PlexusContainerAdapter
      */
     public ClassRealm getComponentRealm( String realmId )
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "getComponentRealm( String realmId )" );
     }
 
     /**
@@ -260,7 +269,7 @@ public class PlexusContainerAdapter
      */
     public ClassRealm getContainerRealm()
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "getContainerRealm()" );
     }
 
     /**
@@ -278,7 +287,7 @@ public class PlexusContainerAdapter
      */
     public Date getCreationDate()
     {
-        throw new UnsupportedOperationException();
+        return creationDate;
     }
 
     /**
@@ -287,7 +296,7 @@ public class PlexusContainerAdapter
      */
     public Logger getLogger()
     {
-        throw new UnsupportedOperationException();
+        return getLoggerManager().getLoggerForComponent( getClass().getName() );
     }
 
     /**
@@ -296,7 +305,17 @@ public class PlexusContainerAdapter
      */
     public LoggerManager getLoggerManager()
     {
-        throw new UnsupportedOperationException();
+        if ( this.applicationContext.containsBean( "loggerManager" ) )
+        {
+            return (LoggerManager) this.applicationContext.getBean( "loggerManager" );
+        }
+        else
+        {
+            logger.warn( "No loggerManager set in context. Falling back to ConsoleLoggerManager" );
+            ConsoleLoggerManager defaultLoggerManager = new ConsoleLoggerManager();
+            defaultLoggerManager.initialize();
+            return defaultLoggerManager;
+        }
     }
 
     /**
@@ -305,7 +324,7 @@ public class PlexusContainerAdapter
      */
     public ClassRealm getLookupRealm()
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "getLookupRealm()" );
     }
 
     /**
@@ -314,7 +333,7 @@ public class PlexusContainerAdapter
      */
     public ClassRealm getLookupRealm( Object component )
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "getLookupRealm( Object component )" );
     }
 
     /**
@@ -332,7 +351,7 @@ public class PlexusContainerAdapter
      */
     public boolean hasChildContainer( String name )
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "hasChildContainer( String name )" );
     }
 
     /**
@@ -341,7 +360,7 @@ public class PlexusContainerAdapter
      */
     public boolean hasComponent( String role )
     {
-        return false;
+        return applicationContext.containsBean( PlexusToSpringUtils.buildSpringId( role ) );
     }
 
     /**
@@ -359,7 +378,7 @@ public class PlexusContainerAdapter
      */
     public boolean isReloadingEnabled()
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "isReloadingEnabled()" );
     }
 
     /**
@@ -390,7 +409,7 @@ public class PlexusContainerAdapter
     public Object lookup( String componentKey, ClassRealm realm )
         throws ComponentLookupException
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "lookup( String componentKey, ClassRealm realm )" );
     }
 
     /**
@@ -410,7 +429,7 @@ public class PlexusContainerAdapter
     public Object lookup( Class componentClass, ClassRealm realm )
         throws ComponentLookupException
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "lookup( Class componentClass, ClassRealm realm )" );
     }
 
     /**
@@ -430,7 +449,7 @@ public class PlexusContainerAdapter
     public Object lookup( String role, String roleHint, ClassRealm realm )
         throws ComponentLookupException
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "lookup( String role, String roleHint, ClassRealm realm )" );
     }
 
     /**
@@ -440,7 +459,7 @@ public class PlexusContainerAdapter
     public Object lookup( Class role, String roleHint, ClassRealm realm )
         throws ComponentLookupException
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "lookup( Class role, String roleHint, ClassRealm realm )" );
     }
 
     /**
@@ -470,7 +489,7 @@ public class PlexusContainerAdapter
     public List lookupList( String role, ClassRealm realm )
         throws ComponentLookupException
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "lookupList( String role, ClassRealm realm )" );
     }
 
     /**
@@ -480,7 +499,7 @@ public class PlexusContainerAdapter
     public List lookupList( Class role, ClassRealm realm )
         throws ComponentLookupException
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "lookupList( Class role, ClassRealm realm )" );
     }
 
     /**
@@ -510,7 +529,7 @@ public class PlexusContainerAdapter
     public Map lookupMap( String role, ClassRealm realm )
         throws ComponentLookupException
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "lookupMap( String role, ClassRealm realm )" );
     }
 
     /**
@@ -520,7 +539,7 @@ public class PlexusContainerAdapter
     public Map lookupMap( Class role, ClassRealm realm )
         throws ComponentLookupException
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "lookupMap( Class role, ClassRealm realm )" );
     }
 
     /**
@@ -529,7 +548,8 @@ public class PlexusContainerAdapter
      */
     public void registerComponentDiscoveryListener( ComponentDiscoveryListener listener )
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException(
+                                                 "registerComponentDiscoveryListener( ComponentDiscoveryListener listener )" );
     }
 
     /**
@@ -539,6 +559,7 @@ public class PlexusContainerAdapter
     public void release( Object component )
         throws ComponentLifecycleException
     {
+        // nothing here
     }
 
     /**
@@ -548,6 +569,7 @@ public class PlexusContainerAdapter
     public void releaseAll( Map components )
         throws ComponentLifecycleException
     {
+        // nothing here
     }
 
     /**
@@ -557,6 +579,7 @@ public class PlexusContainerAdapter
     public void releaseAll( List components )
         throws ComponentLifecycleException
     {
+        // nothing here
     }
 
     /**
@@ -565,7 +588,7 @@ public class PlexusContainerAdapter
      */
     public void removeChildContainer( String name )
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "removeChildContainer( String name )" );
     }
 
     /**
@@ -574,7 +597,8 @@ public class PlexusContainerAdapter
      */
     public void removeComponentDiscoveryListener( ComponentDiscoveryListener listener )
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException(
+                                                 "removeComponentDiscoveryListener( ComponentDiscoveryListener listener )" );
     }
 
     /**
@@ -584,7 +608,7 @@ public class PlexusContainerAdapter
     public void resume( Object component )
         throws ComponentLifecycleException
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "resume( Object component )" );
     }
 
     /**
@@ -602,7 +626,7 @@ public class PlexusContainerAdapter
      */
     public ClassRealm setLookupRealm( ClassRealm realm )
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "setLookupRealm( ClassRealm realm )" );
     }
 
     /**
@@ -620,7 +644,7 @@ public class PlexusContainerAdapter
      */
     public void setParentPlexusContainer( PlexusContainer container )
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "setParentPlexusContainer( PlexusContainer container )" );
     }
 
     /**
@@ -629,7 +653,7 @@ public class PlexusContainerAdapter
      */
     public void setReloadingEnabled( boolean reloadingEnabled )
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "setReloadingEnabled( boolean reloadingEnabled )" );
     }
 
     /**
@@ -639,7 +663,7 @@ public class PlexusContainerAdapter
     public void suspend( Object component )
         throws ComponentLifecycleException
     {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException( "suspend( Object component )" );
     }
 
     /**
@@ -652,7 +676,8 @@ public class PlexusContainerAdapter
         this.applicationContext = applicationContext;
     }
 
-    private class SimpleContext implements Context
+    private class SimpleContext
+        implements Context
     {
         private Map map = new HashMap();
 
