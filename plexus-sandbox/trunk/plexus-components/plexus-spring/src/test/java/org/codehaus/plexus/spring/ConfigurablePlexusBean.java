@@ -51,6 +51,10 @@ public class ConfigurablePlexusBean
     private Wine wine;
 
     private PlexusContainer container;
+   
+    private String toMailbox;
+    
+    private String fromMailbox;
     
     /**
      * @plexus.requirement
@@ -119,8 +123,19 @@ public class ConfigurablePlexusBean
         return wine;
     }
 
+    public String getFromMailbox()
+    {
+        return fromMailbox;
+    }
 
+    public String getLocalRepository()
+    {
+        return localRepository;
+    }
 
-
+    public String getToMailbox()
+    {
+        return toMailbox;
+    }
 
 }

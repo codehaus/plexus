@@ -41,8 +41,8 @@ public class ConfigurableTreePlexusBeanTest
         try
         {
             String[] confLocations = new String[] {
-                "testTreeConfigurablePlexusBean.xml",
-                "classpath*:META-INF/plexus/components.xml" };
+                "classpath*:META-INF/plexus/components.xml",
+                "testTreeConfigurablePlexusBean.xml" };
             ConfigurableApplicationContext applicationContext = new PlexusClassPathXmlApplicationContext( confLocations );
             ConfigurablePlexusBean plexusBean = (ConfigurablePlexusBean) applicationContext
                 .getBean( "configurablePlexusBean#configurable" );
@@ -60,6 +60,10 @@ public class ConfigurableTreePlexusBeanTest
             assertNotNull( plexusBean.getMavenSettingsBuilder() );
             
             assertNotNull( plexusBean.getServiceLocator() );
+            
+            assertEquals( "foo", plexusBean.getToMailbox());
+            
+            assertEquals( "bar", plexusBean.getFromMailbox() );
         }
         catch ( Throwable e )
         {
