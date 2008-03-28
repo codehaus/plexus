@@ -68,6 +68,33 @@
         features to a spring-based application.
       </p>
     </subsection>
+    <subsection name="interpolation">
+      <p>Some components use interpolation in the configuration element with some predefined values (plexus.home).</p>
+      <p>To handle this you have to record a propertyConfigurer Spring bean :
+        <source>
+<![CDATA[
+  <bean id="propertyConfigurer" 
+         class="org.codehaus.plexus.spring.PlexusServletContextPropertyPlaceholderConfigurer">
+    <property name="locations">
+      <list>
+        <value>classpath:plexus.properties</value>
+      </list>
+    </property> 
+    <!-- ignore if plexus.properties not found -->
+    <property name="ignoreResourceNotFound">
+      <value>true</value>
+    </property>  
+    <!-- ignore if a interpolated key not exists -->
+    <property name="ignoreUnresolvablePlaceholders">
+      <value>true</value>
+    </property> 
+  </bean>
+]]>
+        </source>
+      </p>
+      <p>The PlexusServletContextPropertyPlaceholderConfigurer will set a plexus.home value 
+        (if not already found in the properties defined in location to File( servletContext.getRealPath( "/WEB-INF" ) ).getAbsolutePath()</p>
+    </subsection>
   </section>
 </body>
 
