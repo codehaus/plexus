@@ -23,7 +23,7 @@
         </wines>
         <local-repository>${plexus.home}/local-repository</local-repository>
         <toMailbox>foo</toMailbox>
-        <from-mailbox>bar</from-mailbox>        
+        <from-mailbox></from-mailbox>        
       </configuration>
     </component>
     <component>

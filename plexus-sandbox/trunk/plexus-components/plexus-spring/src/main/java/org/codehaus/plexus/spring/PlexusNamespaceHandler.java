@@ -35,7 +35,6 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
-import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
@@ -129,13 +128,16 @@ public class PlexusNamespaceHandler
                 Element child = (Element) iterator.next();
                 String name = child.getAttribute( "name" );
                 
-                
                 if ( child.getChildNodes().getLength() == 1 )
                 {
                     String dependencyValue = DOM2Utils.getTextContext( child );
                     value.append( DOM2Utils.escapeText( dependencyValue ) );
                     dependencyValue = StringUtils.replace( dependencyValue, "${basedir}", PlexusToSpringUtils.getBasedir() );
                     dependencies.put( name, dependencyValue );                    
+                }
+                else if ( child.getChildNodes().getLength() == 0 )
+                {
+                    dependencies.put( name, null );  
                 }
                 else
                 {
