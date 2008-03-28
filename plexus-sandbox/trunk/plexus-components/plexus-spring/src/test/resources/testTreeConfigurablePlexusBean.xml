@@ -4,24 +4,26 @@
       <role>org.codehaus.plexus.spring.ConfigurablePlexusBean</role>
       <implementation>org.codehaus.plexus.spring.ConfigurablePlexusBean</implementation>
       <role-hint>configurable</role-hint>
-	  <requirements>
+      <requirements>
         <requirement>
           <role>org.apache.maven.settings.MavenSettingsBuilder</role>
           <field-name>mavenSettingsBuilder</field-name>
         </requirement>
         <requirement>
           <role>org.codehaus.plexus.commandline.ExecutableResolver</role>	
-		</requirement>
+        </requirement>
       </requirements>
       <configuration>
-		<local-repository>${plexus.home}/local-repository</local-repository>
         <task-entry-evaluators>
-	      <task-entry-evaluator>first</task-entry-evaluator>
-		  <task-entry-evaluator>second</task-entry-evaluator>
+          <task-entry-evaluator>first</task-entry-evaluator>
+          <task-entry-evaluator>second</task-entry-evaluator>
         </task-entry-evaluators>
-		<wines>
-		  <wine>saumur</wine>	
-		</wines>
+        <wines>
+          <wine>saumur</wine>	
+        </wines>
+        <local-repository>${plexus.home}/local-repository</local-repository>
+        <toMailbox>foo</toMailbox>
+        <from-mailbox>bar</from-mailbox>        
       </configuration>
     </component>
     <component>
