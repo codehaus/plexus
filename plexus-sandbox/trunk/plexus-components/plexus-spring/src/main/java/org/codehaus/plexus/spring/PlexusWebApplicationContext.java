@@ -21,6 +21,7 @@ package org.codehaus.plexus.spring;
 
 import java.io.IOException;
 
+import org.codehaus.plexus.PlexusConstants;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
@@ -60,6 +61,7 @@ public class PlexusWebApplicationContext
     {
         delegate.postProcessBeanFactory( beanFactory, this );
         getServletContext().setAttribute( "webwork.plexus.container", beanFactory.getBean( "plexusContainer" ) );
+        getServletContext().setAttribute( PlexusConstants.PLEXUS_KEY, beanFactory.getBean( "plexusContainer" ) );
         super.postProcessBeanFactory( beanFactory );
     }
 
