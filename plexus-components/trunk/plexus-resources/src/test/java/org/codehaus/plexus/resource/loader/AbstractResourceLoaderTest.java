@@ -35,7 +35,7 @@ import org.codehaus.plexus.util.IOUtil;
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
-public class AbstractResourceLoaderTest
+public abstract class AbstractResourceLoaderTest
     extends PlexusTestCase
 {
     protected void assertResource( String name, String expectedContent )
