@@ -25,6 +25,12 @@
   <version>1.0-SNAPSHOT</version>
   <name>Plexus Interpolation API</name>
   
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-sandbox/trunk/plexus-components/plexus-interpolation</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-sandbox/trunk/plexus-components/plexus-interpolation</developerConnection>
+    <url>http://svn.codehaus.org/plexus/plexus-sandbox/trunk/plexus-components/plexus-interpolation</url>
+  </scm>
+  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
