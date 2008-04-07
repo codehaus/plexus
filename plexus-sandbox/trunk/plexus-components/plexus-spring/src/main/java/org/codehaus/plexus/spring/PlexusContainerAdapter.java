@@ -469,7 +469,7 @@ public class PlexusContainerAdapter
     public List lookupList( String role )
         throws ComponentLookupException
     {
-        return PlexusToSpringUtils.LookupList( role, applicationContext );
+        return PlexusToSpringUtils.lookupList( role, applicationContext );
     }
 
     /**
