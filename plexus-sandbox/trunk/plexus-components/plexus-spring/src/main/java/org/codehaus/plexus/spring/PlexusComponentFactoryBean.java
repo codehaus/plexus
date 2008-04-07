@@ -239,7 +239,7 @@ public class PlexusComponentFactoryBean
             }
             else if ( Collection.class.isAssignableFrom( field.getType() ) )
             {
-                requirement = PlexusToSpringUtils.LookupList( beanName, getListableBeanFactory() );
+                requirement = PlexusToSpringUtils.lookupList( beanName, getListableBeanFactory() );
             }
             else
             {

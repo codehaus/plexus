@@ -153,7 +153,7 @@ public class PlexusToSpringUtils
         return map;
     }
 
-    public static List LookupList( String role, ListableBeanFactory beanFactory )
+    public static List lookupList( String role, ListableBeanFactory beanFactory )
     {
         return new ArrayList( PlexusToSpringUtils.lookupMap( role, beanFactory ).values() );
     }
