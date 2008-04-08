@@ -469,7 +469,7 @@ public class PlexusContainerAdapter
     public List lookupList( String role )
         throws ComponentLookupException
     {
-        return PlexusToSpringUtils.lookupList( role, applicationContext );
+        return PlexusToSpringUtils.lookupList( PlexusToSpringUtils.buildSpringId( role ), applicationContext );
     }
 
     /**
@@ -509,7 +509,7 @@ public class PlexusContainerAdapter
     public Map lookupMap( String role )
         throws ComponentLookupException
     {
-        return PlexusToSpringUtils.lookupMap( role, applicationContext );
+        return PlexusToSpringUtils.lookupMap( PlexusToSpringUtils.buildSpringId( role ), applicationContext );
     }
 
     /**
