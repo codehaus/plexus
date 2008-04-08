@@ -25,6 +25,7 @@ import com.opensymphony.webwork.spring.WebWorkSpringObjectFactory;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.Result;
 import com.opensymphony.xwork.interceptor.Interceptor;
+import com.opensymphony.xwork.validator.Validator;
 
 /**
  * Replacement for WebWorkSpringObjectFactory ("webwork.objectFactory = spring")
@@ -63,7 +64,24 @@ public class WebWorkPlexusInSpringObjectFactory
         {
             return super.buildBean( id, map );
         }
+        
+        id = PlexusToSpringUtils.buildSpringId( Validator.class, name );
+        if ( appContext.containsBean( id ) )
+        {
+            return super.buildBean( id, map );
+        }        
         return super.buildBean( name, map );
+    }
+
+    public Validator buildValidator( String className, Map params, Map extraContext )
+        throws Exception
+    {
+        String id = PlexusToSpringUtils.buildSpringId( Validator.class, className );
+        if ( appContext.containsBean( id ) )
+        {
+            return (Validator) appContext.getBean( id );
+        }    
+        return super.buildValidator( className, params, extraContext );
     }
 
     public Class getClassInstance( String className )
@@ -86,6 +104,11 @@ public class WebWorkPlexusInSpringObjectFactory
         {
             return appContext.getType( id );
         }
+        id = PlexusToSpringUtils.buildSpringId( Validator.class, className );
+        if ( appContext.containsBean( id ) )
+        {
+            return appContext.getType( id );
+        }        
         return super.getClassInstance( className );
     }
 }
