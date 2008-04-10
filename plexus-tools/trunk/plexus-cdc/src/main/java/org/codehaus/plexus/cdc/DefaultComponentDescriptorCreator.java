@@ -146,6 +146,10 @@ public class DefaultComponentDescriptorCreator
             }
 
             JavaClass javaClass = getJavaClass( javaSources[i] );
+            if (javaClass == null)
+            {
+                continue;
+            }
 
             for (Iterator j = gleaners.iterator(); j.hasNext();)
             {
@@ -371,6 +375,10 @@ public class DefaultComponentDescriptorCreator
 
     private JavaClass getJavaClass( JavaSource javaSource )
     {
+		if (javaSource.getClasses().length == 0)
+		{
+            return null;
+        }
         return javaSource.getClasses()[0];
     }
 }
