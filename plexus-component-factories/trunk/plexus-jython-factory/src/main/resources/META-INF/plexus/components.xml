@@ -1,9 +1,0 @@
-<component-set>
-  <components>
-    <component>
-      <role>org.codehaus.plexus.component.factory.jython.Hello</role>
-      <implementation>DefaultHello</implementation>
-      <component-factory>jython</component-factory>
-    </component>
-  </components>
-</component-set>
