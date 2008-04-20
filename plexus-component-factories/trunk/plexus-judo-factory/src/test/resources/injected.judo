@@ -1,2 +1,0 @@
-println "The next line was injected from plexus config:";
-println key;

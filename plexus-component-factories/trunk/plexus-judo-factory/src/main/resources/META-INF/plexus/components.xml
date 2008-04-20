@@ -1,9 +1,0 @@
-<component-set>
-  <components>
-    <component>
-      <role>org.codehaus.plexus.component.factory.ComponentFactory</role>
-      <implementation>org.codehaus.plexus.component.factory.judo.JudoComponentFactory</implementation>
-      <role-hint>judo</role-hint>
-    </component>
-  </components>
-</component-set>
