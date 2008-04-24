@@ -1,28 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns="http://plexus.codehaus.org/spring" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-targetNamespace="http://plexus.codehaus.org/spring"
-elementFormDefault="qualified" attributeFormDefault="unqualified">
+  targetNamespace="http://plexus.codehaus.org/spring" elementFormDefault="qualified"
+  attributeFormDefault="unqualified">
+
+  <xsd:element name="component-set">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="component" minOccurs="0" maxOccurs="unbounded" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
 
   <xsd:element name="component">
-	 <xsd:complexType>
-	   <xsd:sequence>
-	     <xsd:element name="requirement" minOccurs="0">
-	       <xsd:complexType>
-           <xsd:attribute name="field-name" type="xsd:string" use="optional"/>
-           <xsd:attribute name="role" type="xsd:string" use="required"/>
-	   	   	 <xsd:attribute name="role-hint" type="xsd:string" use="optional"/>
-	       </xsd:complexType>
-	     </xsd:element>
-	     <xsd:element name="configuration" minOccurs="0">
-	       <xsd:complexType>
-           <xsd:attribute name="name" type="xsd:string" use="required"/>
-	   	   	 <xsd:attribute name="value" type="xsd:string" use="required"/>
-	       </xsd:complexType>
-	     </xsd:element>
-	   </xsd:sequence>
-	   <xsd:attribute name="role" type="xsd:string" use="required"/>
-	   <xsd:attribute name="role-hint" type="xsd:string" use="optional"/>
-	   <xsd:attribute name="implementation" type="xsd:string" use="required"/>
-	 </xsd:complexType>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="role" type="xsd:string" minOccurs="1" maxOccurs="1" />
+        <xsd:element name="role-hint" type="xsd:string" minOccurs="0" maxOccurs="1" />
+        <xsd:element name="implementation" type="xsd:string" minOccurs="1" maxOccurs="1" />
+        <xsd:element name="requirements" minOccurs="0" maxOccurs="1">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="requirement" minOccurs="0" maxOccurs="unbounded" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element ref="configuration" minOccurs="0" maxOccurs="1" />
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
+
+  <xsd:element name="requirement">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="field-name" type="xsd:string" minOccurs="0" maxOccurs="1" />
+        <xsd:element name="role" type="xsd:string" minOccurs="1" maxOccurs="1" />
+        <xsd:element name="role-hint" type="xsd:string" minOccurs="0" maxOccurs="1" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="configuration">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
 </xsd:schema>
