@@ -21,12 +21,25 @@ package org.codehaus.plexus.spring;
 
 /**
  * A bean expected to live in the spring context
+ * 
  * @author <a href="mailto:nicolas@apache.org">Nicolas De Loof</a>
  */
 public class SpringBean
 {
+    private String myProperty;
+
     public String toString()
     {
         return "SpringBean";
+    }
+
+    public void setMyProperty( String myProperty )
+    {
+        this.myProperty = myProperty;
+    }
+
+    public String getMyProperty()
+    {
+        return myProperty;
     }
 }
