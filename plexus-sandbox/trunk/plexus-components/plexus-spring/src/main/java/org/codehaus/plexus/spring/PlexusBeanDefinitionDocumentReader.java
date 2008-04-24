@@ -24,6 +24,7 @@ import java.io.StringWriter;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMResult;
@@ -50,9 +51,11 @@ import org.w3c.dom.Document;
 public class PlexusBeanDefinitionDocumentReader
     extends DefaultBeanDefinitionDocumentReader
 {
+    private static final String XSL = "PlexusBeanDefinitionDocumentReader.xsl";
+
     public void registerBeanDefinitions( Document doc, XmlReaderContext readerContext )
     {
-        doc = convertPlexusDescriptorToSpringBeans( doc );
+        doc = convertPlexusDescriptorToSpringBeans( doc, readerContext );
         if ( Boolean.getBoolean( "plexus-spring.debug" ) )
         {
             try
@@ -69,49 +72,65 @@ public class PlexusBeanDefinitionDocumentReader
         super.registerBeanDefinitions( doc, readerContext );
     }
 
+    /**
+     * @deprecated
+     */
     protected Document convertPlexusDescriptorToSpringBeans( Document doc )
+    {
+        return convertPlexusDescriptorToSpringBeans( doc, null );
+    }
+
+    protected Document convertPlexusDescriptorToSpringBeans( Document doc, XmlReaderContext readerContext )
     {
         if ( "component-set".equals( doc.getDocumentElement().getNodeName() ) )
         {
-            return translatePlexusDescriptor( doc );
+            return translatePlexusDescriptor( doc, readerContext );
         }
         if ( "plexus".equals( doc.getDocumentElement().getNodeName() ) )
         {
-            return translatePlexusDescriptor( doc );
+            return translatePlexusDescriptor( doc, readerContext );
         }
 
         return doc;
     }
 
-    private Document translatePlexusDescriptor( Document doc )
-        throws TransformerFactoryConfigurationError
+    private Document translatePlexusDescriptor( Document doc, XmlReaderContext readerContext )
     {
+        Source xmlSource = new DOMSource( doc );
+        InputStream is = getClass().getResourceAsStream( XSL );
+        if ( is == null )
+        {
+            throw new BeanDefinitionStoreException( "XSL not found in the classpath: " + XSL );
+        }
+        Source xsltSource = new StreamSource( is );
+
+        DOMResult transResult = new DOMResult();
+
+        TransformerFactory tf = TransformerFactory.newInstance();
+
         try
         {
-            Source xmlSource = new DOMSource( doc );
-            InputStream is = getClass().getResourceAsStream( "PlexusBeanDefinitionDocumentReader.xsl" );
-            Source xsltSource = new StreamSource( is );
-
-            DOMResult transResult = new DOMResult();
-
-            TransformerFactory tf = TransformerFactory.newInstance();
             Transformer t = tf.newTransformer( xsltSource );
             t.transform( xmlSource, transResult );
 
             // DOM3 Only - logger.debug( doc.getDocumentURI() + " successfully translated to Spring" );
-            if (logger.isDebugEnabled())
+            if ( logger.isDebugEnabled() )
             {
                 logger.debug( "Plexus Bean Definition Document successfully translated to Spring" );
                 StringWriter stringWriter = new StringWriter();
-                t.transform( xmlSource, new StreamResult(stringWriter) );
+                t.transform( xmlSource, new StreamResult( stringWriter ) );
                 logger.debug( "result " + stringWriter.toString() );
             }
             return (Document) transResult.getNode();
         }
-        catch ( Exception e )
+        catch ( TransformerException e )
         {
-            throw new BeanDefinitionStoreException(
-                "Failed to translate plexus component descriptor to Spring XML context", e );
+            String msg = "Failed to translate plexus component descriptor to Spring XML context";
+            if ( readerContext != null )
+            {
+                msg += " : " + readerContext.getResource();
+            }
+            throw new BeanDefinitionStoreException( msg, e );
         }
     }
 }
