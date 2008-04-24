@@ -19,6 +19,8 @@ package org.codehaus.plexus.spring;
  * under the License.
  */
 
+import java.util.Properties;
+
 import junit.framework.TestCase;
 
 import org.slf4j.LoggerFactory;
@@ -125,4 +127,18 @@ public class PlexusClassPathXmlApplicationContextTest
         assertEquals( "expected", plexusBean.getProperties().getProperty( "test" ) );
     }
 
+    public void testSpringNamespaces()
+        throws Exception
+    {
+        ConfigurableApplicationContext applicationContext =
+            new PlexusClassPathXmlApplicationContext( new String[] { "testSpringNamespaces.xml" } );
+
+        SpringBean bean = (SpringBean) applicationContext.getBean( "myBean" );
+        
+        //TODO to be fixed
+        //assertEquals( "myValue", bean.getMyProperty() );
+
+        //Properties myProperties = (Properties) applicationContext.getBean( "myProperties" );
+        //assertNotNull( myProperties );
+    }
 }
