@@ -35,6 +35,9 @@ public class PropertiesPlexusBean
         return properties;
     }
 
-
+    public void setProperties( Properties properties )
+    {
+        this.properties = properties;
+    }
 
 }

@@ -19,24 +19,25 @@ package org.codehaus.plexus.spring;
  * under the License.
  */
 
-import java.beans.PropertyEditorSupport;
 import java.io.StringReader;
 import java.util.Iterator;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.PropertyEditorRegistry;
+import org.springframework.beans.propertyeditors.PropertiesEditor;
 
 /**
  * @author <a href="mailto:nicolas@apache.org">Nicolas De Loof</a>
  * @version $Id$
  */
 public class PropertiesPropertyEditor
-    extends PropertyEditorSupport
+    extends PropertiesEditor
     implements PropertyEditorRegistrar
 {
 
@@ -84,12 +85,13 @@ public class PropertiesPropertyEditor
                 Element element = (Element) i.next();
                 properties.setProperty( element.element( "name" ).getText(), element.element( "value" ).getText() );
             }
+            setValue( properties );
         }
-        catch ( Exception e )
+        catch ( DocumentException e )
         {
-            throw new IllegalArgumentException( "Failed to convert to Properties", e );
+            /* text is not Plexus formatted properties, handle as usual Spring properties */
+            super.setAsText( text );
         }
-        setValue( properties );
     }
 
 }
