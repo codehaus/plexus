@@ -23,6 +23,8 @@ import java.io.IOException;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.xml.ResourceEntityResolver;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -98,6 +100,28 @@ public class PlexusClassPathXmlApplicationContext
     {
         delegate.loadBeanDefinitions( reader );
         super.loadBeanDefinitions( reader );
+    }
+
+    /**
+     * copied from superclass
+     * Loads the bean definitions via an XmlBeanDefinitionReader.
+     * @see org.springframework.beans.factory.xml.XmlBeanDefinitionReader
+     * @see #initBeanDefinitionReader
+     * @see #loadBeanDefinitions
+     */
+    protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) throws IOException {
+        // Create a new XmlBeanDefinitionReader for the given BeanFactory.
+        XmlBeanDefinitionReader beanDefinitionReader = new PlexusXmlBeanDefinitionReader(beanFactory);
+
+        // Configure the bean definition reader with this context's
+        // resource loading environment.
+        beanDefinitionReader.setResourceLoader(this);
+        beanDefinitionReader.setEntityResolver(new ResourceEntityResolver(this));
+
+        // Allow a subclass to provide custom initialization of the reader,
+        // then proceed with actually loading the bean definitions.
+        initBeanDefinitionReader(beanDefinitionReader);
+        loadBeanDefinitions(beanDefinitionReader);
     }
 
     /**

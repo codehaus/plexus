@@ -21,8 +21,6 @@ package org.codehaus.plexus.spring;
 
 import java.io.IOException;
 
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -51,7 +49,6 @@ public class PlexusApplicationContextDelegate
     {
         logger.info( "Registering Plexus to Spring XML translation" );
         reader.setDocumentReaderClass( PlexusBeanDefinitionDocumentReader.class );
-        reader.setValidationMode( XmlBeanDefinitionReader.VALIDATION_NONE );
     }
 
     /**
