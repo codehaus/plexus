@@ -135,10 +135,9 @@ public class PlexusClassPathXmlApplicationContextTest
 
         SpringBean bean = (SpringBean) applicationContext.getBean( "myBean" );
         
-        //TODO to be fixed
-        //assertEquals( "myValue", bean.getMyProperty() );
+        assertEquals( "myValue", bean.getMyProperty() );
 
-        //Properties myProperties = (Properties) applicationContext.getBean( "myProperties" );
-        //assertNotNull( myProperties );
+        Properties myProperties = (Properties) applicationContext.getBean( "myProperties" );
+        assertNotNull( myProperties );
     }
 }
