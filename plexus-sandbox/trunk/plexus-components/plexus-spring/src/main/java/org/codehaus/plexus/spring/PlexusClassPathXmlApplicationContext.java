@@ -27,6 +27,7 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.ResourceEntityResolver;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -103,7 +104,7 @@ public class PlexusClassPathXmlApplicationContext
     }
 
     /**
-     * copied from superclass
+     * Copied from {@link AbstractXmlApplicationContext}
      * Loads the bean definitions via an XmlBeanDefinitionReader.
      * @see org.springframework.beans.factory.xml.XmlBeanDefinitionReader
      * @see #initBeanDefinitionReader

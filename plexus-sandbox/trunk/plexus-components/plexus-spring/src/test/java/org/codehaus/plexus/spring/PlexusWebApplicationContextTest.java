@@ -19,13 +19,21 @@ package org.codehaus.plexus.spring;
  * under the License.
  */
 
-import org.springframework.context.ConfigurableApplicationContext;
+import javax.servlet.ServletContext;
 
-public class PlexusClassPathXmlApplicationContextTest
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.mock.web.MockServletContext;
+
+public class PlexusWebApplicationContextTest
     extends AbstractPlexusApplicationContextTest
 {
     protected ConfigurableApplicationContext createApplicationContest( String[] locations )
     {
-        return new PlexusClassPathXmlApplicationContext( locations );
+        PlexusWebApplicationContext context = new PlexusWebApplicationContext();
+        context.setConfigLocations( locations );
+        ServletContext servletContext = new MockServletContext();
+        context.setServletContext( servletContext );
+        context.refresh();
+        return context;
     }
 }
