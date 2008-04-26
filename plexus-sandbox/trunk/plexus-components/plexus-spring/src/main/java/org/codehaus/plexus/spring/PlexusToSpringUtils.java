@@ -41,6 +41,8 @@ import org.springframework.beans.factory.ListableBeanFactory;
 public class PlexusToSpringUtils
 {
 
+    private static final char ROLE_SEPARATOR = '#';
+
     public static String toSpringId( String string )
     {
         int i = string.lastIndexOf( '.' );
@@ -125,7 +127,7 @@ public class PlexusToSpringUtils
             i = 0;
         }
         String id = Character.toLowerCase( role.charAt( i ) ) + role.substring( i + 1 );
-        return isDefaultHint( roleHint ) ? id : id + '#' + roleHint;
+        return isDefaultHint( roleHint ) ? id : id + ROLE_SEPARATOR + roleHint;
     }
 
     private static boolean isDefaultHint( String roleHint )
@@ -136,7 +138,7 @@ public class PlexusToSpringUtils
     public static Map lookupMap( String role, ListableBeanFactory beanFactory )
     {
         Map map = new HashMap();
-        String mask = role + '#';
+        String mask = role + ROLE_SEPARATOR;
         String[] beans = beanFactory.getBeanDefinitionNames();
         for ( int i = 0; i < beans.length; i++ )
         {
