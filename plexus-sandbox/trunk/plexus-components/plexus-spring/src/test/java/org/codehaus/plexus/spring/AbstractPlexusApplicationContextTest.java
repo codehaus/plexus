@@ -134,4 +134,16 @@ public abstract class AbstractPlexusApplicationContextTest
         Properties myProperties = (Properties) applicationContext.getBean( "myProperties" );
         assertNotNull( myProperties );
     }
+
+    public void testInjectPlexusCollection()
+        throws Exception
+    {
+        ConfigurableApplicationContext applicationContext =
+            createApplicationContest( new String[] { "testInjectPlexusCollection.xml" } );
+        PlexusBean plexusBean = (PlexusBean) applicationContext.getBean( "plexusBean" );
+        assertEquals( "expected", plexusBean.getMessage() );
+        assertEquals( 3, plexusBean.getStringList().size() );
+        assertEquals( 2, plexusBean.getStringSet().size() );
+    }
+
 }

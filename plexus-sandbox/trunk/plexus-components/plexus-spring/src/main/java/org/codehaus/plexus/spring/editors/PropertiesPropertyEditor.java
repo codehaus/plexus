@@ -1,4 +1,4 @@
-package org.codehaus.plexus.spring;
+package org.codehaus.plexus.spring.editors;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
