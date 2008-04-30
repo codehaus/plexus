@@ -35,27 +35,29 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class PlexusInSpringTestCase
     extends TestCase
 {
-    private ConfigurableApplicationContext applicationContext;
+    protected ConfigurableApplicationContext applicationContext;
 
     protected void setUp()
         throws Exception
     {
-        applicationContext =
-            new PlexusClassPathXmlApplicationContext( new String[] {
-                "classpath*:META-INF/spring-context.xml",
-                "classpath*:META-INF/plexus/components.xml",
-                "classpath*:" + getPlexusConfigLocation(),
-                "classpath*:" + getSpringConfigLocation()} );
+        applicationContext = new PlexusClassPathXmlApplicationContext( getConfigLocations() );
+    }
+
+    protected String[] getConfigLocations()
+    {
+        return new String[] { 
+            "classpath*:META-INF/spring-context.xml", 
+            "classpath*:META-INF/plexus/components.xml",
+            "classpath*:" + getPlexusConfigLocation(), 
+            "classpath*:" + getSpringConfigLocation() };
     }
 
     protected String getSpringConfigLocation()
-        throws Exception
     {
         return getClass().getName().replace( '.', '/' ) + "-context.xml";
     }
 
     protected String getPlexusConfigLocation()
-        throws Exception
     {
         return getClass().getName().replace( '.', '/' ) + ".xml";
     }
