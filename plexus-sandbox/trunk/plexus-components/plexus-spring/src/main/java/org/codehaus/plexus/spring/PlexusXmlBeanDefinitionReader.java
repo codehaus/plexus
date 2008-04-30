@@ -3,7 +3,6 @@ package org.codehaus.plexus.spring;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.xml.BeanDefinitionDocumentReader;
@@ -14,6 +13,8 @@ import org.springframework.util.xml.XmlValidationModeDetector;
 public class PlexusXmlBeanDefinitionReader
     extends XmlBeanDefinitionReader
 {
+    private boolean fastDetection = false;
+
     private PlexusXmlValidationModeDetector validationModeDetector = new PlexusXmlValidationModeDetector();
 
     private PlexusBeanDefinitionDocumentReader reader = new PlexusBeanDefinitionDocumentReader();
@@ -41,31 +42,41 @@ public class PlexusXmlBeanDefinitionReader
                 "on your XmlBeanDefinitionReader instance." );
         }
 
-        InputStream inputStream;
-        try
+        Boolean isPlexusDefinition = null;
+
+        /* making a guess based on the filename instead of parsing the file contents could be a little bit faster */
+        if ( fastDetection )
         {
-            inputStream = resource.getInputStream();
-        }
-        catch ( IOException ex )
-        {
-            throw new BeanDefinitionStoreException( "Unable to determine validation mode for [" + resource +
-                "]: cannot open InputStream. " +
-                "Did you attempt to load directly from a SAX InputSource without specifying the " +
-                "validationMode on your XmlBeanDefinitionReader instance?", ex );
+            isPlexusDefinition = isPlexusDefinitionName( resource );
         }
 
-        boolean isPlexusDefinition = false;
-        try
+        if ( isPlexusDefinition == null )
         {
-            isPlexusDefinition = validationModeDetector.isPlexusDefinition( inputStream );
-        }
-        catch ( IOException ex )
-        {
-            throw new BeanDefinitionStoreException( "Unable to determine validation mode for [" + resource +
-                "]: an error occurred whilst reading from the InputStream.", ex );
+            InputStream inputStream;
+            try
+            {
+                inputStream = resource.getInputStream();
+            }
+            catch ( IOException ex )
+            {
+                throw new BeanDefinitionStoreException( "Unable to determine validation mode for [" + resource +
+                    "]: cannot open InputStream. " +
+                    "Did you attempt to load directly from a SAX InputSource without specifying the " +
+                    "validationMode on your XmlBeanDefinitionReader instance?", ex );
+            }
+
+            try
+            {
+                isPlexusDefinition = Boolean.valueOf( validationModeDetector.isPlexusDefinition( inputStream ) );
+            }
+            catch ( IOException ex )
+            {
+                throw new BeanDefinitionStoreException( "Unable to determine validation mode for [" + resource +
+                    "]: an error occurred whilst reading from the InputStream.", ex );
+            }
         }
 
-        if ( isPlexusDefinition )
+        if ( isPlexusDefinition.booleanValue() )
         {
             return XmlValidationModeDetector.VALIDATION_NONE;
         }
@@ -73,5 +84,20 @@ public class PlexusXmlBeanDefinitionReader
         {
             return super.detectValidationMode( resource );
         }
+    }
+
+    private Boolean isPlexusDefinitionName( Resource resource )
+    {
+        if ( resource.getFilename().equals( "components.xml" ) || resource.getFilename().equals( "application.xml" ) )
+        {
+            return Boolean.TRUE;
+        }
+        if ( resource.getFilename().equals( "applicationContext.xml" ) ||
+            resource.getFilename().equals( "spring-context.xml" ) )
+        {
+            return Boolean.FALSE;
+        }
+        /* it may be any, like a test context */
+        return null;
     }
 }
