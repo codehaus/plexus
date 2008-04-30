@@ -19,6 +19,7 @@ package org.codehaus.plexus.spring;
  * under the License.
  */
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 
@@ -82,19 +83,6 @@ public class PlexusBeanDefinitionDocumentReader
     public void registerBeanDefinitions( Document doc, XmlReaderContext readerContext )
     {
         doc = convertPlexusDescriptorToSpringBeans( doc, readerContext );
-        if ( Boolean.getBoolean( "plexus-spring.debug" ) )
-        {
-            try
-            {
-                XMLWriter writer = new XMLWriter( System.out, OutputFormat.createPrettyPrint() );
-                writer.write( new DOMReader().read( doc ) );
-            }
-            catch ( Exception e )
-            {
-                // ignored
-            }
-        }
-
         super.registerBeanDefinitions( doc, readerContext );
     }
 
@@ -125,17 +113,19 @@ public class PlexusBeanDefinitionDocumentReader
         Source xmlSource = new DOMSource( doc );
         DOMResult transResult = new DOMResult();
 
+        if ( logger.isDebugEnabled() )
+        {
+            log( doc, "Plexus Bean Definition Document to be translated" );
+        }
+
         try
         {
             transformer.transform( xmlSource, transResult );
 
-            // DOM3 Only - logger.debug( doc.getDocumentURI() + " successfully translated to Spring" );
             if ( logger.isDebugEnabled() )
             {
-                logger.debug( "Plexus Bean Definition Document successfully translated to Spring" );
-                StringWriter stringWriter = new StringWriter();
-                transformer.transform( xmlSource, new StreamResult( stringWriter ) );
-                logger.debug( "result " + stringWriter.toString() );
+                log( (Document) transResult.getNode(),
+                     "Plexus Bean Definition Document successfully translated to Spring" );
             }
             return (Document) transResult.getNode();
         }
@@ -147,6 +137,22 @@ public class PlexusBeanDefinitionDocumentReader
                 msg += " : " + readerContext.getResource();
             }
             throw new BeanDefinitionStoreException( msg, e );
+        }
+    }
+
+    private void log( Document doc, String msg )
+    {
+        try
+        {
+            logger.debug( msg );
+            StringWriter stringWriter = new StringWriter();
+            XMLWriter writer = new XMLWriter( stringWriter, OutputFormat.createPrettyPrint() );
+            writer.write( new DOMReader().read( doc ) );
+            logger.debug( stringWriter.toString() );
+        }
+        catch ( IOException e )
+        {
+            // ignored
         }
     }
 }
