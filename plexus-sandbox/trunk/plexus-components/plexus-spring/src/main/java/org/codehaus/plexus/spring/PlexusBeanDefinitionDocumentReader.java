@@ -24,9 +24,9 @@ import java.io.StringWriter;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -52,6 +52,32 @@ public class PlexusBeanDefinitionDocumentReader
     extends DefaultBeanDefinitionDocumentReader
 {
     private static final String XSL = "PlexusBeanDefinitionDocumentReader.xsl";
+
+    private Transformer transformer;
+
+    public PlexusBeanDefinitionDocumentReader()
+    {
+        super();
+
+        InputStream is = getClass().getResourceAsStream( XSL );
+        if ( is == null )
+        {
+            throw new BeanDefinitionStoreException( "XSL not found in the classpath: " + XSL );
+        }
+        Source xsltSource = new StreamSource( is );
+
+        TransformerFactory tf = TransformerFactory.newInstance();
+
+        try
+        {
+            transformer = tf.newTransformer( xsltSource );
+        }
+        catch ( TransformerConfigurationException e )
+        {
+            String msg = "Failed to load Plexus to Spring XSL " + XSL;
+            throw new BeanDefinitionStoreException( msg, e );
+        }
+    }
 
     public void registerBeanDefinitions( Document doc, XmlReaderContext readerContext )
     {
@@ -97,28 +123,18 @@ public class PlexusBeanDefinitionDocumentReader
     private Document translatePlexusDescriptor( Document doc, XmlReaderContext readerContext )
     {
         Source xmlSource = new DOMSource( doc );
-        InputStream is = getClass().getResourceAsStream( XSL );
-        if ( is == null )
-        {
-            throw new BeanDefinitionStoreException( "XSL not found in the classpath: " + XSL );
-        }
-        Source xsltSource = new StreamSource( is );
-
         DOMResult transResult = new DOMResult();
-
-        TransformerFactory tf = TransformerFactory.newInstance();
 
         try
         {
-            Transformer t = tf.newTransformer( xsltSource );
-            t.transform( xmlSource, transResult );
+            transformer.transform( xmlSource, transResult );
 
             // DOM3 Only - logger.debug( doc.getDocumentURI() + " successfully translated to Spring" );
             if ( logger.isDebugEnabled() )
             {
                 logger.debug( "Plexus Bean Definition Document successfully translated to Spring" );
                 StringWriter stringWriter = new StringWriter();
-                t.transform( xmlSource, new StreamResult( stringWriter ) );
+                transformer.transform( xmlSource, new StreamResult( stringWriter ) );
                 logger.debug( "result " + stringWriter.toString() );
             }
             return (Document) transResult.getNode();
