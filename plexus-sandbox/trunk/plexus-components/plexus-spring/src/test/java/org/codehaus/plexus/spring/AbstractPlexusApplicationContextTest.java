@@ -28,17 +28,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 public abstract class AbstractPlexusApplicationContextTest
     extends TestCase
 {
-    /**
-     * {@inheritDoc}
-     *
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp()
-        throws Exception
-    {
-        System.setProperty( "plexus-spring.debug", "true" );
-    }
-
     protected abstract ConfigurableApplicationContext createApplicationContest( String[] strings );
 
     public void testInjectSpringBeansInPlexusComponent()
