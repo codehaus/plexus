@@ -3,8 +3,10 @@ package org.codehaus.plexus.spring;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.xml.BeanDefinitionDocumentReader;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.Resource;
 import org.springframework.util.xml.XmlValidationModeDetector;
@@ -14,9 +16,19 @@ public class PlexusXmlBeanDefinitionReader
 {
     private PlexusXmlValidationModeDetector validationModeDetector = new PlexusXmlValidationModeDetector();
 
+    private PlexusBeanDefinitionDocumentReader reader = new PlexusBeanDefinitionDocumentReader();
+
     public PlexusXmlBeanDefinitionReader( BeanDefinitionRegistry registry )
     {
         super( registry );
+    }
+
+    /**
+     * Override just for performance optimization
+     */
+    protected BeanDefinitionDocumentReader createBeanDefinitionDocumentReader()
+    {
+        return reader;
     }
 
     protected int detectValidationMode( Resource resource )
