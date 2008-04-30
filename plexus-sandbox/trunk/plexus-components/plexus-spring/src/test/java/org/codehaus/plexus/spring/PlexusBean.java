@@ -1,5 +1,8 @@
 package org.codehaus.plexus.spring;
 
+import java.util.List;
+import java.util.Set;
+
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.logging.Logger;
 
@@ -42,4 +45,10 @@ public interface PlexusBean
     Context getContext();
 
     Logger getLogger();
+
+    List getStringList();
+
+    Set getStringSet();
+
+    String getMessage();
 }

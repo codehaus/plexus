@@ -1,5 +1,8 @@
 package org.codehaus.plexus.spring;
 
+import java.util.List;
+import java.util.Set;
+
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
@@ -46,6 +49,10 @@ public class PlexusBeanImpl
      */
     private SpringBean bean;
 
+    private List stringList;
+
+    private Set stringSet;
+
     private Context context;
 
     public void initialize()
@@ -91,5 +98,20 @@ public class PlexusBeanImpl
     public Logger getLogger()
     {
         return super.getLogger();
+    }
+
+    public List getStringList()
+    {
+        return stringList;
+    }
+
+    public Set getStringSet()
+    {
+        return stringSet;
+    }
+
+    public String getMessage()
+    {
+        return message;
     }
 }
