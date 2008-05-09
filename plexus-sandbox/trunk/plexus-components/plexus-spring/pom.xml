@@ -25,23 +25,25 @@
   <name>Plexus to Spring Adapter</name>
 
   <description>Bridge utility to use plexus components in a SpringFramework context.</description>
-
+  <properties>
+    <springVersion>2.5.4</springVersion>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>2.5.3</version>
+      <version>${springVersion}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>2.5.3</version>
+      <version>${springVersion}</version>
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>2.5.3</version>
+      <version>${springVersion}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -71,11 +73,11 @@
       <version>2.3</version>
       <optional>true</optional>
     </dependency>
-	<dependency>
-	  <groupId>org.codehaus.plexus</groupId>
-	  <artifactId>plexus-utils</artifactId>
-	  <version>1.5.1</version>
-	</dependency>	  
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.5.1</version>
+    </dependency>	  
     
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -103,9 +105,9 @@
       <scope>test</scope>
       <exclusions>
       	<exclusion>      		 
-	      <groupId>log4j</groupId>
-	      <artifactId>log4j</artifactId>
-	    </exclusion>	      
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>	      
       </exclusions>
     </dependency>
     <dependency>
@@ -117,44 +119,44 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-artifact</artifactId>
-	  <scope>test</scope>
-	  <version>2.0.8</version>
+      <scope>test</scope>
+      <version>2.0.8</version>
     </dependency>	 
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-project</artifactId>
-	  <version>2.0.8</version> 
-	  <scope>test</scope>
+      <version>2.0.8</version> 
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
       <version>2.0.8</version>
-	  <scope>test</scope>
+      <scope>test</scope>
     </dependency>	   
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-settings</artifactId>
       <version>2.0.8</version>
-	  <scope>test</scope>		
+      <scope>test</scope>		
     </dependency>	  
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-model</artifactId>
       <version>2.0.8</version>
-	  <scope>test</scope>		
+      <scope>test</scope>		
     </dependency>	
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-command-line</artifactId>
       <version>1.0-alpha-2</version>
-	  <scope>test</scope>
-	  <exclusions>
+      <scope>test</scope>
+      <exclusions>
         <exclusion>
-		  <groupId>org.codehaus.plexus</groupId>
-		  <artifactId>plexus-utils</artifactId>	
-		</exclusion>
-	  </exclusions>
+          <groupId>org.codehaus.plexus</groupId>
+          <artifactId>plexus-utils</artifactId>	
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
 
