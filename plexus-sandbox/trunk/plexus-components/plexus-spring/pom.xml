@@ -21,7 +21,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus-spring</artifactId>
-  <version>1.0</version>
+  <version>1.0.1-SNAPSHOT</version>
   <name>Plexus to Spring Adapter</name>
 
   <description>Bridge utility to use plexus components in a SpringFramework context.</description>
@@ -166,10 +166,4 @@
       <name>Nicolas De Loof</name>
     </developer>
   </developers>
-
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-components/tags/plexus-spring-1.0</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-components/tags/plexus-spring-1.0</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-components/tags/plexus-spring-1.0</url>
-  </scm>
 </project>
