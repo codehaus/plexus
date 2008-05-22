@@ -26,7 +26,8 @@ package org.codehaus.plexus.maven.plugin;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -162,7 +163,7 @@ public abstract class AbstractDescriptorMojo
 
         FileUtils.forceMkdir(outputFile.getParentFile());
 
-        BufferedWriter output = new BufferedWriter(new FileWriter(outputFile));
+        BufferedWriter output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "UTF-8"));
 
         try {
             writer.writeDescriptorSet(output, desc, containerDescriptor);
