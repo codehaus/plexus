@@ -19,7 +19,6 @@ package org.codehaus.plexus.maven.plugin;
 import java.util.List;
 
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.plugin.logging.Log;
 import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
 
 /**
