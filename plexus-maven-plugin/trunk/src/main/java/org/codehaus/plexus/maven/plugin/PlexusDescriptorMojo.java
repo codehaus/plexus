@@ -23,7 +23,6 @@ package org.codehaus.plexus.maven.plugin;
  */
 
 import java.io.File;
-import java.util.Collections;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.artifact.handler.ArtifactHandler;
