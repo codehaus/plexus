@@ -64,6 +64,11 @@ public abstract class AbstractDescriptorMojo
     protected String fileName;
 
     /**
+     * @parameter expression="${encoding}" default-value="${project.build.sourceEncoding}"
+     */
+    private String encoding;
+
+    /**
      * Whether to generate a Plexus Container descriptor instead of a component descriptor.
      *
      * @parameter default-value="false"
@@ -118,7 +123,7 @@ public abstract class AbstractDescriptorMojo
         // If no extractors are configured then use a default (javadoc-style source extraction)
         if (extractors == null || extractors.length == 0) {
             extractors = new ComponentDescriptorExtractor[] {
-                new SourceComponentDescriptorExtractor(),
+                new SourceComponentDescriptorExtractor(encoding),
             };
         }
 
