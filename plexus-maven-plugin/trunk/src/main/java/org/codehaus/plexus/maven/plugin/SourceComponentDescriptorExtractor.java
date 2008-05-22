@@ -28,6 +28,7 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.cdc.gleaner.QDoxComponentGleaner;
 import org.codehaus.plexus.cdc.gleaner.SourceComponentGleaner;
 import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Extracts {@link ComponentDescriptor} from source files.
@@ -39,11 +40,22 @@ public class SourceComponentDescriptorExtractor
 {
     private SourceComponentGleaner gleaner;
 
+    private String encoding;
+    
     public SourceComponentDescriptorExtractor(final SourceComponentGleaner gleaner) {
         this.gleaner = gleaner;
     }
 
+    public SourceComponentDescriptorExtractor(final SourceComponentGleaner gleaner, final String encoding) {
+        this.gleaner = gleaner;
+        this.encoding = encoding;
+    }
+
     public SourceComponentDescriptorExtractor() {}
+
+    public SourceComponentDescriptorExtractor(final String encoding) {
+        this.encoding = encoding;
+    }
 
     public List extract(final MavenProject project, final String scope, final ComponentDescriptor[] roleDefaults) throws Exception {
         assert project != null;
@@ -82,6 +94,9 @@ public class SourceComponentDescriptorExtractor
 
         // Scan the sources
         JavaDocBuilder builder = new JavaDocBuilder();
+        if ( !StringUtils.isEmpty( encoding )) {
+            builder.setEncoding( encoding );
+        }
 
         for (Iterator iter = sourceDirectories.iterator(); iter.hasNext();) {
             File dir = new File((String)iter.next());
