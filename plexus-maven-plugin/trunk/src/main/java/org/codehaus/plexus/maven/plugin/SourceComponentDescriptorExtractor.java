@@ -96,6 +96,9 @@ public class SourceComponentDescriptorExtractor
         JavaDocBuilder builder = new JavaDocBuilder();
         if ( !StringUtils.isEmpty( encoding )) {
             builder.setEncoding( encoding );
+        } else {
+            log.warn( "File encoding has not been set, using platform encoding " + System.getProperty( "file.encoding" )
+                + ", i.e. build is platform dependent!" );
         }
 
         for (Iterator iter = sourceDirectories.iterator(); iter.hasNext();) {
