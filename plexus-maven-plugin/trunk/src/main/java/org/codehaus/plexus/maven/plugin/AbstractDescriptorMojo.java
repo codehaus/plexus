@@ -58,7 +58,9 @@ public abstract class AbstractDescriptorMojo
     protected final Logger log = LoggerFactory.getLogger(getClass());
     
     /**
-     * @parameter expression="META-INF/plexus/components.xml"
+     * The relative path to the output file for the generated descriptor.
+     * 
+     * @parameter default-value="META-INF/plexus/components.xml"
      * @required
      */
     protected String fileName;
@@ -82,6 +84,7 @@ public abstract class AbstractDescriptorMojo
     /**
      * @parameter expression="${project}"
      * @required
+     * @readonly
      */
     private MavenProject mavenProject;
 
