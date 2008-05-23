@@ -52,7 +52,7 @@ public class PlexusTestDescriptorMojo
     /**
      * The output directory where the descriptor is written.
      *
-     * @parameter expression="${project.build.testOutputDirectory}"
+     * @parameter default-value="${project.build.testOutputDirectory}"
      * @required
      */
     private File outputDirectory;

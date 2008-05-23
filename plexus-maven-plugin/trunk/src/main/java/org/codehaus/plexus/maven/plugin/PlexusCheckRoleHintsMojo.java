@@ -51,7 +51,7 @@ public class PlexusCheckRoleHintsMojo extends AbstractMojo
      * The META-INF/plexus/ directory that contains the post-processed 
      * plexus data files. [ components.xml, application.xml, and plexus.xml ]
      * 
-     * @parameter expression="${project.build.outputDirectory}/META-INF/plexus"
+     * @parameter default-value="${project.build.outputDirectory}/META-INF/plexus"
      * @required
      */
     private File plexusDirectory;
