@@ -64,7 +64,10 @@ public abstract class AbstractDescriptorMojo
     protected String fileName;
 
     /**
+     * The file encoding to use when reading the source files.
+     * 
      * @parameter expression="${encoding}" default-value="${project.build.sourceEncoding}"
+     * @since 1.3.9
      */
     private String encoding;
 
