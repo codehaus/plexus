@@ -80,7 +80,7 @@ public class RegexBasedInterpolator
             recursionInterceptor = new SimpleRecursionInterceptor();
         }
 
-        if ( thisPrefixPattern.length() == 0 )
+        if ( thisPrefixPattern != null && thisPrefixPattern.length() == 0 )
         {
             thisPrefixPattern = null;
         }
