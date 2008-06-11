@@ -1,0 +1,9 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.component.factory.ComponentFactory</role>
+      <implementation>org.codehaus.plexus.component.factory.groovy.GroovyComponentFactory</implementation>
+      <role-hint>groovy</role-hint>
+    </component>
+  </components>
+</component-set>
