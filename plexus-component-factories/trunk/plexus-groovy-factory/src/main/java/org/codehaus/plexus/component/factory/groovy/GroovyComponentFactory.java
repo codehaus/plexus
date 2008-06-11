@@ -1,17 +1,17 @@
 package org.codehaus.plexus.component.factory.groovy;
 
-import java.net.URL;
-
-import groovy.lang.GroovyClassLoader;
-import groovy.lang.GroovyObject;
-import groovy.lang.GroovyResourceLoader;
-import groovy.lang.GroovyCodeSource;
-
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.factory.AbstractComponentFactory;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
-import org.codehaus.plexus.classworlds.realm.ClassRealm;
+
+import groovy.lang.GroovyClassLoader;
+import groovy.lang.GroovyCodeSource;
+import groovy.lang.GroovyObject;
+import groovy.lang.GroovyResourceLoader;
+
+import java.net.URL;
 
 /**
  * Factory for loading components implemented in <a href="http://groovy.codehaus.org">Groovy</a>.
@@ -71,5 +71,10 @@ public class GroovyComponentFactory
         assert classLoader != null;
 
         return loadGroovyObject(className, classLoader, new GroovyResourceLoaderImpl(classLoader));
+    }
+
+    public String getId()
+    {
+        return "groovy";
     }
 }

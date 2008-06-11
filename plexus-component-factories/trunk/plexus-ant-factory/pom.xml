@@ -2,7 +2,7 @@
   <parent>
     <artifactId>plexus-component-factories</artifactId>
     <groupId>org.codehaus.plexus</groupId>
-    <version>1.0-alpha-10</version>
+    <version>1.0-alpha-11-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>plexus-ant-factory</artifactId>
@@ -22,7 +22,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>1.0.5</version>
+      <version>1.4.5</version>
     </dependency>
   </dependencies>
 </project>
