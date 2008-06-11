@@ -1,0 +1,18 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.component.factory.ComponentFactory</role>
+      <implementation>org.codehaus.plexus.component.factory.marmalade.MarmaladeClasspathComponentFactory</implementation>
+      <role-hint>marmalade</role-hint>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.marmalade.monitor.log.MarmaladeLog</role>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.codehaus.marmalade.monitor.log.MarmaladeLog</role>
+      <implementation>org.codehaus.plexus.component.factory.marmalade.PlexusIntegratedLog</implementation>
+    </component>
+  </components>
+</component-set>

@@ -1,0 +1,112 @@
+ -----
+ Using Plexus JRuby Factory
+ -----
+ Eric Redmond
+ -----
+
+JRuby Factory
+
+ This factory uses the JRuby plugin version 0.9.9 - which, unfortunately, it's
+ pom uses system scope. So sad, they need to fix that.
+ 
+* Examples
+
+ The ComponentFactory role-hint is "jruby", and the implementation it expects
+ is a Ruby script file. For example, the script:
+
++----+ 
+class Hello
+  def print( greeting )
+    puts "#{greeting} from #{$hello_from.to_s}"
+  end
+end
+
+Hello.new.print "Hello"
++----+
+
+ components.xml is like this
+
++----+ 
+    <component>
+      <role>hello</role>
+      <implementation>/hello.rb</implementation>
+      <component-factory>jruby</component-factory>
+    </component>
++----+ 
+
+ The "jruby" ComponentFactory returns looked-up implementations as 
+ "org.codehaus.plexus.component.jruby.JRubyInvoker" objects. You can put global
+ variables into the script via the "putGlobal" methods, which takes a variable
+ name (sans "$" prefix and an java object (JRuby wraps them as interpretable
+ JavaObject's). When you are satisfied with your population, you can invoke the
+ script:
+
++----+
+    JRubyInvoker invoker = (JRubyInvoker)lookup( "hello" );
+
+    invoker.putGlobal( "hello_from", "Mexico" );
+
+    invoker.invoke();
++----+
+
+ Outputs
+
++----+
+Hello from Mexico
++----+
+
+ By default the invoker outputs to System.out and System.err. You can capture
+ the output for yourself by passing in in your own stdout and sdterr to the
+ "invoke" method:
+
++----+
+    invoker.invoke( myOutputStream, myErrorStream );
++----+
+
+ The current running directory defaults to the current directory of the running
+ JVM, but can be overridden via:
+
++----+
+    invoker.setCurrentDirectory( new File("/myDir") );
++----+
+
+ If you call "exit" within your script, the Invoker will throw a 
+ "org.codehaus.plexus.component.jruby.JRubySystemExitException". The method
+ contains a "getStatus()" method which returns the numerical value of the
+ "exit".
+
+ Finally, your ruby script can return objects. However, note that JRuby doesn't
+ like scripts to end with a "return" statement, so just end your script with the
+ value you wish returned. For example, the following implementation:
+
++----+
+include_class 'com.test.Executor'
+
+class JExecute < Executor
+  def execute
+    puts "random number: #{$random.nextInt.to_s}"
+  end
+end
+
+#return value cannot be prefixed by 'return' keyword
+JExecute.new
++----+
+
+ When invoked the script execute and return the JExecute object implementing the
+ "com.test.Executor" interface. This allows a Plexus JRuby component to interact
+ with the calling Plexus component.
+
++----+
+    JRubyInvoker invoker = (JRubyInvoker) lookup( "execute" );
+
+    invoker.putGlobal( "random", new Random() );
+
+    Executor result = (Executor)invoker.invoke();
+    result.execute();
++----+
+
+ Will print:
+
++----+
+random number: -123494581
++----+
