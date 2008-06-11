@@ -1,7 +1,5 @@
 package org.codehaus.plexus.component.factory.bsh;
 
-import bsh.EvalError;
-import bsh.Interpreter;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.factory.AbstractComponentFactory;
@@ -14,7 +12,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
-import java.net.URLClassLoader;
+
+import bsh.EvalError;
+import bsh.Interpreter;
 
 /**
  * BeanShell component factory.
@@ -72,20 +72,22 @@ public class BshComponentFactory
         }
         catch ( EvalError evalError )
         {
-            container.getLogger().info( "Error text: " + evalError.getErrorText() );
+            container.getLoggerManager()
+                     .getLoggerForComponent( getClass().getName() )
+                     .info( "Error text: " + evalError.getErrorText() );
 
             throw new ComponentInstantiationException( "Cannot build component for: " +
-                componentDescriptor.getComponentKey() + "; unable to read BeanShell script", evalError );
+                componentDescriptor.getHumanReadableKey() + "; unable to read BeanShell script", evalError );
         }
         catch ( FileNotFoundException e )
         {
             throw new ComponentInstantiationException( "Cannot build component for: " +
-                componentDescriptor.getComponentKey() + "; unable to read BeanShell script", e );
+                componentDescriptor.getHumanReadableKey() + "; unable to read BeanShell script", e );
         }
         catch ( IOException e )
         {
             throw new ComponentInstantiationException( "Cannot build component for: " +
-                componentDescriptor.getComponentKey() + "; unable to read BeanShell script", e );
+                componentDescriptor.getHumanReadableKey() + "; unable to read BeanShell script", e );
         }
         finally
         {
@@ -93,6 +95,11 @@ public class BshComponentFactory
         }
 
         return result;
+    }
+
+    public String getId()
+    {
+        return "bsh";
     }
 
 }

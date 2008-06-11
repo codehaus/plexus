@@ -1,7 +1,7 @@
 package org.codehaus.plexus.component.factory.ant;
 
-import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.factory.AbstractComponentFactory;
 import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
@@ -22,6 +22,11 @@ public class AntComponentFactory
         {
             throw new ComponentInstantiationException( "Failed to extract Ant script for: " + componentDescriptor.getHumanReadableKey(), e );
         }
+    }
+
+    public String getId()
+    {
+        return "ant";
     }
 
 }
