@@ -1,13 +1,12 @@
 package org.codehaus.plexus.scheduler;
 
-import org.quartz.JobDetail;
-import org.quartz.Trigger;
-import org.quartz.SchedulerException;
-import org.quartz.JobListener;
-import org.quartz.TriggerListener;
-import org.quartz.impl.StdScheduler;
-
 import java.util.Properties;
+
+import org.quartz.JobDetail;
+import org.quartz.JobListener;
+import org.quartz.SchedulerException;
+import org.quartz.Trigger;
+import org.quartz.TriggerListener;
 
 public interface Scheduler
 {

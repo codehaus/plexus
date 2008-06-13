@@ -1,14 +1,7 @@
 package org.codehaus.plexus.scheduler.configuration;
 
 import org.codehaus.plexus.scheduler.Scheduler;
-import org.quartz.spi.JobStore;
-import org.quartz.spi.ThreadPool;
-import org.quartz.core.QuartzScheduler;
-import org.quartz.core.SchedulingContext;
-import org.quartz.utils.DBConnectionManager;
 import org.quartz.impl.StdSchedulerFactory;
-
-import java.util.Properties;
 
 /**
  * Class to represent the configuration file for the proxy
