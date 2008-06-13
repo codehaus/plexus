@@ -25,6 +25,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Expansion of the original RegexBasedInterpolator, found in plexus-utils, this
+ * interpolator provides options for setting custom prefix/suffix regex parts,
+ * and includes a {@link RecursionInterceptor} parameter in its interpolate(..)
+ * call, to allow the detection of cyclical expression references.
  *
  * @version $Id$
  */
@@ -38,38 +42,95 @@ public class RegexBasedInterpolator
 
     private List valueSources;
 
+    /**
+     * Setup a basic interpolator.
+     * <br/>
+     * <b>NOTE:</b> You will have to call
+     * {@link RegexBasedInterpolator#addValueSource(ValueSource)} at least once
+     * if you use this constructor!
+     */
     public RegexBasedInterpolator()
     {
         valueSources = new ArrayList();
     }
 
     /**
+     * Setup an interpolator with no value sources, and the specified regex pattern
+     * prefix and suffix in place of the default one.
+     * <br/>
+     * <b>NOTE:</b> You will have to call
+     * {@link RegexBasedInterpolator#addValueSource(ValueSource)} at least once
+     * if you use this constructor!
+     *
      * @param startRegex start of the regular expression to use
      * @param endRegex end of the regular expression to use
-     * @since 1.5
      */
     public RegexBasedInterpolator (String startRegex, String endRegex)
     {
-        this();
+        valueSources = new ArrayList();
         this.startRegex = startRegex;
         this.endRegex = endRegex;
     }
 
+    /**
+     * Setup a basic interpolator with the specified list of value sources.
+     *
+     * @param valueSources The list of value sources to use
+     */
     public RegexBasedInterpolator( List valueSources )
     {
         this.valueSources = new ArrayList( valueSources );
     }
 
+    /**
+     * Setup an interpolator with the specified value sources, and the specified
+     * regex pattern prefix and suffix in place of the default one.
+     *
+     * @param startRegex start of the regular expression to use
+     * @param endRegex end of the regular expression to use
+     * @param valueSources The list of value sources to use
+     */
+    public RegexBasedInterpolator (String startRegex, String endRegex, List valueSources )
+    {
+        this.startRegex = startRegex;
+        this.endRegex = endRegex;
+        this.valueSources = valueSources;
+    }
+
+    /**
+     * Add a new {@link ValueSource} to the stack used to resolve expressions
+     * in this interpolator instance.
+     */
     public void addValueSource( ValueSource valueSource )
     {
         valueSources.add( valueSource );
     }
 
+    /**
+     * Remove the specified {@link ValueSource} from the stack used to resolve
+     * expressions in this interpolator instance.
+     */
     public void removeValuesSource( ValueSource valueSource )
     {
         valueSources.remove( valueSource );
     }
 
+    /**
+     * Attempt to resolve all expressions in the given input string, using the
+     * given pattern to first trim an optional prefix from each expression. The
+     * supplied recursion interceptor will provide protection from expression
+     * cycles, ensuring that the input can be resolved or an exception is
+     * thrown.
+     *
+     * @param input The input string to interpolate
+     *
+     * @param thisPrefixPattern An optional pattern that should be trimmed from
+     *                          the start of any expressions found in the input.
+     *
+     * @param recursionInterceptor Used to protect the interpolation process
+     *                             from expression cycles, and throw an
+     *                             exception if one is detected.
+     */
     public String interpolate( String input,
                                String thisPrefixPattern,
                                RecursionInterceptor recursionInterceptor )
@@ -84,8 +145,6 @@ public class RegexBasedInterpolator
         {
             thisPrefixPattern = null;
         }
-
-        String result = input;
 
         int realExprGroup = 2;
         Pattern expressionPattern = null;
@@ -103,6 +162,23 @@ public class RegexBasedInterpolator
             realExprGroup = 1;
         }
 
+        return interpolate( input, recursionInterceptor, expressionPattern, realExprGroup );
+    }
+
+    /**
+     * Entry point for recursive resolution of an expression and all of its
+     * nested expressions.
+     *
+     * @todo Ensure unresolvable expressions don't trigger infinite recursion.
+     */
+    private String interpolate( String input,
+                                RecursionInterceptor recursionInterceptor,
+                                Pattern expressionPattern,
+                                int realExprGroup )
+        throws InterpolationException
+    {
+        String result = input;
+
         Matcher matcher = expressionPattern.matcher( result );
 
         while ( matcher.find() )
@@ -115,6 +191,13 @@ public class RegexBasedInterpolator
                 realExpr = realExpr.substring( 1 );
             }
 
+            if ( recursionInterceptor.hasRecursiveExpression( realExpr ) )
+            {
+                throw new InterpolationException( "Detected the following recursive expression cycle: "
+                                                                  + recursionInterceptor.getExpressionCycle( realExpr ),
+                                                  wholeExpr );
+            }
+
             recursionInterceptor.expressionResolutionStarted( realExpr );
 
             Object value = null;
@@ -125,14 +208,12 @@ public class RegexBasedInterpolator
                 value = vs.getValue( realExpr );
             }
 
-            if ( value != null && recursionInterceptor.hasRecursiveExpression( value.toString() ) )
-            {
-                throw new InterpolationException( "Expression: \'" + wholeExpr + "\' references itself.", wholeExpr );
-            }
-
             if ( value != null )
             {
+                value = interpolate( String.valueOf( value ), recursionInterceptor, expressionPattern, realExprGroup );
+
                 result = StringUtils.replace( result, wholeExpr, String.valueOf( value ) );
+
                 // could use:
                 // result = matcher.replaceFirst( stringValue );
                 // but this could result in multiple lookups of stringValue, and replaceAll is not correct behaviour
@@ -145,6 +226,15 @@ public class RegexBasedInterpolator
         return result;
     }
 
+    /**
+     * Return any feedback messages and errors that were generated - but
+     * suppressed - during the interpolation process. Since unresolvable
+     * expressions will be left in the source string as-is, this feedback is
+     * optional, and will only be useful for debugging interpolation problems.
+     *
+     * @return a {@link List} that may be interspersed with {@link String} and
+     * {@link Throwable} instances.
+     */
     public List getFeedback()
     {
         List messages = new ArrayList();
@@ -164,6 +254,9 @@ public class RegexBasedInterpolator
         return messages;
     }
 
+    /**
+     * Clear the feedback messages from previous interpolate(..) calls.
+     */
     public void clearFeedback()
     {
         for ( Iterator it = valueSources.iterator(); it.hasNext(); )
@@ -176,6 +269,17 @@ public class RegexBasedInterpolator
         }
     }
 
+    /**
+     * See {@link RegexBasedInterpolator#interpolate(String, String, RecursionInterceptor)}.
+     * <br/>
+     * This method triggers the use of a {@link SimpleRecursionInterceptor}
+     * instance for protection against expression cycles.
+     *
+     * @param input The input string to interpolate
+     *
+     * @param thisPrefixPattern An optional pattern that should be trimmed from
+     *                          the start of any expressions found in the input.
+     */
     public String interpolate( String input,
                                String thisPrefixPattern )
         throws InterpolationException
@@ -183,12 +287,35 @@ public class RegexBasedInterpolator
         return interpolate( input, thisPrefixPattern, null );
     }
 
+    /**
+     * See {@link RegexBasedInterpolator#interpolate(String, String, RecursionInterceptor)}.
+     * <br/>
+     * This method triggers the use of a {@link SimpleRecursionInterceptor}
+     * instance for protection against expression cycles. It also leaves empty the
+     * expression prefix which would otherwise be trimmed from expressions. The
+     * result is that any detected expression will be resolved as-is.
+     *
+     * @param input The input string to interpolate
+     */
     public String interpolate( String input )
         throws InterpolationException
     {
         return interpolate( input, null, null );
     }
 
+    /**
+     * See {@link RegexBasedInterpolator#interpolate(String, String, RecursionInterceptor)}.
+     * <br/>
+     * This method leaves empty the expression prefix which would otherwise be
+     * trimmed from expressions. The result is that any detected expression will
+     * be resolved as-is.
+     *
+     * @param input The input string to interpolate
+     *
+     * @param recursionInterceptor Used to protect the interpolation process
+     *                             from expression cycles, and throw an
+     *                             exception if one is detected.
+     */
     public String interpolate( String input,
                                RecursionInterceptor recursionInterceptor )
         throws InterpolationException

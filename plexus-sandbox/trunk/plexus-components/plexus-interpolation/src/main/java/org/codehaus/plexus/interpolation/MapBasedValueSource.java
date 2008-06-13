@@ -18,7 +18,8 @@ package org.codehaus.plexus.interpolation;
 import java.util.Map;
 
 /**
- * @version $Id$
+ * Wraps a Map, and looks up the whole expression as a single key, returning the
+ * value mapped to it.
  */
 public class MapBasedValueSource
     implements ValueSource
@@ -26,11 +27,18 @@ public class MapBasedValueSource
 
     private final Map values;
 
+    /**
+     * Construct a new value source to wrap the supplied map.
+     */
     public MapBasedValueSource( Map values )
     {
         this.values = values;
     }
 
+    /**
+     * Lookup the supplied expression as a key in the wrapped Map, and return
+     * its value.
+     */
     public Object getValue( String expression )
     {
         return values.get( expression );

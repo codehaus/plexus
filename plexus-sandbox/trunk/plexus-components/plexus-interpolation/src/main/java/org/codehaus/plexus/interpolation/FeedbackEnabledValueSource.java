@@ -18,12 +18,28 @@ package org.codehaus.plexus.interpolation;
 
 import java.util.List;
 
+/**
+ * Represents a {@link ValueSource} which provides information back to the caller
+ * about what may have gone wrong while resolving the value for an expression.
+ *
+ * @author jdcasey
+ *
+ */
 public interface FeedbackEnabledValueSource
     extends ValueSource
 {
 
+    /**
+     * Return the feedback about resolution failures for a particular expression.
+     *
+     * @return a combination of String and Throwable instances, where strings
+     * related to throwables are listed first.
+     */
     List getFeedback();
 
+    /**
+     * Clear the feedback accumulated by a prior interpolation run.
+     */
     void clearFeedback();
 
 }

@@ -30,6 +30,9 @@ import java.io.InputStreamReader;
 import java.util.Properties;
 
 /**
+ * <b>NOTE:</b> This class was copied from plexus-utils, to allow this library
+ * to stand completely self-contained.
+ * <br/>
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l </a>
  * @version $Id$
  */

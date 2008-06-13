@@ -23,7 +23,11 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * @version $Id$
+ * Legacy support. Allow trimming one of a set of expression prefixes, the lookup
+ * the remaining expression as a literal key from the wrapped properties instance.
+ * <br/>
+ * This is just a convenience implementation to provide a shorthand for constructing
+ * the properties value source and then wrapping it with a prefixed value-source wrapper.
  */
 public class PrefixedPropertiesValueSource
     implements QueryEnabledValueSource
@@ -31,31 +35,62 @@ public class PrefixedPropertiesValueSource
 
     private final PrefixedValueSourceWrapper delegate;
 
+    /**
+     * Wrap the specified properties file with a new {@link PropertiesBasedValueSource}, then
+     * wrap that source with a new {@link PrefixedValueSourceWrapper} that uses the specified
+     * expression prefix. Finally, set this wrapper source as a delegate for this
+     * instance to use.
+     *
+     * @param prefix The expression prefix to trim
+     * @param properties The properties instance to wrap
+     */
     public PrefixedPropertiesValueSource( String prefix, Properties properties )
     {
         delegate = new PrefixedValueSourceWrapper( new PropertiesBasedValueSource( properties ), prefix );
     }
 
+    /**
+     * Wrap the specified properties file with a new {@link PropertiesBasedValueSource}, then
+     * wrap that source with a new {@link PrefixedValueSourceWrapper} that uses the specified
+     * expression-prefix list. Finally, set this wrapper source as a delegate for this
+     * instance to use.
+     *
+     * @param possiblePrefixes The expression-prefix list to trim
+     * @param properties The properties instance to wrap
+     */
     public PrefixedPropertiesValueSource( List possiblePrefixes, Properties properties, boolean allowUnprefixedExpressions )
     {
         delegate = new PrefixedValueSourceWrapper( new PropertiesBasedValueSource( properties ), possiblePrefixes, allowUnprefixedExpressions );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void clearFeedback()
     {
         delegate.clearFeedback();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public List getFeedback()
     {
         return delegate.getFeedback();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getLastExpression()
     {
         return delegate.getLastExpression();
     }
 
+    /**
+     * Delegates to {@link PrefixedValueSourceWrapper#getValue(String)} for the
+     * instance wrapping the {@PropertiesValueSource} instance.
+     */
     public Object getValue( String expression )
     {
         return delegate.getValue( expression );

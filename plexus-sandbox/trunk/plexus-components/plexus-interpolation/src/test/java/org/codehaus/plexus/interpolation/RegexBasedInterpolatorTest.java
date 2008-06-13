@@ -19,6 +19,7 @@ package org.codehaus.plexus.interpolation;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import junit.framework.TestCase;
 
@@ -30,6 +31,27 @@ public class RegexBasedInterpolatorTest
     public String getVar()
     {
         return "testVar";
+    }
+
+    public void testShouldFailOnExpressionCycle()
+    {
+        Properties props = new Properties();
+        props.setProperty( "key1", "${key2}" );
+        props.setProperty( "key2", "${key1}" );
+
+        RegexBasedInterpolator rbi = new RegexBasedInterpolator();
+        rbi.addValueSource( new PropertiesBasedValueSource( props ) );
+
+        try
+        {
+            rbi.interpolate( "${key1}", new SimpleRecursionInterceptor() );
+
+            fail( "Should detect expression cycle and fail." );
+        }
+        catch ( InterpolationException e )
+        {
+            e.printStackTrace( System.out );
+        }
     }
 
     public void testShouldResolveByMy_getVar_Method()
@@ -67,6 +89,7 @@ public class RegexBasedInterpolatorTest
         String result = rbi.interpolate( "this is a ${env.HOME}", "this" );
 
         assertFalse( "this is a ${HOME}".equals( result ) );
+        assertFalse( "this is a ${env.HOME}".equals( result ) );
     }
 
     public void testUseAlternateRegex()

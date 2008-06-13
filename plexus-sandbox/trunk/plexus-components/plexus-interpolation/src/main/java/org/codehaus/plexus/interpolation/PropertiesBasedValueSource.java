@@ -18,17 +18,37 @@ package org.codehaus.plexus.interpolation;
 
 import java.util.Properties;
 
+/**
+ * {@link ValueSource} implementation that wraps a {@link Properties} instance,
+ * and does a simple lookup of the entire expression string as the parameter for
+ * {@link Properties#getProperty(String)}, returning the result as the resolved
+ * value.
+ *
+ * @author jdcasey
+ *
+ */
 public class PropertiesBasedValueSource
     implements ValueSource
 {
 
     private final Properties properties;
 
+    /**
+     * Wrap the specified {@link Properties} object for use as a value source.
+     * Nulls are allowed.
+     *
+     * @param properties The properties instance to wrap.
+     */
     public PropertiesBasedValueSource( Properties properties )
     {
         this.properties = properties;
     }
 
+    /**
+     * @return the result of {@link Properties#getProperty(String)}, using the
+     * entire expression as the key to lookup. If the wrapped properties instance
+     * is null, simply return null.
+     */
     public Object getValue( String expression )
     {
         return properties == null ? null : properties.getProperty( expression );
