@@ -18,7 +18,6 @@ package org.codehaus.plexus.interpolation;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
 
@@ -26,30 +25,18 @@ public class PrefixAwareRecursionInterceptorTest
     extends TestCase
 {
 
-    public void testDefaultTokensInPattern()
-    {
-        String pattern = PrefixAwareRecursionInterceptor.DEFAULT_START_TOKEN + "(.+?)"
-                         + PrefixAwareRecursionInterceptor.DEFAULT_END_TOKEN;
-
-        Pattern p = Pattern.compile( pattern );
-
-        assertTrue( p.matcher( "${key}" ).matches() );
-        assertTrue( "${prefix.first}".matches( pattern ) );
-    }
-
     public void testFindExpression()
     {
         PrefixAwareRecursionInterceptor receptor = new PrefixAwareRecursionInterceptor(
                                                                                         Collections.singleton( "prefix." ) );
 
-        String nakedExpr = "prefix.first";
-        String expr = "${" + nakedExpr + "}";
+        String expr = "prefix.first";
 
-        receptor.expressionResolutionStarted( nakedExpr );
+        receptor.expressionResolutionStarted( expr );
 
         assertTrue( receptor.hasRecursiveExpression( expr ) );
 
-        receptor.expressionResolutionFinished( nakedExpr );
+        receptor.expressionResolutionFinished( expr );
 
         assertFalse( receptor.hasRecursiveExpression( expr ) );
     }
@@ -62,14 +49,13 @@ public class PrefixAwareRecursionInterceptorTest
                                                                                             "other."
                                                                                         } ) );
 
-        String nakedExpr = "prefix.first";
-        String expr = "${other.first}";
+        String expr = "prefix.first";
 
-        receptor.expressionResolutionStarted( nakedExpr );
+        receptor.expressionResolutionStarted( expr );
 
         assertTrue( receptor.hasRecursiveExpression( expr ) );
 
-        receptor.expressionResolutionFinished( nakedExpr );
+        receptor.expressionResolutionFinished( expr );
 
         assertFalse( receptor.hasRecursiveExpression( expr ) );
     }
@@ -82,14 +68,14 @@ public class PrefixAwareRecursionInterceptorTest
                                                                                             "other."
                                                                                         } ) );
 
-        String nakedExpr = "prefix.first";
-        String expr = "${first}";
+        String prefixedExpr = "prefix.first";
+        String expr = "first";
 
-        receptor.expressionResolutionStarted( nakedExpr );
+        receptor.expressionResolutionStarted( prefixedExpr );
 
         assertTrue( receptor.hasRecursiveExpression( expr ) );
 
-        receptor.expressionResolutionFinished( nakedExpr );
+        receptor.expressionResolutionFinished( prefixedExpr );
 
         assertFalse( receptor.hasRecursiveExpression( expr ) );
     }

@@ -22,8 +22,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * {@link RecursionInterceptor} implementation that provides support for expressions
@@ -74,18 +72,12 @@ public class PrefixAwareRecursionInterceptor
         this.possiblePrefixes = possiblePrefixes;
     }
 
-    public boolean hasRecursiveExpression( String value )
+    public boolean hasRecursiveExpression( String expression )
     {
-        Pattern expressionPattern = Pattern.compile( startToken + "(.+?)" + endToken );
-        Matcher matcher = expressionPattern.matcher( value );
-        while( matcher.find() )
+        String realExpr = ValueSourceUtils.trimPrefix( expression, possiblePrefixes, watchUnprefixedExpressions );
+        if ( realExpr != null )
         {
-            String realExpr = ValueSourceUtils.trimPrefix( matcher.group( 1 ), possiblePrefixes, watchUnprefixedExpressions );
-
-            if ( nakedExpressions.contains( realExpr ) )
-            {
-                return true;
-            }
+            return nakedExpressions.contains( realExpr );
         }
 
         return false;
