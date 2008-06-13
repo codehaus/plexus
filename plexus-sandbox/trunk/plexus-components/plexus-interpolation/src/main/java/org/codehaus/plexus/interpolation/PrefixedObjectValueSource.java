@@ -22,6 +22,10 @@ package org.codehaus.plexus.interpolation;
 import java.util.List;
 
 /**
+ * Wraps an arbitrary object with an {@link ObjectBasedValueSource} instance, then
+ * wraps that source with a {@link PrefixedValueSourceWrapper} instance, to which
+ * this class delegates all of its calls.
+ *
  * @version $Id$
  */
 public class PrefixedObjectValueSource
@@ -30,31 +34,52 @@ public class PrefixedObjectValueSource
 
     private final PrefixedValueSourceWrapper delegate;
 
+    /**
+     * Wrap the specified root object, allowing the specified expression prefix.
+     */
     public PrefixedObjectValueSource( String prefix, Object root )
     {
         delegate = new PrefixedValueSourceWrapper( new ObjectBasedValueSource( root ), prefix );
     }
 
+    /**
+     * Wrap the specified root object, allowing the specified list of expression
+     * prefixes and setting whether the {@link PrefixedValueSourceWrapper} allows
+     * unprefixed expressions.
+     */
     public PrefixedObjectValueSource( List possiblePrefixes, Object root, boolean allowUnprefixedExpressions )
     {
         delegate = new PrefixedValueSourceWrapper( new ObjectBasedValueSource( root ), possiblePrefixes, allowUnprefixedExpressions );
     }
 
+    /**
+     * Delegates to {@link PrefixedValueSourceWrapper#getValue(String)} for the
+     * instance wrapping the {@ObjectBasedValueSource} instance.
+     */
     public Object getValue( String expression )
     {
         return delegate.getValue( expression );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void clearFeedback()
     {
         delegate.clearFeedback();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public List getFeedback()
     {
         return delegate.getFeedback();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getLastExpression()
     {
         return delegate.getLastExpression();

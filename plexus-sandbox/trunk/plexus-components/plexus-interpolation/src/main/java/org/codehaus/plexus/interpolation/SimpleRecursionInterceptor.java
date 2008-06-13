@@ -16,37 +16,67 @@ package org.codehaus.plexus.interpolation;
  * limitations under the License.
  */
 
-import java.util.Iterator;
+import java.util.Collections;
+import java.util.List;
 import java.util.Stack;
 
+/**
+ * Simplest implementation of a {@link RecursionInterceptor}, which checks whether
+ * the existing interpolation effort is already attempting to resolve an exact
+ * expression, but has not finished. This will not catch synonym expressions, as
+ * are found in Maven (${project.build.directory}, ${pom.build.directory}, and
+ * ${build.directory} are synonyms).
+ *
+ * @author jdcasey
+ */
 public class SimpleRecursionInterceptor
     implements RecursionInterceptor
 {
 
     private Stack expressions = new Stack();
 
+    /**
+     * {@inheritDoc}
+     */
     public void expressionResolutionFinished( String expression )
     {
         expressions.pop();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void expressionResolutionStarted( String expression )
     {
         expressions.push( expression );
     }
 
-    public boolean hasRecursiveExpression( String value )
+    /**
+     * Check whether the current expression is already present in the in-process
+     * stack.
+     */
+    public boolean hasRecursiveExpression( String expression )
     {
-        for ( Iterator it = expressions.iterator(); it.hasNext(); )
-        {
-            String expr = (String) it.next();
-            if ( expr.equals( value ) || expr.indexOf( value ) > -1 )
-            {
-                return true;
-            }
-        }
+        return expressions.contains( expression );
+    }
 
-        return false;
+    /**
+     * When an expression is determined to be a recursive reference, this method
+     * returns the sublist of tracked expressions that participate in this cycle.
+     * Otherwise, if the expression isn't present in the in-process stack, return
+     * {@link Collections#EMPTY_LIST}.
+     */
+    public List getExpressionCycle( String expression )
+    {
+        int idx = expressions.indexOf( expression );
+        if ( idx < 0 )
+        {
+            return Collections.EMPTY_LIST;
+        }
+        else
+        {
+            return expressions.subList( idx, expressions.size() );
+        }
     }
 
 }

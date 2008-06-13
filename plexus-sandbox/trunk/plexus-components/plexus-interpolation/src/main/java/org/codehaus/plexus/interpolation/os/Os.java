@@ -60,6 +60,9 @@ import java.util.Locale;
 import java.util.Set;
 
 /**
+ * <b>NOTE:</b> This class was copied from plexus-utils, to allow this library
+ * to stand completely self-contained.
+ * <br/>
  * Condition that tests the OS type.
  *
  * @author Stefan Bodewig
@@ -125,7 +128,7 @@ public class Os
 
     /**
      * Constructor that sets the family attribute
-     * 
+     *
      * @param family a String value
      */
     public Os( String family )
@@ -156,7 +159,7 @@ public class Os
 
     /**
      * Sets the desired OS family type
-     * 
+     *
      * @param f The OS family type desired<br />
      *            Possible values:<br />
      *            <ul>
@@ -180,7 +183,7 @@ public class Os
 
     /**
      * Sets the desired OS name
-     * 
+     *
      * @param name The OS name
      */
     public void setName( String name )
@@ -190,7 +193,7 @@ public class Os
 
     /**
      * Sets the desired OS architecture
-     * 
+     *
      * @param arch The OS architecture
      */
     public void setArch( String arch )
@@ -200,7 +203,7 @@ public class Os
 
     /**
      * Sets the desired OS version
-     * 
+     *
      * @param version The OS version
      */
     public void setVersion( String version )
@@ -211,7 +214,7 @@ public class Os
     /**
      * Determines if the current OS matches the type of that
      * set in setFamily.
-     * 
+     *
      * @see Os#setFamily(String)
      */
     public boolean eval()
@@ -223,7 +226,7 @@ public class Os
     /**
      * Determines if the current OS matches the given OS
      * family.
-     * 
+     *
      * @param family the family to check for
      * @return true if the OS matches
      * @since 1.0
@@ -236,7 +239,7 @@ public class Os
     /**
      * Determines if the current OS matches the given OS
      * name.
-     * 
+     *
      * @param name the OS name to check for
      * @return true if the OS matches
      * @since 1.0
@@ -249,7 +252,7 @@ public class Os
     /**
      * Determines if the current OS matches the given OS
      * architecture.
-     * 
+     *
      * @param arch the OS architecture to check for
      * @return true if the OS matches
      * @since 1.0
@@ -262,7 +265,7 @@ public class Os
     /**
      * Determines if the current OS matches the given OS
      * version.
-     * 
+     *
      * @param version the OS version to check for
      * @return true if the OS matches
      * @since 1.0
@@ -275,11 +278,11 @@ public class Os
     /**
      * Determines if the current OS matches the given OS
      * family, name, architecture and version.
-     * 
+     *
      * The name, archictecture and version are compared to
      * the System properties os.name, os.version and os.arch
      * in a case-independent way.
-     * 
+     *
      * @param family The OS family
      * @param name The OS name
      * @param arch The OS architecture
@@ -372,7 +375,7 @@ public class Os
 
     /**
      * Helper method to determine the current OS family.
-     * 
+     *
      * @return name of current OS family.
      * @since 1.4.2
      */
@@ -418,7 +421,7 @@ public class Os
      * <li>os/400</li>
      * <li>openvms</li>
      * </ul>
-     * 
+     *
      * @param theFamily the family to check.
      * @return true if one of the valid families.
      * @since 1.4.2

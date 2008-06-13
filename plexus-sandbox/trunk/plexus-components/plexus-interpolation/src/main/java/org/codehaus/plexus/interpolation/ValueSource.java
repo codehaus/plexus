@@ -16,6 +16,10 @@ package org.codehaus.plexus.interpolation;
  * limitations under the License.
  */
 
+/**
+ * Supplies one strategy for resolving a value for an interpolation expression.
+ * ValueSources may be stacked.
+ */
 public interface ValueSource
 {
 

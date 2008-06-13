@@ -23,6 +23,9 @@ import java.util.Hashtable;
 import java.util.Map;
 
 /**
+ * <b>NOTE:</b> This class was copied from plexus-utils, to allow this library
+ * to stand completely self-contained.
+ * <br/>
  * A cache of introspection information for a specific class instance.
  * Keys {@link java.lang.Method} objects by a concatenation of the
  * method name and the names of classes that make up the parameters.

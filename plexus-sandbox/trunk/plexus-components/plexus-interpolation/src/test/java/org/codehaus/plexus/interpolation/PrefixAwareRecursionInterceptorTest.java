@@ -28,7 +28,8 @@ public class PrefixAwareRecursionInterceptorTest
 
     public void testDefaultTokensInPattern()
     {
-        String pattern = PrefixAwareRecursionInterceptor.DEFAULT_START_TOKEN + "(.+?)" + PrefixAwareRecursionInterceptor.DEFAULT_END_TOKEN;
+        String pattern = PrefixAwareRecursionInterceptor.DEFAULT_START_TOKEN + "(.+?)"
+                         + PrefixAwareRecursionInterceptor.DEFAULT_END_TOKEN;
 
         Pattern p = Pattern.compile( pattern );
 
@@ -38,7 +39,8 @@ public class PrefixAwareRecursionInterceptorTest
 
     public void testFindExpression()
     {
-        PrefixAwareRecursionInterceptor receptor = new PrefixAwareRecursionInterceptor( Collections.singleton( "prefix." ) );
+        PrefixAwareRecursionInterceptor receptor = new PrefixAwareRecursionInterceptor(
+                                                                                        Collections.singleton( "prefix." ) );
 
         String nakedExpr = "prefix.first";
         String expr = "${" + nakedExpr + "}";
@@ -54,7 +56,11 @@ public class PrefixAwareRecursionInterceptorTest
 
     public void testFindExpressionWithDifferentPrefix()
     {
-        PrefixAwareRecursionInterceptor receptor = new PrefixAwareRecursionInterceptor( Arrays.asList( new String[]{"prefix.", "other."} ) );
+        PrefixAwareRecursionInterceptor receptor = new PrefixAwareRecursionInterceptor(
+                                                                                        Arrays.asList( new String[] {
+                                                                                            "prefix.",
+                                                                                            "other."
+                                                                                        } ) );
 
         String nakedExpr = "prefix.first";
         String expr = "${other.first}";
@@ -70,7 +76,11 @@ public class PrefixAwareRecursionInterceptorTest
 
     public void testFindExpressionWithoutPrefix()
     {
-        PrefixAwareRecursionInterceptor receptor = new PrefixAwareRecursionInterceptor( Arrays.asList( new String[]{"prefix.", "other."} ) );
+        PrefixAwareRecursionInterceptor receptor = new PrefixAwareRecursionInterceptor(
+                                                                                        Arrays.asList( new String[] {
+                                                                                            "prefix.",
+                                                                                            "other."
+                                                                                        } ) );
 
         String nakedExpr = "prefix.first";
         String expr = "${first}";

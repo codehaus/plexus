@@ -22,6 +22,11 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
+ * {@link ValueSource} which resolves expressions against the environment variables
+ * available from the underlying operating system (and possibly, the shell environment
+ * that created the present Java process). If the expression starts with 'env.',
+ * this prefix is trimmed before resolving the rest as an environment variable name.
+ *
  * @version $Id$
  */
 public class EnvarBasedValueSource
@@ -56,6 +61,15 @@ public class EnvarBasedValueSource
         envars = OperatingSystemUtils.getSystemEnvVars( caseSensitive );
     }
 
+    /**
+     * If the expression starts with 'env.' then trim this prefix. Next, resolve
+     * the (possibly trimmed) expression as an environment variable name against
+     * the collection of environment variables that were read from the operating
+     * system when this {@link ValueSource} instance was created.
+     *
+     * @param expression envar expression, like 'HOME' or 'env.HOME'
+     * @return the environment variable value for the given expression
+     */
     public Object getValue( String expression )
     {
         String expr = expression;

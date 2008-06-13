@@ -16,9 +16,17 @@ package org.codehaus.plexus.interpolation.util;
  * limitations under the License.
  */
 
+import org.codehaus.plexus.interpolation.ValueSource;
+
 import java.util.Collection;
 import java.util.Iterator;
 
+/**
+ * Utility methods shared by multiple {@link ValueSource} implementations.
+ *
+ * @author jdcasey
+ *
+ */
 public final class ValueSourceUtils
 {
 
@@ -26,6 +34,22 @@ public final class ValueSourceUtils
     {
     }
 
+    /**
+     * If the expression starts with one of the provided prefixes, trim that prefix
+     * and return the remaining expression. If it doesn't start with a provided
+     * prefix, and the allowUnprefixedExpressions flag is true, then return the
+     * expression unchanged; if the flag is false, return null. Finally, if the
+     * original expression is null, return null without attempting to process it.
+     *
+     * @param expression The expression to trim
+     * @param possiblePrefixes The list of possible expression prefixes to trim
+     * @param allowUnprefixedExpressions Whether to return the expression if it
+     * doesn't start with one of the prefixes. If true, simply return the
+     * original expression; if false, return null.
+     *
+     * @return The trimmed expression, or null. See the behavior of
+     * allowUnprefixedExpressions in this method for more detail.
+     */
     public static String trimPrefix( String expression, Collection possiblePrefixes, boolean allowUnprefixedExpressions )
     {
         if ( expression == null )

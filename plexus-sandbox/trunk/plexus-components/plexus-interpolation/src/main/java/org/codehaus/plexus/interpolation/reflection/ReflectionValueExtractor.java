@@ -24,6 +24,9 @@ import java.util.StringTokenizer;
 import java.util.WeakHashMap;
 
 /**
+ * <b>NOTE:</b> This class was copied from plexus-utils, to allow this library
+ * to stand completely self-contained.
+ * <br/>
  * Using simple dotted expressions extract the values from a MavenProject
  * instance, For example we might want to extract a value like:
  * project.build.sourceDirectory

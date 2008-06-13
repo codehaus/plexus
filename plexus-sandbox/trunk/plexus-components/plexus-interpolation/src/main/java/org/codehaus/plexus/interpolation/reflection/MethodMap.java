@@ -26,7 +26,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * <b>NOTE:</b> This class was copied from plexus-utils, to allow this library
+ * to stand completely self-contained.
+ * <br/>
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
  * @author <a href="mailto:bob@werken.com">Bob McWhirter</a>
  * @author <a href="mailto:Christoph.Reck@dlr.de">Christoph Reck</a>
