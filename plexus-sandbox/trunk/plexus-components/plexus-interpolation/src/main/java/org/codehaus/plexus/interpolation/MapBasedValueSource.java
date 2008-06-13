@@ -41,7 +41,7 @@ public class MapBasedValueSource
      */
     public Object getValue( String expression )
     {
-        return values.get( expression );
+        return values == null ? null : values.get( expression );
     }
 
 }
