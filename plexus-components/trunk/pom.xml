@@ -92,7 +92,9 @@
     <profile>
       <id>requires-thirdparty</id>
       <activation>
+        <!--
         <activeByDefault>true</activeByDefault>
+      -->
         <property>
           <name>include-thirdparty</name>
           <value>!false</value>
