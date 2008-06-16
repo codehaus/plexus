@@ -40,7 +40,6 @@
     <module>plexus-i18n</module>
     <module>plexus-interactivity</module>
     <module>plexus-ircbot</module>
-    <module>plexus-jdo</module>
     <module>plexus-jetty-httpd</module>
     <module>plexus-jetty</module>
     <module>plexus-mimetyper</module>
@@ -88,4 +87,20 @@
       </plugin>      
     </plugins>
   </reporting>  
+  
+  <profiles>
+    <profile>
+      <id>requires-thirdparty</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+        <property>
+          <name>include-thirdparty</name>
+          <value>!false</value>
+        </property>
+      </activation>
+      <modules>
+        <module>plexus-jdo</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>
