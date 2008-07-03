@@ -311,6 +311,7 @@
       </plugin>
       -->
     </plugins>
+    <!-- As of 2.0.9, maven includes webdav.
     <extensions>
       <extension>
         <groupId>org.apache.maven.wagon</groupId>
@@ -318,6 +319,7 @@
         <version>1.0-rc1-SNAPSHOT</version>
       </extension>
     </extensions>
+    -->
     <pluginManagement>
       <plugins>
         <plugin>
