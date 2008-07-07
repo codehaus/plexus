@@ -162,6 +162,7 @@
       <groupId>org.codehaus.plexus.registry</groupId>
       <artifactId>plexus-registry-commons</artifactId>
       <version>1.0-alpha-3</version>
+      <scope>test</scope>
       <exclusions>
         <exclusion>
           <groupId>ant</groupId>
@@ -181,6 +182,7 @@
       <groupId>org.codehaus.plexus.registry</groupId>
       <artifactId>plexus-registry-api</artifactId>
       <version>1.0-alpha-3</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
