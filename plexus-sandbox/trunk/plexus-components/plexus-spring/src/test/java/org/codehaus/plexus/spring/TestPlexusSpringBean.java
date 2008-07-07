@@ -21,7 +21,6 @@ package org.codehaus.plexus.spring;
 import org.codehaus.plexus.registry.Registry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.BeanCreationException;
 
 /**
  * @author <a href="mailto:olamy at codehaus.org">olamy</a>
