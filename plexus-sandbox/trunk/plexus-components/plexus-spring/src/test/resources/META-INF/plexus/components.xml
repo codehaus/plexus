@@ -20,5 +20,19 @@
       <role-hint>saumur</role-hint>
     </component>
 
+    <component>
+      <role>org.codehaus.plexus.registry.Registry</role>
+      <implementation>org.codehaus.plexus.registry.commons.CommonsConfigurationRegistry</implementation>
+      <role-hint>commons-configuration-exists</role-hint>
+      <configuration>
+        <properties>
+          <system/>
+          <xml fileName="${target}/.foo/zloug.xml" config-optional="true"/>
+          <properties fileName="foo/bar/foo.properties" config-at="foo"/>
+        </properties>
+      </configuration>
+    </component>
+    
+    
   </components>
 </plexus>
