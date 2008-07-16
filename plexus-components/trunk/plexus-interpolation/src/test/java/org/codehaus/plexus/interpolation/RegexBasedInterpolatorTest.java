@@ -23,7 +23,6 @@ import java.util.Properties;
 
 import junit.framework.TestCase;
 
-
 public class RegexBasedInterpolatorTest
     extends TestCase
 {
@@ -95,7 +94,7 @@ public class RegexBasedInterpolatorTest
     public void testUseAlternateRegex()
         throws Exception
     {
-        RegexBasedInterpolator rbi = new RegexBasedInterpolator("\\@\\{(", ")?([^}]+)\\}@");
+        RegexBasedInterpolator rbi = new RegexBasedInterpolator( "\\@\\{(", ")?([^}]+)\\}@" );
 
         Map context = new HashMap();
         context.put( "var", "testVar" );
@@ -105,5 +104,51 @@ public class RegexBasedInterpolatorTest
         String result = rbi.interpolate( "this is a @{this.var}@", "this" );
 
         assertEquals( "this is a testVar", result );
+    }
+
+    public void testUsePostProcessor_DoesNotChangeValue()
+        throws InterpolationException
+    {
+        RegexBasedInterpolator rbi = new RegexBasedInterpolator();
+        
+        Map context = new HashMap();
+        context.put( "test.var", "testVar" );
+
+        rbi.addValueSource( new MapBasedValueSource( context ) );
+
+        rbi.addPostProcessor( new InterpolationPostProcessor()
+        {
+            public Object execute( String expression, Object value )
+            {
+                return null;
+            }
+        } );
+
+        String result = rbi.interpolate( "this is a ${test.var}", "" );
+
+        assertEquals( "this is a testVar", result );
+    }
+
+    public void testUsePostProcessor_ChangesValue()
+        throws InterpolationException
+    {
+        RegexBasedInterpolator rbi = new RegexBasedInterpolator();
+
+        Map context = new HashMap();
+        context.put( "test.var", "testVar" );
+
+        rbi.addValueSource( new MapBasedValueSource( context ) );
+
+        rbi.addPostProcessor( new InterpolationPostProcessor()
+        {
+            public Object execute( String expression, Object value )
+            {
+                return value + "2";
+            }
+        } );
+
+        String result = rbi.interpolate( "this is a ${test.var}", "" );
+
+        assertEquals( "this is a testVar2", result );
     }
 }

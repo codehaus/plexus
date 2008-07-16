@@ -37,6 +37,17 @@ public interface Interpolator
      * expressions in this interpolator instance.
      */
     void removeValuesSource( ValueSource valueSource );
+    
+    /**
+     * Add a new post-processor to handle final processing after 
+     * recursively-interpolated value is determined.
+     */
+    void addPostProcessor( InterpolationPostProcessor postProcessor );
+
+    /**
+     * Remove the given post-processor.
+     */
+    void removePostProcessor( InterpolationPostProcessor postProcessor );
 
     /**
      * See {@link Interpolator#interpolate(String, String, RecursionInterceptor)}.
