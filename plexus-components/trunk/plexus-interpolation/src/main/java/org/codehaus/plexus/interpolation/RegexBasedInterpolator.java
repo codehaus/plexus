@@ -40,7 +40,9 @@ public class RegexBasedInterpolator
 
     private String endRegex;
 
-    private List valueSources;
+    private List valueSources = new ArrayList();
+    
+    private List postProcessors = new ArrayList();
 
     /**
      * Setup a basic interpolator.
@@ -51,7 +53,6 @@ public class RegexBasedInterpolator
      */
     public RegexBasedInterpolator()
     {
-        valueSources = new ArrayList();
     }
 
     /**
@@ -67,7 +68,6 @@ public class RegexBasedInterpolator
      */
     public RegexBasedInterpolator (String startRegex, String endRegex)
     {
-        valueSources = new ArrayList();
         this.startRegex = startRegex;
         this.endRegex = endRegex;
     }
@@ -79,7 +79,7 @@ public class RegexBasedInterpolator
      */
     public RegexBasedInterpolator( List valueSources )
     {
-        this.valueSources = new ArrayList( valueSources );
+        this.valueSources.addAll( valueSources );
     }
 
     /**
@@ -94,12 +94,11 @@ public class RegexBasedInterpolator
     {
         this.startRegex = startRegex;
         this.endRegex = endRegex;
-        this.valueSources = valueSources;
+        this.valueSources.addAll( valueSources );
     }
 
     /**
-     * Add a new {@link ValueSource} to the stack used to resolve expressions
-     * in this interpolator instance.
+     * {@inheritDoc}
      */
     public void addValueSource( ValueSource valueSource )
     {
@@ -107,12 +106,27 @@ public class RegexBasedInterpolator
     }
 
     /**
-     * Remove the specified {@link ValueSource} from the stack used to resolve
-     * expressions in this interpolator instance.
+     * {@inheritDoc}
      */
     public void removeValuesSource( ValueSource valueSource )
     {
         valueSources.remove( valueSource );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addPostProcessor( InterpolationPostProcessor postProcessor )
+    {
+        postProcessors.add( postProcessor );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void removePostProcessor( InterpolationPostProcessor postProcessor )
+    {
+        postProcessors.remove( postProcessor  );
     }
 
     /**
@@ -211,6 +225,20 @@ public class RegexBasedInterpolator
             if ( value != null )
             {
                 value = interpolate( String.valueOf( value ), recursionInterceptor, expressionPattern, realExprGroup );
+                
+                if ( postProcessors != null && !postProcessors.isEmpty() )
+                {
+                    for ( Iterator it = postProcessors.iterator(); it.hasNext(); )
+                    {
+                        InterpolationPostProcessor postProcessor = (InterpolationPostProcessor) it.next();
+                        Object newVal = postProcessor.execute( realExpr, value );
+                        if ( newVal != null )
+                        {
+                            value = newVal;
+                            break;
+                        }
+                    }
+                }
 
                 result = StringUtils.replace( result, wholeExpr, String.valueOf( value ) );
 
