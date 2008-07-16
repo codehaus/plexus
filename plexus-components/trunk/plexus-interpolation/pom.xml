@@ -5,8 +5,10 @@
     <artifactId>plexus</artifactId>
     <version>1.0.11</version>
   </parent>
+  
   <artifactId>plexus-interpolation</artifactId>
   <version>1.1-SNAPSHOT</version>
+  
   <name>Plexus Interpolation API</name>
   
   <scm>
