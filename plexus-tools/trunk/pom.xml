@@ -21,10 +21,7 @@
     <module>plexus-cdc</module>
     <module>plexus-cdc-anno</module>
     <module>plexus-cli</module>
-    <!-- Removing this so I can release the rest...there is a strange unit test failure during the release:prepare step on 
-         this one that doesn't happen when building normally from plexus-tools dir. I'll release this one separately.
     <module>plexus-javadoc</module>
-    -->
   </modules>
   <scm> 
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-tools/trunk</connection>
