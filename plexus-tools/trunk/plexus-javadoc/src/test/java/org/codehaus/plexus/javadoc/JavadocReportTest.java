@@ -109,7 +109,7 @@ public class JavadocReportTest
     {
         File testPom = new File( getBasedir(), "src/test/resources/unit/plexus/plexus-plugin-config.xml" );
         PlexusConfiguration pluginConfiguration = extractPluginConfiguration( "maven-javadoc-plugin", testPom );
-        JavadocReport mojo = (JavadocReport) lookupMojo( "org.apache.maven.plugins", "maven-javadoc-plugin", "2.3",
+        JavadocReport mojo = (JavadocReport) lookupMojo( "org.apache.maven.plugins", "maven-javadoc-plugin", "2.4",
                                                          "javadoc", pluginConfiguration );
         // Don't know we need to specify that
         ArtifactRepository repository = new DefaultArtifactRepository( "central", "file://"
@@ -129,7 +129,7 @@ public class JavadocReportTest
                                                    + "<DD>\"org.codehaus.plexus.test.App\"</DD>"
                                                    + "<DT><B>role-hint:</B></DT>" + "<DD>\"app\"</DD>"
                                                    + "</DL></TD></TR></TABLE></DD>" ).toLowerCase()) != -1 );
-        
+
         assertTrue( str.toLowerCase().indexOf(
                                                ( "<DT><B>Plexus configuration:</B></DT><DD>"
                                                    + "<TABLE CELLPADDING=\"2\" CELLSPACING=\"0\"><TR><TD><DL>"
@@ -141,7 +141,7 @@ public class JavadocReportTest
                                                ( "<DT><B>Plexus requirement:</B></DT><DD>"
                                                    + "<TABLE CELLPADDING=\"2\" CELLSPACING=\"0\"><TR><TD><DL>"
                                                    + "<DT><B>role-hint:</B></DT><DD>\"foo\"</DD>"
-                                                   + "</DL></TD></TR></TABLE></DD></DL>" ).toLowerCase() ) != -1 );        
-        
+                                                   + "</DL></TD></TR></TABLE></DD></DL>" ).toLowerCase() ) != -1 );
+
     }
 }
