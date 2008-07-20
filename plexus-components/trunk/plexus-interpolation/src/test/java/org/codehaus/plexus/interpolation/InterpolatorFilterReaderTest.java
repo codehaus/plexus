@@ -117,6 +117,18 @@ public class InterpolatorFilterReaderTest
         assertEquals( "jason is an asshole", interpolate( foo, m ) );
     }
 
+    public void testInterpolationWithInterpolatedValueAtEndWithCustomToken()
+        throws Exception
+    {
+        Map m = new HashMap();
+        m.put( "name", "jason" );
+        m.put( "noun", "asshole" );
+
+        String foo = "@{name} is an @{noun}";
+
+        assertEquals( "jason is an asshole", interpolate( foo, m, "@{", "}", "\\@\\{(", ")?(.+?)\\}" ) );
+    }    
+    
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
@@ -126,14 +138,14 @@ public class InterpolatorFilterReaderTest
     {
         Interpolator interpolator = new RegexBasedInterpolator();
 
-        interpolator.addValueSource( new MapBasedValueSource(context) );
+        interpolator.addValueSource( new MapBasedValueSource( context ) );
 
-        Reader r = new InterpolatorFilterReader(  new StringReader( input ), interpolator );
+        Reader r = new InterpolatorFilterReader( new StringReader( input ), interpolator );
 
         StringBuffer buf = new StringBuffer();
         int read = -1;
         char[] cbuf = new char[1024];
-        while( ( read = r.read( cbuf ) ) > -1 )
+        while ( ( read = r.read( cbuf ) ) > -1 )
         {
             buf.append( cbuf, 0, read );
         }
@@ -141,4 +153,25 @@ public class InterpolatorFilterReaderTest
         return buf.toString();
     }
 
+    private String interpolate( String input, Map context, String beginToken, String endToken, String startRegExp,
+                                String endRegExp )
+        throws Exception
+    {
+        Interpolator interpolator = new RegexBasedInterpolator( startRegExp, endRegExp );
+
+        interpolator.addValueSource( new MapBasedValueSource( context ) );
+
+        Reader r = new InterpolatorFilterReader( new StringReader( input ), interpolator, beginToken, endToken );
+
+        StringBuffer buf = new StringBuffer();
+        int read = -1;
+        char[] cbuf = new char[1024];
+        while ( ( read = r.read( cbuf ) ) > -1 )
+        {
+            buf.append( cbuf, 0, read );
+        }
+
+        return buf.toString();
+    }    
+    
 }
