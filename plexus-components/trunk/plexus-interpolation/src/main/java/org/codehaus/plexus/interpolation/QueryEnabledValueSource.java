@@ -20,6 +20,7 @@ package org.codehaus.plexus.interpolation;
  * Tracks the most recent expression processed by this value source implementation.
  * This can be useful if the most recent expression is meant to modify the current
  * one.
+ * @version $Id$
  */
 public interface QueryEnabledValueSource
     extends ValueSource

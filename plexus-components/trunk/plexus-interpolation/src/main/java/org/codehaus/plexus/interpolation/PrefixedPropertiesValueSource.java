@@ -28,6 +28,7 @@ import java.util.Properties;
  * <br/>
  * This is just a convenience implementation to provide a shorthand for constructing
  * the properties value source and then wrapping it with a prefixed value-source wrapper.
+ * @version $Id$
  */
 public class PrefixedPropertiesValueSource
     implements QueryEnabledValueSource

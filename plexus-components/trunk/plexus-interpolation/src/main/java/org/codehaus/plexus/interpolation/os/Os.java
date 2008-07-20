@@ -69,7 +69,7 @@ import java.util.Set;
  * @author Magesh Umasankar
  * @author Brian Fox
  * @since 1.0
- * @version $Revision: 6549 $
+ * @version $Id$
  */
 public class Os
 {

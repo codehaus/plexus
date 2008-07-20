@@ -3,6 +3,7 @@ package org.codehaus.plexus.interpolation;
 /**
  * Used to allow full recursion of value interpolation before applying some rule
  * to the result.
+ * @version $Id$
  */
 public interface InterpolationPostProcessor
 {

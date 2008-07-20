@@ -29,6 +29,7 @@ import java.util.Stack;
  * build.directory in Maven's POM.
  *
  * @author jdcasey
+ * @version $Id$
  */
 public class PrefixAwareRecursionInterceptor
     implements RecursionInterceptor

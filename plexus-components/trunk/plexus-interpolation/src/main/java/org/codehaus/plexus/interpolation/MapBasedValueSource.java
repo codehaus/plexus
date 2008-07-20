@@ -20,6 +20,7 @@ import java.util.Map;
 /**
  * Wraps a Map, and looks up the whole expression as a single key, returning the
  * value mapped to it.
+ * @version $Id$
  */
 public class MapBasedValueSource
     implements ValueSource

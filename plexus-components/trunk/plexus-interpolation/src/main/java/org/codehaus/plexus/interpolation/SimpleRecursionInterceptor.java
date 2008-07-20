@@ -28,6 +28,7 @@ import java.util.Stack;
  * ${build.directory} are synonyms).
  *
  * @author jdcasey
+ * @version $Id$
  */
 public class SimpleRecursionInterceptor
     implements RecursionInterceptor
