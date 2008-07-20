@@ -162,9 +162,18 @@ public class RegexBasedInterpolator
 
         int realExprGroup = 2;
         Pattern expressionPattern = null;
-        if (startRegex != null || endRegex != null)
+        if ( startRegex != null || endRegex != null )
         {
-            expressionPattern = Pattern.compile( startRegex + thisPrefixPattern + endRegex );
+            if ( thisPrefixPattern == null )
+            {
+                expressionPattern = Pattern.compile( startRegex + endRegex );
+                realExprGroup = 1;
+            }
+            else
+            {
+                expressionPattern = Pattern.compile( startRegex + thisPrefixPattern + endRegex );
+            }
+
         }
         else if ( thisPrefixPattern != null )
         {
