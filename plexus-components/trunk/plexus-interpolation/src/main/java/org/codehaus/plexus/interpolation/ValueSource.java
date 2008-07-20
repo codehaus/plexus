@@ -19,6 +19,7 @@ package org.codehaus.plexus.interpolation;
 /**
  * Supplies one strategy for resolving a value for an interpolation expression.
  * ValueSources may be stacked.
+ * @version $Id$
  */
 public interface ValueSource
 {

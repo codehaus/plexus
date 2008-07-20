@@ -23,6 +23,7 @@ import java.util.List;
  * about what may have gone wrong while resolving the value for an expression.
  *
  * @author jdcasey
+ * @version $Id$
  *
  */
 public interface FeedbackEnabledValueSource

@@ -22,6 +22,7 @@ import java.util.List;
  * Interpolator interface. Based on existing RegexBasedInterpolator interface.
  *
  * @author cstamas
+ * @version $Id$
  */
 public interface Interpolator
 {

@@ -25,6 +25,7 @@ import java.util.List;
  * implementations ensure that those expressions don't reference an expression
  * which is in the process of being resolved. If that happens, the expression
  * references are cyclical, and would othewise result in an infinite loop.
+ * @version $Id$
  */
 public interface RecursionInterceptor
 {

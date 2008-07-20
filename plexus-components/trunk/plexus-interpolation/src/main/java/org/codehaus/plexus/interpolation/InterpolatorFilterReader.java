@@ -63,6 +63,7 @@ import java.io.Reader;
  * implementation. This implementation is heavily based on org.codehaus.plexus.util.InterpolationFilterReader.
  *
  * @author cstamas
+ * @version $Id$
  */
 public class InterpolatorFilterReader
     extends FilterReader

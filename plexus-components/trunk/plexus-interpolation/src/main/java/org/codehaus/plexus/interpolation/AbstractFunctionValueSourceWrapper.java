@@ -28,6 +28,7 @@ package org.codehaus.plexus.interpolation;
  * This allows the first expression to be a function name that modifies the
  * value of the second expression, which is resolved from the wrapped value
  * source.
+ * @version $Id$
  */
 public abstract class AbstractFunctionValueSourceWrapper
     implements ValueSource

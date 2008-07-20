@@ -25,6 +25,7 @@ import java.util.List;
  * supplied object is the root. Expressions like 'child.name' will translate into
  * 'rootObject.getChild().getName()' for non-boolean properties, and
  * 'rootObject.getChild().isName()' for boolean properties.
+ * @version $Id$
  */
 public class ObjectBasedValueSource
     implements FeedbackEnabledValueSource
