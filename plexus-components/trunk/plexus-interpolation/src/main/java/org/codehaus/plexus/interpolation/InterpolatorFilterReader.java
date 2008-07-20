@@ -81,17 +81,41 @@ public class InterpolatorFilterReader
     private int previousIndex = -1;
 
     /** Default begin token. */
-    private static String BEGIN_TOKEN = "${";
+    public static final String DEFAULT_BEGIN_TOKEN = "${";
 
     /** Default end token. */
-    private static String END_TOKEN = "}";
+    public static final String DEFAULT_END_TOKEN = "}";
+    
+    private String beginToken;
+    
+    private String endToken;
 
+    /**
+     * this constructor use default begin token ${ and default end token } 
+     * @param in reader to use
+     * @param interpolator interpolator instance to use
+     */
     public InterpolatorFilterReader( Reader in, Interpolator interpolator )
+    {
+        this( in, interpolator, DEFAULT_BEGIN_TOKEN, DEFAULT_END_TOKEN );
+    }
+    
+    /**
+     * @param in reader to use
+     * @param interpolator interpolator instance to use
+     * @param beginToken start token to use
+     * @param endToken end token to use
+     */
+    public InterpolatorFilterReader( Reader in, Interpolator interpolator, String beginToken, String endToken )
     {
         super( in );
 
         this.interpolator = interpolator;
-    }
+        
+        this.beginToken = beginToken;
+        
+        this.endToken = endToken;
+    }    
 
     /**
      * Skips characters. This method will block until some characters are available, an I/O error occurs, or the end of
@@ -172,16 +196,16 @@ public class InterpolatorFilterReader
         }
 
         int ch = -1;
-        if ( previousIndex != -1 && previousIndex < END_TOKEN.length() )
+        if ( previousIndex != -1 && previousIndex < this.endToken.length() )
         {
-            ch = END_TOKEN.charAt( previousIndex++ );
+            ch = this.endToken.charAt( previousIndex++ );
         }
         else
         {
             ch = in.read();
         }
 
-        if ( ch == BEGIN_TOKEN.charAt( 0 ) )
+        if ( ch == this.beginToken.charAt( 0 ) )
         {
             StringBuffer key = new StringBuffer( );
 
@@ -191,9 +215,9 @@ public class InterpolatorFilterReader
 
             do
             {
-                if ( previousIndex != -1 && previousIndex < END_TOKEN.length() )
+                if ( previousIndex != -1 && previousIndex < this.endToken.length() )
                 {
-                    ch = END_TOKEN.charAt( previousIndex++ );
+                    ch = this.endToken.charAt( previousIndex++ );
                 }
                 else
                 {
@@ -203,8 +227,8 @@ public class InterpolatorFilterReader
                 {
                     key.append( (char) ch );
 
-                    if ( ( beginTokenMatchPos < BEGIN_TOKEN.length() )
-                        && ( ch != BEGIN_TOKEN.charAt( beginTokenMatchPos++ ) ) )
+                    if ( ( beginTokenMatchPos < this.beginToken.length() )
+                        && ( ch != this.beginToken.charAt( beginTokenMatchPos++ ) ) )
                     {
                         ch = -1; // not really EOF but to trigger code below
                         break;
@@ -215,18 +239,18 @@ public class InterpolatorFilterReader
                     break;
                 }
             }
-            while ( ch != END_TOKEN.charAt( 0 ) );
+            while ( ch != this.endToken.charAt( 0 ) );
 
             // now test endToken
-            if ( ch != -1 && END_TOKEN.length() > 1 )
+            if ( ch != -1 && this.endToken.length() > 1 )
             {
                 int endTokenMatchPos = 1;
 
                 do
                 {
-                    if ( previousIndex != -1 && previousIndex < END_TOKEN.length() )
+                    if ( previousIndex != -1 && previousIndex < this.endToken.length() )
                     {
-                        ch = END_TOKEN.charAt( previousIndex++ );
+                        ch = this.endToken.charAt( previousIndex++ );
                     }
                     else
                     {
@@ -237,7 +261,7 @@ public class InterpolatorFilterReader
                     {
                         key.append( (char) ch );
 
-                        if ( ch != END_TOKEN.charAt( endTokenMatchPos++ ) )
+                        if ( ch != this.endToken.charAt( endTokenMatchPos++ ) )
                         {
                             ch = -1; // not really EOF but to trigger code below
                             break;
@@ -249,7 +273,7 @@ public class InterpolatorFilterReader
                         break;
                     }
                 }
-                while ( endTokenMatchPos < END_TOKEN.length() );
+                while ( endTokenMatchPos < this.endToken.length() );
             }
 
             // There is nothing left to read so we have the situation where the begin/end token
@@ -287,9 +311,9 @@ public class InterpolatorFilterReader
             else
             {
                 previousIndex = 0;
-                replaceData = key.substring( 0, key.length() - END_TOKEN.length() );
+                replaceData = key.substring( 0, key.length() - this.endToken.length() );
                 replaceIndex = 0;
-                return BEGIN_TOKEN.charAt( 0 );
+                return this.beginToken.charAt( 0 );
             }
         }
 
