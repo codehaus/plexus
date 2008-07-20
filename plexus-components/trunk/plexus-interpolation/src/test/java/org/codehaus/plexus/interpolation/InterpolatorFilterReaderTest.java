@@ -126,8 +126,20 @@ public class InterpolatorFilterReaderTest
 
         String foo = "@{name} is an @{noun}";
 
-        assertEquals( "jason is an asshole", interpolate( foo, m, "@{", "}", "\\@\\{(", ")?(.+?)\\}" ) );
+        assertEquals( "jason is an asshole", interpolate( foo, m, "@{", "}", "\\@\\{", "(.+?)\\}" ) );
     }    
+    
+    public void testInterpolationWithInterpolatedValueAtEndWithCustomTokenAndCustomRegExp()
+    throws Exception
+{
+    Map m = new HashMap();
+    m.put( "name", "jason" );
+    m.put( "noun", "asshole" );
+
+    String foo = "@name@ is an @noun@";
+
+    assertEquals( "jason is an asshole", interpolate( foo, m, "@", "@", "\\@", "(.+?)\\@" ) );
+}    
     
     // ----------------------------------------------------------------------
     //
