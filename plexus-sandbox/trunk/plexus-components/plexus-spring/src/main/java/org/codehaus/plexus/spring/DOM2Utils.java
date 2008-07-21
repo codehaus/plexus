@@ -95,6 +95,16 @@ public class DOM2Utils
         return StringEscapeUtils.escapeXml( text );
     }
     
+    /**
+     * Hack to prevent change in commons-lang see :
+     * http://issues.apache.org/jira/browse/LANG-363
+     * to prevent http://jira.codehaus.org/browse/CONTINUUM-1816
+     * org/apache/maven/continuum/security.properties -> org\/apache\/maven\/continuum\/security.properties
+     * @param out
+     * @param str
+     * @param escapeSingleQuote
+     * @throws IOException
+     */
     private static void escapeJavaStyleString( Writer out, String str, boolean escapeSingleQuote )
         throws IOException
     {
