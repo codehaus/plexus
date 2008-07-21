@@ -1,4 +1,4 @@
-<project>
+<book>
   <id>Plexus_developer_reference</id>
   <title>Plexus - Developer Reference</title>
   <author>Rahul Thakur</author>
@@ -16,5 +16,5 @@
       </sections>
     </chapter>   
   </chapters>
-</project>
+</book>
 

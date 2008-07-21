@@ -24,6 +24,14 @@
             <td><a href="../plexus-components/plexus-mail-sender">plexus-mail-sender</a></td>
             <td>Mail sender with different providers (javamail, simple)</td>
           </tr>
+          <tr>
+            <td><a href="../plexus-components/plexus-interpolation">plexus-interpolation</a></td>
+            <td>Flexible interpolation Framework.</td>
+          </tr>    
+          <tr>
+            <td><a href="../plexus-components/plexus-cache">plexus-cache</a></td>
+            <td>Cache API with different providers (oscache, whirlycache, hashmap)</td>
+          </tr>                
         </table>
       </subsection>
       <subsection name="Sandboxed Components">
@@ -33,8 +41,8 @@
             <th>Description</th>
           </tr>
           <tr>
-            <td><a href="../plexus-components/plexus-cache">plexus-cache</a></td>
-            <td>Cache API with different providers (oscache, whirlycache, hashmap)</td>
+            <td><a href="../plexus-components/plexus-spring">plexus-spring</a></td>
+            <td>Adapter to use plexus components in a springframework application context</td>
           </tr>
           <tr>
             <td><a href="../plexus-components/plexus-contextualizer">plexus-contextualizer</a></td>
