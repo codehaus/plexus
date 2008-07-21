@@ -1,4 +1,4 @@
-<project name="Plexus Utils">
+<project name="Plexus Interpolation">
   <bannerLeft>
     <name>Plexus</name>
     <href>http://plexus.codehaus.org/</href>
@@ -20,6 +20,9 @@
     <links>
       <item name="Plexus" href="http://plexus.codehaus.org/"/>
     </links>  
-     <menu ref="reports" inherit="bottom" />
+    <menu name="Overview">
+      <item name="Introduction" href="index.html"/>
+    </menu>    
+    <menu ref="reports" inherit="bottom" />
   </body>
 </project>
