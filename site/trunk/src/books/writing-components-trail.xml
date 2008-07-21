@@ -1,4 +1,4 @@
-<project>
+<book>
   <id>writing-components-trail</id>
   <title>Writing Components in Plexus</title>
   <author>Rahul Thakur</author>
@@ -112,4 +112,4 @@
       </sections>
     </chapter>
   </chapters>
-</project>
+</book>
