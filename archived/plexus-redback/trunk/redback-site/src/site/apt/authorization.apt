@@ -1,9 +1,0 @@
- -----
- Authorization       
- -----
- 2 June 2007
- -----
-
-Redback Authorization
-
-  Redback comes with an implementation of role based access control.  Please see the section below on rbac to learn more about that system.

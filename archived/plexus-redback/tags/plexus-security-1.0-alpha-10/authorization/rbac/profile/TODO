@@ -1,4 +1,0 @@
-
-* allow resources and role names of be sourced from different items for dynamic roles
-* wrap user assignment logic as well to make using rbac that much easier
-* expand scope of role profiles to include more rbac utility, perhaps catching some of the runtime exceptions that can come out of the rbac manager (until maybe we go back and make them checked)
