@@ -1,0 +1,45 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <artifactId>plexus</artifactId>
+    <groupId>org.codehaus.plexus</groupId>
+    <version>1.0.11</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>plexus-tools</artifactId>
+  <packaging>pom</packaging>
+  <name>Plexus Tools Parent Project</name>
+  <version>1.0.11</version>
+  <url>http://plexus.codehaus.org/plexus-tools</url>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <version>1.0-alpha-43</version>
+    </dependency>
+  </dependencies>
+  <modules>
+    <module>plexus-cdc</module>
+    <module>plexus-cdc-anno</module>
+    <module>plexus-cli</module>
+    <module>plexus-javadoc</module>
+  </modules>
+  <scm> 
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-tools/tags/plexus-tools-1.0.11</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-tools/tags/plexus-tools-1.0.11</developerConnection> 
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-tools/tags/plexus-tools-1.0.11</url>
+  </scm>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.0-beta-7</version>
+        <configuration>
+          <useReleaseProfile>true</useReleaseProfile>  
+          <tagBase>https://svn.codehaus.org/plexus/plexus-tools/tags/</tagBase>
+          <arguments>-Prelease</arguments>
+          <goals>deploy</goals>
+        </configuration>    
+      </plugin>    
+    </plugins>
+  </build>
+</project>
