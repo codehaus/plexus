@@ -28,4 +28,18 @@
     <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-tools/trunk</developerConnection> 
     <url>http://fisheye.codehaus.org/browse/plexus/plexus-tools/trunk/</url>
   </scm>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.0-beta-7</version>
+        <configuration>
+          <useReleaseProfile>true</useReleaseProfile>  
+          <tagBase>https://svn.codehaus.org/plexus/plexus-tools/tags/</tagBase>
+          <arguments>-Prelease</arguments>
+          <goals>deploy</goals>
+        </configuration>    
+      </plugin>    
+    </plugins>
+  </build>
 </project>
