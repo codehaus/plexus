@@ -6,7 +6,7 @@
   <parent>
     <artifactId>plexus-tools</artifactId>
     <groupId>org.codehaus.plexus</groupId>
-    <version>1.0.11-SNAPSHOT</version>
+    <version>1.0.11</version>
   </parent>
 
   <artifactId>plexus-javadoc</artifactId>
