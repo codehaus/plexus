@@ -31,11 +31,7 @@
   </dependencies>
   <modules>
     <module>plexus-archiver</module>
-    <module>plexus-bayesian</module>
-    <module>plexus-command</module>
     <module>plexus-compiler</module>
-    <module>plexus-formica</module>
-    <module>plexus-formica-web</module>
     <module>plexus-hibernate</module>
     <module>plexus-i18n</module>
     <module>plexus-interactivity</module>
@@ -50,6 +46,8 @@
     <module>plexus-taskqueue</module>
     <module>plexus-velocity</module>
     <module>plexus-xmlrpc</module>
+    <module>plexus-spring</module>
+    <module>plexus-swizzle</module>
   </modules>
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-components/trunk/</connection>
