@@ -2,14 +2,14 @@
   <parent>
     <artifactId>plexus-tools</artifactId>
     <groupId>org.codehaus.plexus</groupId>
-    <version>1.0.11</version>
+    <version>1.0.12-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus-cli</artifactId>
   <name>Plexus CLI</name>
   <description>Easily create CLIs with Plexus components</description>
-  <version>1.5</version>
+  <version>1.6-SNAPSHOT</version>
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
