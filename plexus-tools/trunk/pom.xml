@@ -8,7 +8,7 @@
   <artifactId>plexus-tools</artifactId>
   <packaging>pom</packaging>
   <name>Plexus Tools Parent Project</name>
-  <version>1.0.11-SNAPSHOT</version>
+  <version>1.0.11</version>
   <url>http://plexus.codehaus.org/plexus-tools</url>
   <dependencies>
     <dependency>
@@ -24,9 +24,9 @@
     <module>plexus-javadoc</module>
   </modules>
   <scm> 
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-tools/trunk</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-tools/trunk</developerConnection> 
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-tools/trunk/</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-tools/tags/plexus-tools-1.0.11</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-tools/tags/plexus-tools-1.0.11</developerConnection> 
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-tools/tags/plexus-tools-1.0.11</url>
   </scm>
   <build>
     <plugins>
