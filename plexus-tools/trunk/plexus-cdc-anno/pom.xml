@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-tools</artifactId>
-        <version>1.0.11-SNAPSHOT</version>
+        <version>1.0.11</version>
     </parent>
 
     <artifactId>plexus-cdc-anno</artifactId>
     <name>Plexus Component Descriptor Creator by Annotation</name>
-    <version>1.0-alpha-4-SNAPSHOT</version>
+    <version>1.0-alpha-4</version>
 
     <dependencies>
         <dependency>
