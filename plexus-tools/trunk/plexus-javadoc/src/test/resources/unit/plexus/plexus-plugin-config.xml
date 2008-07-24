@@ -44,7 +44,7 @@ under the License.
               <tagletArtifact>
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-javadoc</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0</version>
               </tagletArtifact>
             </taglet>
             <taglet>
@@ -52,7 +52,7 @@ under the License.
               <tagletArtifact>
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-javadoc</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0</version>
               </tagletArtifact>
             </taglet>
             <taglet>
@@ -60,7 +60,7 @@ under the License.
               <tagletArtifact>
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-javadoc</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>1.0</version>
               </tagletArtifact>
             </taglet>
           </taglets>
