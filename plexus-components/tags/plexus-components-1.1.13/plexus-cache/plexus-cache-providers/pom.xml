@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.codehaus.plexus.cache</groupId>
+    <artifactId>plexus-cache</artifactId>
+    <version>1.0-alpha-3-SNAPSHOT</version>
+  </parent>
+  <artifactId>plexus-cache-providers</artifactId>
+  <name>Plexus Cache Providers Parent</name>
+  <packaging>pom</packaging>
+
+  <dependencies>
+      <dependency>
+        <groupId>org.codehaus.plexus.cache</groupId>
+        <artifactId>plexus-cache-api</artifactId>
+        <version>1.0-alpha-2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus.cache</groupId>
+        <artifactId>plexus-cache-test</artifactId>
+        <version>1.0-alpha-2</version>
+        <scope>test</scope>
+      </dependency>
+  </dependencies>
+
+  <modules>
+    <module>plexus-cache-hashmap</module>
+    <module>plexus-cache-ehcache</module>
+    <module>plexus-cache-oscache</module>
+    <module>plexus-cache-whirlycache</module>
+  </modules>
+</project>

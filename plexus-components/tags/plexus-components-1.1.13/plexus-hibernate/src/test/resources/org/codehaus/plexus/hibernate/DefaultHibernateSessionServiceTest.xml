@@ -1,0 +1,14 @@
+<plexus>
+
+  <components>
+
+    <component>
+      <role>org.codehaus.plexus.hibernate.HibernateService</role>
+      <implementation>org.codehaus.plexus.hibernate.DefaultHibernateService</implementation>
+      <configuration>
+        <mapping>/hibernate.cfg.xml</mapping>
+      </configuration>
+    </component>
+
+  </components>
+</plexus>

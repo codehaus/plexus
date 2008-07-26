@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+  <properties>
+    <title>Plexus Cache</title>
+    <author email="olamy@codehaus.org">Olivier Lamy</author>
+  </properties>
+  <body>
+    <section name="Plexus Cache">
+      <p>General Purpose is to provide a cache api with differents providers :
+        <ul>
+          <li>simple hashmap</li>
+          <li>ehcache</li>
+          <li>oscache</li>
+          <li>whirlycache</li>
+        </ul>
+      </p>
+      <subsection name="Use Case">
+        <p>Typical use case for this API could be the following : you have an functionnal API which create objects by using a requirement on a DAO plexus components. Before asking the DAO layer (webServices, Jdbc access ...), you want to ask if the data exists in a cache if yes the cached value is return if not the DAO layer is used and the result put in the cache for future use. 
+          </p>
+      </subsection>
+      <subsection name="Test Case Sample">
+        <p>Look at he test case AbstractTestWineService in the module plexus-cache-test. A service called WineService explains this. The default implementation has two requirements :
+            <ul>
+            <li>WineDao (DAO layer)</li>
+            <li>CacheBuilder</li>
+          </ul>
+        </p>
+        <p>CacheBuilder can build a cache for the bean you ask (in the sample it's Wine) 
+            <source>
+cacheBuilder.getCache( Wine.class )            
+            </source>
+            This will use the following algorithm to provide the Cache implementation :
+            <ul>
+            <li>lookup the plexus component Cache.ROLE with roleHint Wine.class.getName()</li>
+            <li>if not found : lookup the plexus component Cache.ROLE with roleHint default</li>
+            <li>if not found : return NoCacheCache implementation in order to prevent NPE</li>
+          </ul>
+        </p>
+      </subsection>
+      <subsection name="Configuration">
+        <p>In order to setup a particular cache for my bean Wine, I can use : </p>
+        <source>
+<![CDATA[
+    <component>
+      <role>org.codehaus.plexus.cache.Cache</role>
+      <role-hint>org.codehaus.plexus.cache.test.Wine</role-hint>
+      <implementation>org.codehaus.plexus.cache.oscache.OsCacheCache</implementation>
+      <description>OsCacheCache</description>
+      <configuration>
+        <cachePath>${plexus.home}/osCache</cachePath>
+        <cachePersistenceClass>com.opensymphony.oscache.plugins.diskpersistence.DiskPersistenceListener</cachePersistenceClass>
+      </configuration>
+    </component>
+]]>
+</source>
+      </subsection>
+    </section>
+  </body>
+</document>

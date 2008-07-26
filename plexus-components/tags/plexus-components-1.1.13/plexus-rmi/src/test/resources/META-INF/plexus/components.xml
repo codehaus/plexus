@@ -1,0 +1,24 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.rmi.RmiService</role>
+      <implementation>org.codehaus.plexus.rmi.DefaultRmiService</implementation>
+      <configuration>
+        <rmiRegistryPort>9999</rmiRegistryPort>
+      </configuration>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.rmi.test.MyRemoteService</role>
+      <implementation>org.codehaus.plexus.rmi.test.DefaultMyRemoteService</implementation>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.plexus.rmi.test.MyService</role>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.codehaus.plexus.rmi.test.MyService</role>
+      <implementation>org.codehaus.plexus.rmi.test.DefaultMyService</implementation>
+    </component>
+  </components>
+</component-set>
