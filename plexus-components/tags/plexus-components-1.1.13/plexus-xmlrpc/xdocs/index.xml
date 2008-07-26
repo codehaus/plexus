@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Plexus</title>
+    <author email="jason@zenplex.com">Jason van Zyl</author>
+  </properties>
+
+  <body>
+
+  <section name="Plexus">
+    <p>
+    </p>
+  </section>
+  
+  <section name="Alternative XMLRPC component - XmlRpcManagerComponent">
+    <p>
+       This is stored under the org.codehaus.plexus.xmlrpc.manager package to separate it from
+       the other components.
+    </p>
+    
+    <p>
+       Simply configure a new component and assign handlers as shown below.
+    </p>
+    
+    <p>
+    To configure the components, it expects the configuration/handlerName elements to return the
+    names of all components that implement the XmlRpcHandlerDecorator. For example,
+    <source>
+    <![CDATA[
+<configuration>
+  <handlerName>mock0</handlerName>
+  <handlerName>mock1</handlerName>
+</configuration>
+      ]]>
+    </source>
+    
+    </p>
+    
+    <subsection name="Servlet Configuration">
+      <p>Here is an example method of using this component to handle XML RPC requests.  You may have 
+      to adjust the component acquisition steps for your particular application.</p>
+<source>
+<![CDATA[
+public class XmlRpcServlet extends HttpServlet
+{
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+    {
+        try
+        {
+            ServiceManager sm = PlexusServletUtils.getServiceManager(getServletContext());
+            XmlRpcManagerComponent xrmc = (XmlRpcManagerComponent) sm.lookup(XmlRpcManagerComponent.ROLE);
+            XmlRpcServer xmlrpc = xrmc.getXmlRpcServer();
+            byte[] result = xmlrpc.execute(request.getInputStream());
+            response.setContentType("text/xml");
+            response.setContentLength(result.length);
+            OutputStream out = response.getOutputStream();
+            out.write(result);
+            out.flush();
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+}
+      ]]>
+    </source>
+    </subsection>
+  </section>
+</body>
+</document>

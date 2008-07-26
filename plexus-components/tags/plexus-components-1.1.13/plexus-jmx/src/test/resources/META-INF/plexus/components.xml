@@ -1,0 +1,10 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.jmx.JmxService</role>
+      <implementation>org.codehaus.plexus.jmx.DefaultJmxService</implementation>
+      <configuration>
+      </configuration>
+    </component>
+  </components>
+</component-set>

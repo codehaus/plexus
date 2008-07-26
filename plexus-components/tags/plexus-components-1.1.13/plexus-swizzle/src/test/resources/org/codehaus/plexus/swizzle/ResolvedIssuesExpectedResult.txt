@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <title>Swizzle Resolved Issues Report</title>
+  </properties>
+  <body>
+    <section name="Issues Resolved for Swizzle [Test 0.1.1]">
+      <ul>
+        <li><a href="http://jira.codehaus.org/browse/SWIZZLE-6">[SWIZZLE-6]</a> <![CDATA[Fix the toilet]]></li>
+      </ul>
+      <ul>
+        <li><a href="http://jira.codehaus.org/browse/SWIZZLE-12">[SWIZZLE-12]</a> <![CDATA[Fix whole in the wall]]></li>
+      </ul>
+    </section>
+  </body>
+</document>

@@ -1,0 +1,102 @@
+<?xml version="1.0" ?>
+<plexus>
+  <components>
+  
+    <component>
+      <role>org.codehaus.plexus.cache.Cache</role>
+      <role-hint>ehcache</role-hint>
+      <implementation>org.codehaus.plexus.cache.ehcache.EhcacheCache</implementation>
+      <description>EhcacheCache</description>
+      <configuration>
+        <disk-expiry-thread-interval-seconds>600</disk-expiry-thread-interval-seconds>
+        <disk-persistent>false</disk-persistent>
+        <disk-store-path>target/ehcache-test-store</disk-store-path>
+        <eternal>false</eternal>
+        <max-elements-in-memory>1000</max-elements-in-memory>
+        <memory-eviction-policy>LRU</memory-eviction-policy>
+        <name>test-cache</name>
+        <overflow-to-disk>false</overflow-to-disk>
+        <time-to-idle-seconds>600</time-to-idle-seconds>
+        <time-to-live-seconds>300</time-to-live-seconds>
+      </configuration>
+    </component>
+	  
+    <component>
+      <role>org.codehaus.plexus.cache.Cache</role>
+      <role-hint>alwaysrefresh</role-hint>
+      <implementation>org.codehaus.plexus.cache.ehcache.EhcacheCache</implementation>
+      <description>EhcacheCache</description>
+      <configuration>
+        <disk-expiry-thread-interval-seconds>600</disk-expiry-thread-interval-seconds>
+        <disk-persistent>false</disk-persistent>
+        <disk-store-path>target/ehcache-test-store</disk-store-path>
+        <eternal>false</eternal>
+        <max-elements-in-memory>1000</max-elements-in-memory>
+        <memory-eviction-policy>LRU</memory-eviction-policy>
+        <name>alwaysrefresh</name>
+        <overflow-to-disk>false</overflow-to-disk>
+        <time-to-idle-seconds>-1</time-to-idle-seconds>
+        <time-to-live-seconds>-1</time-to-live-seconds>
+      </configuration>
+    </component>	
+	  
+    <component>
+      <role>org.codehaus.plexus.cache.Cache</role>
+      <role-hint>neverrefresh</role-hint>
+      <implementation>org.codehaus.plexus.cache.ehcache.EhcacheCache</implementation>
+      <description>EhcacheCache</description>
+      <configuration>
+        <disk-expiry-thread-interval-seconds>600</disk-expiry-thread-interval-seconds>
+        <disk-persistent>false</disk-persistent>
+        <disk-store-path>target/ehcache-test-store</disk-store-path>
+        <eternal>true</eternal>
+        <max-elements-in-memory>1000</max-elements-in-memory>
+        <memory-eviction-policy>LRU</memory-eviction-policy>
+        <name>neverrefresh</name>
+        <overflow-to-disk>false</overflow-to-disk>
+        <time-to-idle-seconds>-1</time-to-idle-seconds>
+        <time-to-live-seconds>-1</time-to-live-seconds>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.cache.Cache</role>
+      <role-hint>onesecondrefresh</role-hint>
+      <implementation>org.codehaus.plexus.cache.ehcache.EhcacheCache</implementation>
+      <description>EhcacheCache</description>
+      <configuration>
+        <disk-expiry-thread-interval-seconds>600</disk-expiry-thread-interval-seconds>
+        <disk-persistent>false</disk-persistent>
+        <disk-store-path>target/ehcache-test-store</disk-store-path>
+        <eternal>false</eternal>
+        <max-elements-in-memory>1000</max-elements-in-memory>
+        <memory-eviction-policy>LRU</memory-eviction-policy>
+        <name>onesecondrefresh</name>
+        <overflow-to-disk>false</overflow-to-disk>
+        <time-to-idle-seconds>1</time-to-idle-seconds>
+        <time-to-live-seconds>1</time-to-live-seconds>
+      </configuration>
+    </component>
+
+    <component>
+      <role>org.codehaus.plexus.cache.Cache</role>
+      <role-hint>twosecondrefresh</role-hint>
+      <implementation>org.codehaus.plexus.cache.ehcache.EhcacheCache</implementation>
+      <description>EhcacheCache</description>
+      <configuration>
+        <disk-expiry-thread-interval-seconds>600</disk-expiry-thread-interval-seconds>
+        <disk-persistent>false</disk-persistent>
+        <disk-store-path>target/ehcache-test-store</disk-store-path>
+        <eternal>false</eternal>
+        <max-elements-in-memory>1000</max-elements-in-memory>
+        <memory-eviction-policy>LRU</memory-eviction-policy>
+        <name>twosecondrefresh</name>
+        <overflow-to-disk>false</overflow-to-disk>
+        <time-to-idle-seconds>2</time-to-idle-seconds>
+        <time-to-live-seconds>2</time-to-live-seconds>
+      </configuration>
+    </component>	    	  	  
+	    
+    
+  </components>
+</plexus>
