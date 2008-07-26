@@ -3,6 +3,7 @@
     <component>
       <role>org.codehaus.plexus.scheduler.Scheduler</role>
       <implementation>org.codehaus.plexus.scheduler.DefaultScheduler</implementation>
+      <role-hint>test</role-hint>
       <configuration>
         <properties>
           <property>
@@ -15,7 +16,7 @@
           </property>
           <property>
             <name>org.quartz.threadPool.threadCount</name>
-            <value>15</value>
+            <value>1</value>
           </property>
           <property>
             <name>org.quartz.threadPool.threadPriority</name>

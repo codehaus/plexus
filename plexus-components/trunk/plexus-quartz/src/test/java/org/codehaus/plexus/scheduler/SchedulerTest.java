@@ -17,7 +17,7 @@ public class SchedulerTest
     public void testCreation()
         throws Exception
     {
-        Scheduler scheduler = (Scheduler) lookup( Scheduler.ROLE );
+        Scheduler scheduler = (Scheduler) lookup( Scheduler.ROLE, "test" );
 
         assertNotNull( scheduler );
 
@@ -37,7 +37,10 @@ public class SchedulerTest
 
         while ( ! triggerFired )
         {
+          //System.out.println("! triggerFired");
+          Thread.sleep( 10 );
         }
+        System.out.println("ok triggerFired");
     }
 
     public void triggerComplete( Trigger trigger, JobExecutionContext context, int triggerInstructionCode )
