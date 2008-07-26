@@ -3,7 +3,7 @@
   <parent>
     <artifactId>plexus</artifactId>
     <groupId>org.codehaus.plexus</groupId>
-    <version>1.0.10</version>
+    <version>1.0.13</version>
     <relativePath>../pom/pom.xml</relativePath>
   </parent>
   <groupId>org.codehaus.plexus</groupId>
