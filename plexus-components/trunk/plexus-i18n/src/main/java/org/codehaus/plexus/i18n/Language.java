@@ -8,16 +8,8 @@ public interface Language
 
   /** look for Messages.properties in the clazz package by default */
   public static final String DEFAULT_NAME = "Messages";
-
-  public Language init();
-
-	@SuppressWarnings("unchecked")
-  public Language init( Class clazz );
 	
-	@SuppressWarnings("unchecked")
-  public Language init( Class clazz, Locale locale );
-	
-	public String getMessage( String key )
+	public String getMessage( String key, String... args )
 	;
 	
 }
