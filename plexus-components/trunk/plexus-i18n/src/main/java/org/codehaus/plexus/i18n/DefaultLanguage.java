@@ -3,6 +3,8 @@ package org.codehaus.plexus.i18n;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
+
 
 /**
  *
@@ -14,11 +16,12 @@ import java.util.ResourceBundle;
  */
 public class DefaultLanguage
 implements Language
-{
-	public static String DEFAULT_NAME = "Messages";
-	
-	private Class clazz;
-	ResourceBundle rb;
+{	
+	private String bundleName;
+	private Locale locale;
+//	private ResourceBundle rb;
+	private DefaultI18N i18n = new DefaultI18N();
+	private String error;
 	//-------------------------------------------------------------------------------------
 	public DefaultLanguage()
 	{
@@ -26,37 +29,35 @@ implements Language
 	//-------------------------------------------------------------------------------------
 	public DefaultLanguage( Class clazz )
 	{
-		this( clazz, Locale.getDefault() );
+    this.bundleName = clazz.getPackage().getName()+"."+DEFAULT_NAME;
+    try
+    {
+      i18n.initialize();
+    }
+    catch( InitializationException e )
+    {
+      error = e.getMessage();
+    }
 	}
 	//-------------------------------------------------------------------------------------
 	public DefaultLanguage( Class clazz, Locale locale )
 	{
-		this.clazz = clazz;
-		rb = ResourceBundle.getBundle( clazz.getPackage().getName()+"."+DEFAULT_NAME, locale, clazz.getClassLoader() );
+		this( clazz );
+		this.locale = locale;
+//		rb = ResourceBundle.getBundle( clazz.getPackage().getName()+"."+DEFAULT_NAME, locale, clazz.getClassLoader() );
 	}
 	//-------------------------------------------------------------------------------------
-	public Language init()
-	{
-		return new DefaultLanguage();
-	}
-	//-------------------------------------------------------------------------------------
-	public Language init(Class clazz, Locale locale)
-	{
-		return new DefaultLanguage( clazz, locale );
-	}
-	//-------------------------------------------------------------------------------------
-	public Language init(Class clazz)
-	{
-		return new DefaultLanguage( clazz );
-	}
-	//-------------------------------------------------------------------------------------
-	public String getMessage( String key )
-	{
-		if( rb == null )
-			return "resourceBundle not initialized for "+(clazz==null?"null":clazz.getName() );
-		
-		return rb.getString(key);
-	}
+  public String getMessage( String key, String... args )
+  {
+    
+    if( error != null )
+      return error;
+    
+    if( args == null || args.length == 0)
+      return i18n.getString( bundleName, locale, key );
+
+    return i18n.format( bundleName, locale, key, args );
+  }
 	//-------------------------------------------------------------------------------------
 	//-------------------------------------------------------------------------------------
 }
