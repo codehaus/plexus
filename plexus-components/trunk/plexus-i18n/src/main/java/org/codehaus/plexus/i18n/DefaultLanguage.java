@@ -51,10 +51,9 @@ implements Language
 	}
 	//-------------------------------------------------------------------------------------
 	public String getMessage( String key )
-	throws LanguageException
 	{
 		if( rb == null )
-			throw new LanguageException("resourceBundle not initialized for "+(clazz==null?"null":clazz.getName() ) );
+			return "resourceBundle not initialized for "+(clazz==null?"null":clazz.getName() );
 		
 		return rb.getString(key);
 	}
