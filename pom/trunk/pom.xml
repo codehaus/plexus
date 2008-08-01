@@ -37,12 +37,14 @@
       <subscribe>http://xircles.codehaus.org/manage_email/user%40plexus.codehaus.org</subscribe>
       <unsubscribe>http://xircles.codehaus.org/manage_email/user%40plexus.codehaus.org</unsubscribe>
       <archive>http://archive.plexus.codehaus.org/user</archive>
+      <post>user@plexus.codehaus.org</post>
     </mailingList>
     <mailingList>
       <name>Plexus Developer List</name>
       <subscribe>http://xircles.codehaus.org/manage_email/dev%40plexus.codehaus.org</subscribe>
       <unsubscribe>http://xircles.codehaus.org/manage_email/dev%40plexus.codehaus.org</unsubscribe>
       <archive>http://archive.plexus.codehaus.org/dev</archive>
+      <post>dev@plexus.codehaus.org</post>
     </mailingList>
     <mailingList>
       <name>Plexus Announce List</name>
