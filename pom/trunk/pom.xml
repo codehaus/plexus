@@ -5,6 +5,7 @@
   <packaging>pom</packaging>
   <name>Plexus</name>
   <version>1.0.14-SNAPSHOT</version>
+  <url>http://plexus.codehaus.org/</url>
   <!-- ciManagement>
     <notifiers>
       <notifier>
