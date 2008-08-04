@@ -8,6 +8,25 @@
   <artifactId>plexus-i18n</artifactId>
   <name>Plexus I18N Component</name>
   <version>1.0-beta-10-SNAPSHOT</version>
+  
+
+  <distributionManagement>
+    <repository>
+      <id>codehaus.org</id>
+      <name>Plexus Central Repository</name>
+      <url>dav:https://dav.codehaus.org/repository/plexus</url>
+    </repository>
+    <snapshotRepository>
+      <id>codehaus.org</id>
+      <name>Plexus Central Development Repository</name>
+      <url>dav:https://dav.codehaus.org/snapshots.repository/plexus</url>
+    </snapshotRepository>
+    <site>
+      <id>codehaus.org</id>
+      <url>dav:https://dav.codehaus.org/plexus</url>
+    </site>
+  </distributionManagement>
+  
   <build>
     <plugins>
       <plugin>
