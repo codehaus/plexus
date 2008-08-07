@@ -19,8 +19,10 @@ package org.codehaus.plexus.interpolation;
 import org.codehaus.plexus.interpolation.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,7 +45,17 @@ public class RegexBasedInterpolator
     private List valueSources = new ArrayList();
     
     private List postProcessors = new ArrayList();
-
+    
+    private boolean reusePatterns = false;
+    
+    public static final String DEFAULT_REGEXP = "\\$\\{(.+?)\\}";
+    
+    /**
+     * the key is the regex the value is the Pattern 
+     * At the class construction time the Map will contains the default Pattern
+     */
+    private Map compiledPatterns = new HashMap();
+    
     /**
      * Setup a basic interpolator.
      * <br/>
@@ -53,7 +65,18 @@ public class RegexBasedInterpolator
      */
     public RegexBasedInterpolator()
     {
+        compiledPatterns.put( DEFAULT_REGEXP, Pattern.compile( DEFAULT_REGEXP ) );
     }
+    
+    /**
+
+     * @param reusePatterns already compiled patterns will be reused
+     */
+    public RegexBasedInterpolator( boolean reusePatterns )
+    {
+        this();
+        this.reusePatterns = reusePatterns;
+    }    
 
     /**
      * Setup an interpolator with no value sources, and the specified regex pattern
@@ -68,6 +91,7 @@ public class RegexBasedInterpolator
      */
     public RegexBasedInterpolator (String startRegex, String endRegex)
     {
+        this();
         this.startRegex = startRegex;
         this.endRegex = endRegex;
     }
@@ -79,6 +103,7 @@ public class RegexBasedInterpolator
      */
     public RegexBasedInterpolator( List valueSources )
     {
+        this();
         this.valueSources.addAll( valueSources );
     }
 
@@ -92,6 +117,7 @@ public class RegexBasedInterpolator
      */
     public RegexBasedInterpolator (String startRegex, String endRegex, List valueSources )
     {
+        this();
         this.startRegex = startRegex;
         this.endRegex = endRegex;
         this.valueSources.addAll( valueSources );
@@ -166,26 +192,43 @@ public class RegexBasedInterpolator
         {
             if ( thisPrefixPattern == null )
             {
-                expressionPattern = Pattern.compile( startRegex + endRegex );
+                expressionPattern = getPattern( startRegex + endRegex );
                 realExprGroup = 1;
             }
             else
             {
-                expressionPattern = Pattern.compile( startRegex + thisPrefixPattern + endRegex );
+                expressionPattern = getPattern( startRegex + thisPrefixPattern + endRegex );
             }
 
         }
         else if ( thisPrefixPattern != null )
         {
-            expressionPattern = Pattern.compile( "\\$\\{(" + thisPrefixPattern + ")?(.+?)\\}" );
+            expressionPattern = getPattern( "\\$\\{(" + thisPrefixPattern + ")?(.+?)\\}" );
         }
         else
         {
-            expressionPattern = Pattern.compile( "\\$\\{(.+?)\\}" );
+            expressionPattern = getPattern( DEFAULT_REGEXP );
             realExprGroup = 1;
         }
 
         return interpolate( input, recursionInterceptor, expressionPattern, realExprGroup );
+    }
+    
+    private Pattern getPattern( String regExp )
+    {
+        if ( !reusePatterns )
+        {
+            return Pattern.compile( regExp );
+        }
+        // FIXME here we are not really Thread safe        
+        if ( compiledPatterns.containsKey( regExp ) )
+        {
+            return (Pattern) compiledPatterns.get( regExp );
+        }
+
+        Pattern pattern = Pattern.compile( regExp );
+        compiledPatterns.put( regExp, pattern );
+        return pattern;
     }
 
     /**
@@ -358,6 +401,16 @@ public class RegexBasedInterpolator
         throws InterpolationException
     {
         return interpolate( input, null, recursionInterceptor );
+    }
+
+    public boolean isReusePatterns()
+    {
+        return reusePatterns;
+    }
+
+    public void setReusePatterns( boolean reusePatterns )
+    {
+        this.reusePatterns = reusePatterns;
     }
 
 }
