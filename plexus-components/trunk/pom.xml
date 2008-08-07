@@ -32,22 +32,14 @@
   <modules>
     <module>plexus-archiver</module>
     <module>plexus-compiler</module>
-    <module>plexus-hibernate</module>
+    <module>plexus-digest</module>
     <module>plexus-i18n</module>
     <module>plexus-interactivity</module>
-    <module>plexus-ircbot</module>
-    <module>plexus-jetty-httpd</module>
-    <module>plexus-jetty</module>
-    <module>plexus-mimetyper</module>
-    <module>plexus-mail-sender</module>
-    <module>plexus-naming</module>
-    <module>plexus-notification</module>
-    <module>plexus-resources</module>
-    <module>plexus-taskqueue</module>
-    <module>plexus-velocity</module>
-    <module>plexus-xmlrpc</module>
+    <module>plexus-interpolation</module>
+    <module>plexus-io</module>
     <module>plexus-spring</module>
     <module>plexus-swizzle</module>
+    <module>plexus-velocity</module>
   </modules>
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-components/trunk/</connection>
@@ -85,22 +77,4 @@
       </plugin>      
     </plugins>
   </reporting>  
-  
-  <profiles>
-    <profile>
-      <id>requires-thirdparty</id>
-      <activation>
-        <!--
-        <activeByDefault>true</activeByDefault>
-      -->
-        <property>
-          <name>include-thirdparty</name>
-          <value>!false</value>
-        </property>
-      </activation>
-      <modules>
-        <module>plexus-jdo</module>
-      </modules>
-    </profile>
-  </profiles>
 </project>
