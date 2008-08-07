@@ -132,6 +132,11 @@ public class RegexBasedInterpolatorTest
     public void testUsePostProcessor_ChangesValue()
         throws InterpolationException
     {
+
+        int loopNumber = 200000;
+        
+        long start = System.currentTimeMillis();
+
         RegexBasedInterpolator rbi = new RegexBasedInterpolator();
 
         Map context = new HashMap();
@@ -145,10 +150,47 @@ public class RegexBasedInterpolatorTest
             {
                 return value + "2";
             }
-        } );
+        } );        
+        
+        for ( int i = 0, number = loopNumber; i < number; i++ )
+        {
 
-        String result = rbi.interpolate( "this is a ${test.var}", "" );
 
-        assertEquals( "this is a testVar2", result );
+            String result = rbi.interpolate( "this is a ${test.var}", "" );
+
+            assertEquals( "this is a testVar2", result );
+        }
+        long end = System.currentTimeMillis();
+
+        System.out.println( "time without pattern reuse and new RegexBasedInterpolator " + ( end - start ) );
+
+        System.gc();
+        
+        start = System.currentTimeMillis();
+        
+        
+
+        rbi = new RegexBasedInterpolator( true );
+        
+        rbi.addPostProcessor( new InterpolationPostProcessor()
+        {
+            public Object execute( String expression, Object value )
+            {
+                return value + "2";
+            }
+        } );        
+        
+        rbi.addValueSource( new MapBasedValueSource( context ) );
+        
+        for ( int i = 0, number = loopNumber; i < number; i++ )
+        {
+
+            String result = rbi.interpolate( "this is a ${test.var}", "" );
+
+            assertEquals( "this is a testVar2", result );
+        }
+        end = System.currentTimeMillis();
+
+        System.out.println( "time with pattern reuse and RegexBasedInterpolator instance reuse " + ( end - start ) );
     }
 }
