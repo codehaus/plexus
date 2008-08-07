@@ -220,13 +220,16 @@ public class RegexBasedInterpolator
         {
             return Pattern.compile( regExp );
         }
-        // FIXME here we are not really Thread safe        
-        if ( compiledPatterns.containsKey( regExp ) )
+           
+        Pattern pattern = (Pattern) compiledPatterns.get( regExp );
+        
+        // FIXME here we are not really Thread safe
+        if ( pattern != null )
         {
-            return (Pattern) compiledPatterns.get( regExp );
+            return pattern;
         }
 
-        Pattern pattern = Pattern.compile( regExp );
+        pattern = Pattern.compile( regExp );
         compiledPatterns.put( regExp, pattern );
         return pattern;
     }

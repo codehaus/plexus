@@ -162,7 +162,7 @@ public class RegexBasedInterpolatorTest
         }
         long end = System.currentTimeMillis();
 
-        System.out.println( "time without pattern reuse and new RegexBasedInterpolator " + ( end - start ) );
+        System.out.println( "time without pattern reuse and RegexBasedInterpolator instance reuse " + ( end - start ) );
 
         System.gc();
         
