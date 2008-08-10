@@ -60,8 +60,6 @@ public class AnnotationComponentGleaner
         }
 
         ComponentDescriptor component = new ComponentDescriptor();
-
-        log.debug("Creating descriptor for: {}", type);
         
         component.setRole(anno.role().getName());
 

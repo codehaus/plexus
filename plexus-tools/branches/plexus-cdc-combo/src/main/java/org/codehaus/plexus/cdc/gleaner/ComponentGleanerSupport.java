@@ -22,8 +22,6 @@ import java.util.Map;
 import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Support for component gleaner implementations.
@@ -33,8 +31,6 @@ import org.slf4j.LoggerFactory;
 public abstract class ComponentGleanerSupport
 {
     private static final String EMPTY_STRING = "";
-
-    protected final Logger log = LoggerFactory.getLogger(getClass());
 
     protected String filterEmptyAsNull(final String value) {
         if (value == null) {
