@@ -69,12 +69,6 @@
   <profiles>
     <profile>
       <id>its</id>
-      <activation>
-        <property>
-          <name>shit</name>
-          <value>true</value>
-        </property>
-      </activation>
       <build>
         <defaultGoal>install</defaultGoal>
         <plugins>
