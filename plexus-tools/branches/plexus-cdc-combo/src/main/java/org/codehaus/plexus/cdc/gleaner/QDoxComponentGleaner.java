@@ -109,7 +109,7 @@ public class QDoxComponentGleaner
 
         String fqn = javaClass.getFullyQualifiedName();
 
-        log.debug( "Creating descriptor for component: {}", fqn );
+        //log.debug( "Creating descriptor for component: {}", fqn );
 
         ComponentDescriptor componentDescriptor = new ComponentDescriptor();
 
@@ -127,9 +127,11 @@ public class QDoxComponentGleaner
 
             if ( role == null )
             {
+                /*
                 log.warn( "Could not figure out a role for the component '" + fqn + "'. " +
                     "Please specify a role with a parameter '" + PLEXUS_ROLE_PARAMETER + "' " + "on the @" +
                     PLEXUS_COMPONENT_TAG + " tag." );
+                    */
 
                 return null;
             }
@@ -310,8 +312,10 @@ public class QDoxComponentGleaner
             {
                 if ( role != null )
                 {
+                    /*
                     log.warn( "Found several possible roles for component " + "'" +
                         javaClass.getFullyQualifiedName() + "', " + "will use '" + role + "', found: " + ifc.getName() + "." );
+                        */
                 }
 
                 role = fqn;
@@ -423,18 +427,22 @@ public class QDoxComponentGleaner
             {
                 if ( hint != null )
                 {
+                    /*
                     log.warn( "Field: '" + field.getName() + "': A role hint cannot be specified if the " +
                         "field is a java.util.Map or a java.util.List" );
+                        */
 
                     continue;
                 }
 
                 if ( role == null )
                 {
+                    /*
                     log.warn( "Field: '" + field.getName() + "': A java.util.Map or java.util.List " +
                         "requirement has to specify a '" + PLEXUS_ROLE_PARAMETER + "' parameter on " + "the @" +
                         PLEXUS_REQUIREMENT_TAG + " tag so Plexus can know which components to " +
                         "put in the map or list." );
+                        */
 
                     continue;
                 }
@@ -495,9 +503,10 @@ public class QDoxComponentGleaner
 
             if ( defaultValue == null )
             {
+                /*
                 log.warn( "Component: " + javaClass.getName() + ", field name: '" + field.getName() + "': " +
                     "Currently configurable fields will not be written to the descriptor " +
-                    "without a default value." );
+                    "without a default value." );*/
 
                 continue;
             }
@@ -510,7 +519,7 @@ public class QDoxComponentGleaner
 
             c.setValue( defaultValue );
 
-            log.debug( " Configuration: {}={}", name, defaultValue );
+            //log.debug( " Configuration: {}={}", name, defaultValue );
 
             configuration.addChild( c );
 
@@ -528,7 +537,7 @@ public class QDoxComponentGleaner
         {
             String s = (String) it.next();
 
-            log.warn( "Extra parameter on the '" + tagName + "' tag: '" + s + "'." );
+            //log.warn( "Extra parameter on the '" + tagName + "' tag: '" + s + "'." );
         }
     }
 
