@@ -46,8 +46,8 @@
             
             <plugin>
                 <groupId>org.codehaus.plexus</groupId>
-                <artifactId>plexus-maven-plugin</artifactId>
-                <version>testing</version>                
+                <artifactId>plexus-metadata-generator</artifactId>
+                <version>testing</version>
                 <executions>
                     <execution>
                         <goals>
