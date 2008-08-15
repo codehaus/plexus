@@ -267,6 +267,14 @@
         <role>Developer</role>
       </roles>
     </developer>
+    <developer>
+      <name>Oleg Gusakov</name>
+      <id>oleg</id>
+      <email>olegy@codehaus.org</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
   </developers>
   <dependencies>
     <dependency>
