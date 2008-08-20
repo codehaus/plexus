@@ -16,15 +16,16 @@ package org.codehaus.plexus.interpolation;
  * limitations under the License.
  */
 
-import org.codehaus.plexus.interpolation.util.StringUtils;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.codehaus.plexus.interpolation.util.StringUtils;
 
 /**
  * Expansion of the original RegexBasedInterpolator, found in plexus-utils, this
@@ -41,6 +42,8 @@ public class RegexBasedInterpolator
     private String startRegex;
 
     private String endRegex;
+    
+    private Map existingAnswers = new HashMap();
 
     private List valueSources = new ArrayList();
     
@@ -48,13 +51,15 @@ public class RegexBasedInterpolator
     
     private boolean reusePatterns = false;
     
+    private boolean cacheAnswers = false;
+    
     public static final String DEFAULT_REGEXP = "\\$\\{(.+?)\\}";
     
     /**
      * the key is the regex the value is the Pattern 
      * At the class construction time the Map will contains the default Pattern
      */
-    private Map compiledPatterns = new HashMap();
+    private Map compiledPatterns = new WeakHashMap();
     
     /**
      * Setup a basic interpolator.
@@ -211,7 +216,17 @@ public class RegexBasedInterpolator
             realExprGroup = 1;
         }
 
-        return interpolate( input, recursionInterceptor, expressionPattern, realExprGroup );
+        try
+        {
+            return interpolate( input, recursionInterceptor, expressionPattern, realExprGroup );
+        }
+        finally
+        {
+            if ( !cacheAnswers )
+            {
+                clearAnswers();
+            }
+        }
     }
     
     private Pattern getPattern( String regExp )
@@ -221,16 +236,20 @@ public class RegexBasedInterpolator
             return Pattern.compile( regExp );
         }
            
-        Pattern pattern = (Pattern) compiledPatterns.get( regExp );
-        
-        // FIXME here we are not really Thread safe
-        if ( pattern != null )
+        Pattern pattern = null;
+        synchronized( this )
         {
-            return pattern;
-        }
+            pattern = (Pattern) compiledPatterns.get( regExp );
+            
+            if ( pattern != null )
+            {
+                return pattern;
+            }
 
-        pattern = Pattern.compile( regExp );
-        compiledPatterns.put( regExp, pattern );
+            pattern = Pattern.compile( regExp );
+            compiledPatterns.put( regExp, pattern );
+        }
+        
         return pattern;
     }
 
@@ -247,7 +266,7 @@ public class RegexBasedInterpolator
         throws InterpolationException
     {
         String result = input;
-
+        
         Matcher matcher = expressionPattern.matcher( result );
 
         while ( matcher.find() )
@@ -269,7 +288,7 @@ public class RegexBasedInterpolator
 
             recursionInterceptor.expressionResolutionStarted( realExpr );
 
-            Object value = null;
+            Object value = existingAnswers.get( realExpr );
             for ( Iterator it = valueSources.iterator(); it.hasNext() && value == null; )
             {
                 ValueSource vs = (ValueSource) it.next();
@@ -295,17 +314,17 @@ public class RegexBasedInterpolator
                     }
                 }
 
-                result = StringUtils.replace( result, wholeExpr, String.valueOf( value ) );
-
                 // could use:
                 // result = matcher.replaceFirst( stringValue );
                 // but this could result in multiple lookups of stringValue, and replaceAll is not correct behaviour
+                result = StringUtils.replace( result, wholeExpr, String.valueOf( value ) );
+
                 matcher.reset( result );
             }
 
             recursionInterceptor.expressionResolutionFinished( realExpr );
         }
-
+        
         return result;
     }
 
@@ -414,6 +433,21 @@ public class RegexBasedInterpolator
     public void setReusePatterns( boolean reusePatterns )
     {
         this.reusePatterns = reusePatterns;
+    }
+
+    public boolean isCacheAnswers()
+    {
+        return cacheAnswers;
+    }
+
+    public void setCacheAnswers( boolean cacheAnswers )
+    {
+        this.cacheAnswers = cacheAnswers;
+    }
+    
+    public void clearAnswers()
+    {
+        existingAnswers.clear();
     }
 
 }
