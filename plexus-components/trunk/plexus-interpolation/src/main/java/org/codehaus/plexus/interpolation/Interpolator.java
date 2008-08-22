@@ -131,4 +131,10 @@ public interface Interpolator
      * Clear the feedback messages from previous interpolate(..) calls.
      */
     void clearFeedback();
+    
+    boolean isCacheAnswers();
+
+    void setCacheAnswers( boolean cacheAnswers );
+    
+    void clearAnswers();
 }

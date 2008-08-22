@@ -343,13 +343,10 @@ public class RegexBasedInterpolator
         for ( Iterator it = valueSources.iterator(); it.hasNext(); )
         {
             ValueSource vs = (ValueSource) it.next();
-            if ( vs instanceof FeedbackEnabledValueSource )
+            List feedback = vs.getFeedback();
+            if ( feedback != null && !feedback.isEmpty() )
             {
-                List feedback = ((FeedbackEnabledValueSource) vs).getFeedback();
-                if ( feedback != null && !feedback.isEmpty() )
-                {
-                    messages.addAll( feedback );
-                }
+                messages.addAll( feedback );
             }
         }
 
@@ -364,10 +361,7 @@ public class RegexBasedInterpolator
         for ( Iterator it = valueSources.iterator(); it.hasNext(); )
         {
             ValueSource vs = (ValueSource) it.next();
-            if ( vs instanceof FeedbackEnabledValueSource )
-            {
-                ((FeedbackEnabledValueSource) vs).clearFeedback();
-            }
+            vs.clearFeedback();
         }
     }
 

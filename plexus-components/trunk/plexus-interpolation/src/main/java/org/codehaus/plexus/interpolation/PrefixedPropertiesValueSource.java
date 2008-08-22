@@ -31,10 +31,9 @@ import java.util.Properties;
  * @version $Id$
  */
 public class PrefixedPropertiesValueSource
+    extends AbstractDelegatingValueSource
     implements QueryEnabledValueSource
 {
-
-    private final PrefixedValueSourceWrapper delegate;
 
     /**
      * Wrap the specified properties file with a new {@link PropertiesBasedValueSource}, then
@@ -47,7 +46,7 @@ public class PrefixedPropertiesValueSource
      */
     public PrefixedPropertiesValueSource( String prefix, Properties properties )
     {
-        delegate = new PrefixedValueSourceWrapper( new PropertiesBasedValueSource( properties ), prefix );
+        super( new PrefixedValueSourceWrapper( new PropertiesBasedValueSource( properties ), prefix ) );
     }
 
     /**
@@ -61,23 +60,7 @@ public class PrefixedPropertiesValueSource
      */
     public PrefixedPropertiesValueSource( List possiblePrefixes, Properties properties, boolean allowUnprefixedExpressions )
     {
-        delegate = new PrefixedValueSourceWrapper( new PropertiesBasedValueSource( properties ), possiblePrefixes, allowUnprefixedExpressions );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void clearFeedback()
-    {
-        delegate.clearFeedback();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public List getFeedback()
-    {
-        return delegate.getFeedback();
+        super( new PrefixedValueSourceWrapper( new PropertiesBasedValueSource( properties ), possiblePrefixes, allowUnprefixedExpressions ) );
     }
 
     /**
@@ -85,16 +68,7 @@ public class PrefixedPropertiesValueSource
      */
     public String getLastExpression()
     {
-        return delegate.getLastExpression();
-    }
-
-    /**
-     * Delegates to {@link PrefixedValueSourceWrapper#getValue(String)} for the
-     * instance wrapping the {@PropertiesValueSource} instance.
-     */
-    public Object getValue( String expression )
-    {
-        return delegate.getValue( expression );
+        return ((QueryEnabledValueSource) getDelegate()).getLastExpression();
     }
 
 }
