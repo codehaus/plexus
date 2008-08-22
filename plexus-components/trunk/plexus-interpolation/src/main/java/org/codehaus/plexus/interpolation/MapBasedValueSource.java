@@ -23,7 +23,7 @@ import java.util.Map;
  * @version $Id$
  */
 public class MapBasedValueSource
-    implements ValueSource
+    extends AbstractValueSource
 {
 
     private final Map values;
@@ -33,6 +33,7 @@ public class MapBasedValueSource
      */
     public MapBasedValueSource( Map values )
     {
+        super( false );
         this.values = values;
     }
 

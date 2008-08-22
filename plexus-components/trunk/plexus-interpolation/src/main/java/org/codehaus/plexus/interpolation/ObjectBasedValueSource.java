@@ -28,12 +28,10 @@ import java.util.List;
  * @version $Id$
  */
 public class ObjectBasedValueSource
-    implements FeedbackEnabledValueSource
+    extends AbstractValueSource
 {
 
     private final Object root;
-
-    private List feedback = new ArrayList();
 
     /**
      * Construct a new value source, using the supplied object as the root from
@@ -42,6 +40,7 @@ public class ObjectBasedValueSource
      */
     public ObjectBasedValueSource( Object root )
     {
+        super( true );
         this.root = root;
     }
 
@@ -63,27 +62,10 @@ public class ObjectBasedValueSource
         }
         catch ( Exception e )
         {
-            feedback.add( "Failed to extract \'" + expression + "\' from: " + root );
-            feedback.add( e );
+            addFeedback( "Failed to extract \'" + expression + "\' from: " + root, e );
         }
 
         return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public List getFeedback()
-    {
-        return feedback;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void clearFeedback()
-    {
-        feedback.clear();
     }
 
 }

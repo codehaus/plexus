@@ -29,17 +29,16 @@ import java.util.List;
  * @version $Id$
  */
 public class PrefixedObjectValueSource
-    implements FeedbackEnabledValueSource, QueryEnabledValueSource
+    extends AbstractDelegatingValueSource
+    implements QueryEnabledValueSource
 {
-
-    private final PrefixedValueSourceWrapper delegate;
 
     /**
      * Wrap the specified root object, allowing the specified expression prefix.
      */
     public PrefixedObjectValueSource( String prefix, Object root )
     {
-        delegate = new PrefixedValueSourceWrapper( new ObjectBasedValueSource( root ), prefix );
+        super( new PrefixedValueSourceWrapper( new ObjectBasedValueSource( root ), prefix ) );
     }
 
     /**
@@ -49,32 +48,7 @@ public class PrefixedObjectValueSource
      */
     public PrefixedObjectValueSource( List possiblePrefixes, Object root, boolean allowUnprefixedExpressions )
     {
-        delegate = new PrefixedValueSourceWrapper( new ObjectBasedValueSource( root ), possiblePrefixes, allowUnprefixedExpressions );
-    }
-
-    /**
-     * Delegates to {@link PrefixedValueSourceWrapper#getValue(String)} for the
-     * instance wrapping the {@ObjectBasedValueSource} instance.
-     */
-    public Object getValue( String expression )
-    {
-        return delegate.getValue( expression );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void clearFeedback()
-    {
-        delegate.clearFeedback();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public List getFeedback()
-    {
-        return delegate.getFeedback();
+        super( new PrefixedValueSourceWrapper( new ObjectBasedValueSource( root ), possiblePrefixes, allowUnprefixedExpressions ) );
     }
 
     /**
@@ -82,6 +56,6 @@ public class PrefixedObjectValueSource
      */
     public String getLastExpression()
     {
-        return delegate.getLastExpression();
+        return ((QueryEnabledValueSource) getDelegate()).getLastExpression();
     }
 }

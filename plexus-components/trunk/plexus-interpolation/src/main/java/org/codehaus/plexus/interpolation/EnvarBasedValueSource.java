@@ -30,7 +30,7 @@ import java.util.Properties;
  * @version $Id$
  */
 public class EnvarBasedValueSource
-    implements ValueSource
+    extends AbstractValueSource
 {
 
     private Properties envars;
@@ -56,6 +56,7 @@ public class EnvarBasedValueSource
      */
     public EnvarBasedValueSource( boolean caseSensitive ) throws IOException
     {
+        super( false );
         this.caseSensitive = caseSensitive;
 
         envars = OperatingSystemUtils.getSystemEnvVars( caseSensitive );

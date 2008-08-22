@@ -119,7 +119,17 @@ public class StringSearchInterpolator
                                 RecursionInterceptor recursionInterceptor )
         throws InterpolationException
     {
-        return interpolate( input, recursionInterceptor, new HashSet() );
+        try
+        {
+            return interpolate( input, recursionInterceptor, new HashSet() );
+        }
+        finally
+        {
+            if ( !cacheAnswers )
+            {
+                existingAnswers.clear();
+            }
+        }
     }
     
     private String interpolate( String input, RecursionInterceptor recursionInterceptor, Set unresolvable )
@@ -232,13 +242,10 @@ public class StringSearchInterpolator
         for ( Iterator it = valueSources.iterator(); it.hasNext(); )
         {
             ValueSource vs = (ValueSource) it.next();
-            if ( vs instanceof FeedbackEnabledValueSource )
+            List feedback = vs.getFeedback();
+            if ( feedback != null && !feedback.isEmpty() )
             {
-                List feedback = ((FeedbackEnabledValueSource) vs).getFeedback();
-                if ( feedback != null && !feedback.isEmpty() )
-                {
-                    messages.addAll( feedback );
-                }
+                messages.addAll( feedback );
             }
         }
 
@@ -253,10 +260,7 @@ public class StringSearchInterpolator
         for ( Iterator it = valueSources.iterator(); it.hasNext(); )
         {
             ValueSource vs = (ValueSource) it.next();
-            if ( vs instanceof FeedbackEnabledValueSource )
-            {
-                ((FeedbackEnabledValueSource) vs).clearFeedback();
-            }
+            vs.clearFeedback();
         }
     }
 

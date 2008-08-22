@@ -28,7 +28,7 @@ import java.util.Properties;
  * @version $Id$
  */
 public class PropertiesBasedValueSource
-    implements ValueSource
+    extends AbstractValueSource
 {
 
     private final Properties properties;
@@ -41,6 +41,7 @@ public class PropertiesBasedValueSource
      */
     public PropertiesBasedValueSource( Properties properties )
     {
+        super( false );
         this.properties = properties;
     }
 

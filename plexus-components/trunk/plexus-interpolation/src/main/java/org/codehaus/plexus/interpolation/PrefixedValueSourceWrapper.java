@@ -163,10 +163,7 @@ public class PrefixedValueSourceWrapper
      */
     public void clearFeedback()
     {
-        if ( valueSource instanceof FeedbackEnabledValueSource )
-        {
-            ((FeedbackEnabledValueSource) valueSource).clearFeedback();
-        }
+        valueSource.clearFeedback();
     }
 
 }

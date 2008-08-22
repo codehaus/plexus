@@ -1,5 +1,7 @@
 package org.codehaus.plexus.interpolation;
 
+import java.util.List;
+
 /*
  * Copyright 2001-2008 Codehaus Foundation.
  *
@@ -29,4 +31,16 @@ public interface ValueSource
      */
     public Object getValue( String expression );
 
+    /**
+     * Return the feedback about resolution failures for a particular expression.
+     *
+     * @return a combination of String and Throwable instances, where strings
+     * related to throwables are listed first.
+     */
+    List getFeedback();
+
+    /**
+     * Clear the feedback accumulated by a prior interpolation run.
+     */
+    void clearFeedback();
 }
