@@ -154,6 +154,19 @@ public class StringSearchInterpolatorTest
         assertEquals( "this is a testVar2", result );
     }
 
+    
+    public void testSimpleSubstitutionWithDefinedExpr()
+        throws InterpolationException
+    {
+        Properties p = new Properties();
+        p.setProperty( "key", "value" );
+
+        StringSearchInterpolator interpolator = new StringSearchInterpolator( "@{", "}" );
+        interpolator.addValueSource( new PropertiesBasedValueSource( p ) );
+
+        assertEquals( "This is a test value.", interpolator.interpolate( "This is a test @{key}." ) );
+    }    
+    
     public String getVar()
     {
         return "testVar";
