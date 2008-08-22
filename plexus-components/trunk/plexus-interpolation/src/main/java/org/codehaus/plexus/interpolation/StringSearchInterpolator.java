@@ -22,6 +22,27 @@ public class StringSearchInterpolator
     
     private boolean cacheAnswers = false;
     
+    public static final String DEFAULT_START_EXPR = "${";
+    
+    public static final String DEFAULT_END_EXPR = "}";
+    
+    private String startExpr;
+    
+    private String endExpr;
+    
+    public StringSearchInterpolator()
+    {
+        this.startExpr = DEFAULT_START_EXPR;
+        this.endExpr = DEFAULT_END_EXPR;
+    }
+
+    public StringSearchInterpolator( String startExpr, String endExpr )
+    {
+        this.startExpr = startExpr;
+        this.endExpr = endExpr;
+    }    
+    
+    
     /**
      * {@inheritDoc}
      */
@@ -92,11 +113,11 @@ public class StringSearchInterpolator
         
         int startIdx = -1;
         int endIdx = -1;
-        while ( ( startIdx = input.indexOf( "${", endIdx + 1 ) ) > -1 )
+        while ( ( startIdx = input.indexOf( startExpr, endIdx + 1 ) ) > -1 )
         {
             result.append( input.substring( endIdx + 1, startIdx ) );
             
-            endIdx = input.indexOf( "}", startIdx + 1 );
+            endIdx = input.indexOf( endExpr, startIdx + 1 );
             if ( endIdx < 0 )
             {
                 break;
