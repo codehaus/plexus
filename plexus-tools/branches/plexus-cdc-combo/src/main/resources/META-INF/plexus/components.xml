@@ -9,6 +9,10 @@
       <implementation>org.codehaus.plexus.cdc.gleaner.QDoxComponentGleaner</implementation>
     </component>
     <component>
+      <role>org.codehaus.plexus.cdc.ComponentDescriptorCreator</role>
+      <implementation>org.codehaus.plexus.cdc.DefaultComponentDescriptorCreator</implementation>
+    </component>
+    <component>
       <role>org.codehaus.plexus.cdc.ComponentDescriptorWriter</role>
       <implementation>org.codehaus.plexus.cdc.DefaultComponentDescriptorWriter</implementation>
     </component>
