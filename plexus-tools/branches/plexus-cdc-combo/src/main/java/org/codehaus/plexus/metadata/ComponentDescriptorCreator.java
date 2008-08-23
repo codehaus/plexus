@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cdc;
+package org.codehaus.plexus.metadata;
 
 /*
  * The MIT License
@@ -24,21 +24,28 @@ package org.codehaus.plexus.cdc;
  * SOFTWARE.
  */
 
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaClassCache;
-import org.codehaus.plexus.cdc.gleaner.SourceComponentGleaner;
+import java.io.File;
+import java.util.List;
+
 import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  *
- * @deprecated Use {#link ClassComponentGleaner} and {@link SourceComponentGleaner}.
+ * @deprecated Use {#link ComponentDescriptorExtractor}.
  */
-public interface ComponentGleaner
+public interface ComponentDescriptorCreator
 {
-    String ROLE = ComponentGleaner.class.getName();
+    String ROLE = ComponentDescriptorCreator.class.getName();
 
-    ComponentDescriptor glean( JavaClassCache classCache, JavaClass javaClass )
+    void processSources( File[] sourceDirectories, File outputDirectory )
+        throws ComponentDescriptorCreatorException;
+
+    void processSources( File[] sourceDirectories, File outputDirectory, boolean containerDescriptor, ComponentDescriptor[] roleDefaults )
+        throws ComponentDescriptorCreatorException;
+
+    void mergeDescriptors( File outputDescriptor, List descriptors )
         throws ComponentDescriptorCreatorException;
 }

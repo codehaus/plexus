@@ -24,6 +24,8 @@ import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.cdc.ComponentSetDescriptor;
 import org.codehaus.plexus.component.repository.io.PlexusTools;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.metadata.ComponentDescriptorWriter;
+import org.codehaus.plexus.metadata.DefaultComponentDescriptorWriter;
 
 /**
  * Test for the {@link DefaultComponentDescriptorWriter} class.

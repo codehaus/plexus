@@ -1,7 +1,9 @@
+package org.codehaus.plexus.metadata;
+
 /*
  * The MIT License
  *
- * Copyright (c) 2007, The Codehaus
+ * Copyright (c) 2004, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -22,18 +24,21 @@
  * SOFTWARE.
  */
 
-package org.codehaus.plexus.cdc;
-
-import java.io.IOException;
-import java.io.Writer;
-
-import org.codehaus.plexus.component.repository.cdc.ComponentSetDescriptor;
+import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.model.JavaClassCache;
+import org.codehaus.plexus.cdc.gleaner.SourceComponentGleaner;
+import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
 
 /**
- * @author <a href="mailto:kenney@neonics.com">Kenney Westerhof</a>
+ * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
+ * @version $Id$
+ *
+ * @deprecated Use {#link ClassComponentGleaner} and {@link SourceComponentGleaner}.
  */
-public interface ComponentDescriptorWriter
+public interface ComponentGleaner
 {
-    void writeDescriptorSet( Writer writer, ComponentSetDescriptor componentSetDescriptor, boolean containerDescriptor )
-        throws ComponentDescriptorWriteException, IOException;
+    String ROLE = ComponentGleaner.class.getName();
+
+    ComponentDescriptor glean( JavaClassCache classCache, JavaClass javaClass )
+        throws ComponentDescriptorCreatorException;
 }

@@ -29,8 +29,8 @@ import java.util.List;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.codehaus.plexus.cdc.ComponentDescriptorCreator;
-import org.codehaus.plexus.cdc.ComponentDescriptorCreatorException;
+import org.codehaus.plexus.metadata.ComponentDescriptorCreator;
+import org.codehaus.plexus.metadata.ComponentDescriptorCreatorException;
 import org.codehaus.plexus.util.FileUtils;
 
 /**
