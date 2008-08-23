@@ -1,10 +1,8 @@
 <component-set>
   <components>
     <component>
-      <role>org.codehaus.plexus.cdc.component.IComponent</role>
-      <implementation>
-        org.codehaus.plexus.cdc.component.RecessiveComponent
-      </implementation>
+      <role>org.codehaus.plexus.metadata.component.IComponent</role>
+      <implementation>org.codehaus.plexus.metadata.component.RecessiveComponent</implementation>
       <description>Description for conflicting recessive component</description>
       <configuration>
         <prop1>Recessive Property1 value</prop1>
@@ -12,9 +10,7 @@
       </configuration>
       <requirements>
         <requirement>
-          <role>
-            org.codehaus.plexus.cdc.component.IComponentA
-          </role>
+          <role>org.codehaus.plexus.metadata.component.IComponentA</role>
           <field-name>recessiveField</field-name>
         </requirement>
       </requirements>
@@ -22,10 +18,8 @@
     
     <!-- non-conflicting component in recessive -->
     <component>
-      <role>org.codehaus.plexus.cdc.component.INonConflictingComponent</role>
-      <implementation>
-        org.codehaus.plexus.cdc.component.RecessiveComponent
-      </implementation>
+      <role>org.codehaus.plexus.metadata.component.INonConflictingComponent</role>
+      <implementation>org.codehaus.plexus.metadata.component.RecessiveComponent</implementation>
       <description>Description for non-conflicting recessive component</description>
       <configuration>
         <prop1>Non conflicting Property1 value</prop1>
@@ -33,9 +27,7 @@
       </configuration>
       <requirements>
         <requirement>
-          <role>
-            org.codehaus.plexus.cdc.component.IComponentA
-          </role>
+          <role>org.codehaus.plexus.metadata.component.IComponentA</role>
         </requirement>
       </requirements>
     </component>

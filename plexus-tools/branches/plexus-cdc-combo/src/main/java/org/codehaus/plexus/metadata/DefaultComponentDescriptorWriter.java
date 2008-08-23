@@ -30,10 +30,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.codehaus.plexus.component.repository.ComponentDependency;
-import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
-import org.codehaus.plexus.component.repository.cdc.ComponentRequirement;
-import org.codehaus.plexus.component.repository.cdc.ComponentRequirementList;
-import org.codehaus.plexus.component.repository.cdc.ComponentSetDescriptor;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.ComponentRequirement;
+import org.codehaus.plexus.component.repository.ComponentRequirementList;
+import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfigurationException;
 import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter;

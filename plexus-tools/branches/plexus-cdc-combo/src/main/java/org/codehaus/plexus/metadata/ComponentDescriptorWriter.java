@@ -27,7 +27,7 @@ package org.codehaus.plexus.metadata;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.codehaus.plexus.component.repository.cdc.ComponentSetDescriptor;
+import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
 
 /**
  * @author <a href="mailto:kenney@neonics.com">Kenney Westerhof</a>

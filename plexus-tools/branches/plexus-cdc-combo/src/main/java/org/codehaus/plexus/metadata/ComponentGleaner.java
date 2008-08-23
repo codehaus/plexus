@@ -24,10 +24,11 @@ package org.codehaus.plexus.metadata;
  * SOFTWARE.
  */
 
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.codehaus.plexus.metadata.gleaner.SourceComponentGleaner;
+
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaClassCache;
-import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
-import org.codehaus.plexus.metadata.gleaner.SourceComponentGleaner;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>

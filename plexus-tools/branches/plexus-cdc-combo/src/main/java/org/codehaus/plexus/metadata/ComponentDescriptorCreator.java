@@ -27,7 +27,7 @@ package org.codehaus.plexus.metadata;
 import java.io.File;
 import java.util.List;
 
-import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
 
 /**
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>

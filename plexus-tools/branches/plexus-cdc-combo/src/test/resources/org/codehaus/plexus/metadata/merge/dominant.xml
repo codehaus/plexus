@@ -1,10 +1,8 @@
 <component-set>
   <components>
     <component>
-      <role>org.codehaus.plexus.cdc.component.IComponent</role>
-      <implementation>
-        org.codehaus.plexus.cdc.component.DominantComponent
-      </implementation>
+      <role>org.codehaus.plexus.metadata.component.IComponent</role>
+      <implementation>org.codehaus.plexus.metadata.component.DominantComponent</implementation>
       <description>Description for Dominant component</description>
       <configuration>
         <prop1>Dominant Property1 value</prop1>
@@ -12,9 +10,7 @@
       </configuration>
       <requirements>
         <requirement>
-          <role>
-            org.codehaus.plexus.cdc.component.IComponentA
-          </role>
+          <role>org.codehaus.plexus.metadata.component.IComponentA</role>
         </requirement>
       </requirements>
     </component>

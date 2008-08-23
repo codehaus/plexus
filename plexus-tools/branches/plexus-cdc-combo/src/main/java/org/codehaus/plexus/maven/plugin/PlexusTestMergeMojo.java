@@ -23,7 +23,7 @@ import java.io.File;
 import java.util.List;
 
 /**
- * @goal test-merge-descriptors
+ * @goal merge-test-metadata
  * 
  * @phase process-test-resources
  * 

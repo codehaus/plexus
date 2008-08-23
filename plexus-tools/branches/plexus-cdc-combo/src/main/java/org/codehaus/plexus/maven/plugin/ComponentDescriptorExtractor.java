@@ -17,7 +17,7 @@ package org.codehaus.plexus.maven.plugin;
 import java.util.List;
 
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
 
 /**
  * An abstraction to allow pluggable {@link ComponentDescriptor} extraction to be dropped.

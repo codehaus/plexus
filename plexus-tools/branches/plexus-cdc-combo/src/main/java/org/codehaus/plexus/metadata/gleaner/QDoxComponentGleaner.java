@@ -37,9 +37,10 @@ import com.thoughtworks.qdox.model.DocletTag;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaClassCache;
 import com.thoughtworks.qdox.model.JavaField;
-import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
-import org.codehaus.plexus.component.repository.cdc.ComponentRequirement;
-import org.codehaus.plexus.component.repository.cdc.ComponentRequirementList;
+
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.ComponentRequirement;
+import org.codehaus.plexus.component.repository.ComponentRequirementList;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.logging.LogEnabled;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Configurable;

@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package org.codehaus.plexus.cdc.gleaner;
+package org.codehaus.plexus.metadata.gleaner;
 
 /**
  * ???
  *
+ * @plexus.component role="org.codehaus.plexus.metadata.gleaner.ChildComponent"
+ *
  * @version $Id$
  */
-public abstract class AbstractClass
+public class ChildComponent
 {
 }

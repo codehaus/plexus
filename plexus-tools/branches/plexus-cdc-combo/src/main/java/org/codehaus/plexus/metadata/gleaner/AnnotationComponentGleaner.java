@@ -25,12 +25,11 @@ import java.util.List;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.annotations.Requirement;
-import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
-import org.codehaus.plexus.component.repository.cdc.ComponentRequirement;
-import org.codehaus.plexus.component.repository.cdc.ComponentRequirementList;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.ComponentRequirement;
+import org.codehaus.plexus.component.repository.ComponentRequirementList;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
-import org.codehaus.plexus.metadata.gleaner.ComponentGleanerException;
 
 /**
  * A class component gleaner which inspects each type for <tt>org.codehaus.plexus.component.annotations.*</tt> annotations

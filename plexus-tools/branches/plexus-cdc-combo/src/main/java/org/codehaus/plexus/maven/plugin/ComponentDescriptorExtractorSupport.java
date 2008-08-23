@@ -17,7 +17,7 @@ package org.codehaus.plexus.maven.plugin;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
 
 /**
  * Support for {@link ComponentDescriptorExtractor} implementations.

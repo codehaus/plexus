@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cdc.merge;
+package org.codehaus.plexus.metadata.merge;
 
 /*
  * The MIT License
@@ -60,8 +60,8 @@ public class ComponentsXmlMergerTest
     public void testComponentsXmlFileMerge()
         throws Exception
     {
-        File dominantXml = getTestFile( "src/test/resources/org/codehaus/plexus/cdc/merge/dominant.xml" );
-        File recessiveXml = getTestFile( "src/test/resources/org/codehaus/plexus/cdc/merge/recessive.xml" );
+        File dominantXml = getTestFile( "src/test/resources/org/codehaus/plexus/metadata/merge/dominant.xml" );
+        File recessiveXml = getTestFile( "src/test/resources/org/codehaus/plexus/metadata/merge/recessive.xml" );
         Document dDoc = new SAXBuilder().build( dominantXml );
         Document rDoc = new SAXBuilder().build( recessiveXml );
         // ComponentsXmlMerger merger = new ComponentsXmlMerger (dDoc);
@@ -85,8 +85,8 @@ public class ComponentsXmlMergerTest
         assertEquals( 2, componentEltList.size() );
         Element cElt = (Element) componentEltList.get( 0 );
 
-        assertEquals( "org.codehaus.plexus.cdc.component.IComponent", cElt.getChildTextTrim( "role" ) );
-        assertEquals( "org.codehaus.plexus.cdc.component.DominantComponent", cElt.getChildTextTrim( "implementation" ) );
+        assertEquals( "org.codehaus.plexus.metadata.component.IComponent", cElt.getChildTextTrim( "role" ) );
+        assertEquals( "org.codehaus.plexus.metadata.component.DominantComponent", cElt.getChildTextTrim( "implementation" ) );
 
         assertEquals( "Should only have 1 description element.", 1, cElt.getChildren( "description" ).size() );
         assertEquals( "Description for Dominant component", cElt.getChildTextTrim( "description" ) );
@@ -102,8 +102,8 @@ public class ComponentsXmlMergerTest
 
         // now for the second component
         cElt = (Element) componentEltList.get( 1 );
-        assertEquals( "org.codehaus.plexus.cdc.component.INonConflictingComponent", cElt.getChildTextTrim( "role" ) );
-        assertEquals( "org.codehaus.plexus.cdc.component.RecessiveComponent", cElt.getChildTextTrim( "implementation" ) );
+        assertEquals( "org.codehaus.plexus.metadata.component.INonConflictingComponent", cElt.getChildTextTrim( "role" ) );
+        assertEquals( "org.codehaus.plexus.metadata.component.RecessiveComponent", cElt.getChildTextTrim( "implementation" ) );
 
         assertEquals( 1, mRootElt.getChildren( "lifecycle-handler-manager" ).size() );
         assertEquals( "org.codehaus.plexus.lifecycle.DefaultLifecycleHandlerManager", mRootElt

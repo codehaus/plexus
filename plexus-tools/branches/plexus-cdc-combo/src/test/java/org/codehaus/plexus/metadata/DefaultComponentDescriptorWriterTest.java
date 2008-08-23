@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package org.codehaus.plexus.cdc;
+package org.codehaus.plexus.metadata;
 
 import java.io.StringWriter;
 import java.util.List;
 
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
+
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
-import org.codehaus.plexus.component.repository.cdc.ComponentSetDescriptor;
 import org.codehaus.plexus.component.repository.io.PlexusTools;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.metadata.ComponentDescriptorWriter;

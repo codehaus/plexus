@@ -14,15 +14,24 @@
  * limitations under the License.
  */
 
-package org.codehaus.plexus.cdc.gleaner;
+package org.codehaus.plexus.metadata.gleaner;
 
 /**
  * ???
  *
- * @plexus.component role="foo"
+ * @plexus.component role="org.codehaus.plexus.metadata.gleaner.MyComponent" role-hint="foo"
  *
- * @version $Id$
+ * @version $Rev$ $Date$
  */
-public abstract class AbstractWithAnnoClass
+public class MyComponent
 {
+    /**
+     * @plexus.requirement
+     */
+    private ChildComponent child;
+
+    /**
+     * @plexus.configuration default-value="bar"
+     */
+    private String foo;
 }

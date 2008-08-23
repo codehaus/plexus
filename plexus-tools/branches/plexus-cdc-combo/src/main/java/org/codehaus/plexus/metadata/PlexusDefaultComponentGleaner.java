@@ -33,13 +33,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.thoughtworks.qdox.model.DocletTag;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaClassCache;
-import com.thoughtworks.qdox.model.JavaField;
-import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
-import org.codehaus.plexus.component.repository.cdc.ComponentRequirement;
-import org.codehaus.plexus.component.repository.cdc.ComponentRequirementList;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.ComponentRequirement;
+import org.codehaus.plexus.component.repository.ComponentRequirementList;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.logging.LogEnabled;
@@ -51,6 +47,11 @@ import org.codehaus.plexus.personality.plexus.lifecycle.phase.Serviceable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Suspendable;
 import org.codehaus.plexus.util.StringUtils;
+
+import com.thoughtworks.qdox.model.DocletTag;
+import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.model.JavaClassCache;
+import com.thoughtworks.qdox.model.JavaField;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
