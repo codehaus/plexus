@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.plexus.cdc.gleaner;
+package org.codehaus.plexus.metadata.gleaner;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.codehaus.plexus.cdc.gleaner.ComponentGleanerException;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -31,6 +30,7 @@ import org.codehaus.plexus.component.repository.cdc.ComponentRequirement;
 import org.codehaus.plexus.component.repository.cdc.ComponentRequirementList;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
+import org.codehaus.plexus.metadata.gleaner.ComponentGleanerException;
 
 /**
  * A class component gleaner which inspects each type for <tt>org.codehaus.plexus.component.annotations.*</tt> annotations

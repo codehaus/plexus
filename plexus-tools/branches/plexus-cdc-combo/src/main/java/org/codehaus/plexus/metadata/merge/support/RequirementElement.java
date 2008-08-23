@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cdc.merge.support;
+package org.codehaus.plexus.metadata.merge.support;
 
 /*
  * The MIT License
@@ -24,56 +24,36 @@ package org.codehaus.plexus.cdc.merge.support;
  * SOFTWARE.
  */
 
+import org.codehaus.plexus.metadata.merge.MergeException;
 import org.jdom.Element;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  * @version $Id$
  */
-public class ComponentElement
+public class RequirementElement
     extends AbstractMergeableElement
 {
-    /**
-     * Allowed elements/tags that we can expect under this element.
-     */
-    private final DescriptorTag[] allowedTags = {
-        ROLE,
-        ROLE_HINT,
-        IMPLEMENTATION,
-        FIELD_NAME,
-        LIFECYCLE_HANDLER,
-        DESCRIPTION,
-        CONFIGURATION,
-        RequirementsElement.TAG };
+    static final DescriptorTag TAG = new DescriptorTag( "requirement", true, RequirementElement.class );
 
-    static final DescriptorTag TAG = new DescriptorTag( "component", true, ComponentElement.class );
-
-    static final DescriptorTag ROLE = new DescriptorTag( "role" );
-
-    static final DescriptorTag ROLE_HINT = new DescriptorTag( "role-hint" );
-
-    private static final DescriptorTag DESCRIPTION = new DescriptorTag( "description" );
-    
-    private static final DescriptorTag CONFIGURATION = new DescriptorTag( "configuration" );
-
-    static final DescriptorTag FIELD_NAME = new DescriptorTag( "field-name" );
-
-    private static final DescriptorTag IMPLEMENTATION = new DescriptorTag( "implementation" );
-
-    private static final DescriptorTag LIFECYCLE_HANDLER = new DescriptorTag( "lifecycle-handler", false, null );
-
-    public ComponentElement( Element element )
+    public RequirementElement( Element element )
     {
         super( element );
     }
 
-    protected boolean isExpectedElementType( Mergeable me )
-    {
-        return me instanceof ComponentElement;
-    }
-
     public DescriptorTag[] getAllowedTags()
     {
-        return allowedTags;
+        return new DescriptorTag[]{ComponentElement.ROLE, ComponentElement.ROLE_HINT, ComponentElement.FIELD_NAME};
+    }
+
+    public void merge( Mergeable me )
+        throws MergeException
+    {
+        super.merge( me );
+    }
+
+    protected boolean isExpectedElementType( Mergeable me )
+    {
+        return me instanceof RequirementElement;
     }
 }

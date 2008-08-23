@@ -27,6 +27,7 @@ import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.cdc.ComponentRequirement;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.metadata.gleaner.QDoxComponentGleaner;
 
 /**
  * Tests for the {@link QDoxComponentGleaner} class.

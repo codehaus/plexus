@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cdc.merge.support;
+package org.codehaus.plexus.metadata.merge.support;
 
 /*
  * The MIT License
@@ -27,8 +27,8 @@ package org.codehaus.plexus.cdc.merge.support;
 import java.util.Collections;
 import java.util.List;
 
-import org.codehaus.plexus.cdc.merge.MergeException;
-import org.codehaus.plexus.cdc.merge.MergeStrategy;
+import org.codehaus.plexus.metadata.merge.MergeException;
+import org.codehaus.plexus.metadata.merge.MergeStrategy;
 
 /**
  * Collection of available Merge Strategies.<p>
@@ -61,7 +61,7 @@ public class MergeStrategies
     {
         /**
          * @throws MergeException
-         * @see org.codehaus.plexus.cdc.merge.MergeStrategy#apply(Mergeable,Mergeable)
+         * @see org.codehaus.plexus.metadata.merge.MergeStrategy#apply(Mergeable,Mergeable)
          */
         public void apply( Mergeable dElt, Mergeable rElt )
             throws MergeException

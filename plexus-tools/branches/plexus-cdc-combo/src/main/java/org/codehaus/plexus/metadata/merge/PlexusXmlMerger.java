@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cdc.merge.support;
+package org.codehaus.plexus.metadata.merge;
 
 /*
  * The MIT License
@@ -24,36 +24,34 @@ package org.codehaus.plexus.cdc.merge.support;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.cdc.merge.MergeException;
-import org.jdom.Element;
+import org.codehaus.plexus.metadata.merge.support.PlexusRootElement;
+import org.jdom.Document;
 
 /**
+ * Plexus XML merger. This is a superset of the components xml merger so can be used in its place if necessary.
+ *
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  * @version $Id$
  */
-public class RequirementElement
-    extends AbstractMergeableElement
+public class PlexusXmlMerger
+    extends AbstractMerger
 {
-    static final DescriptorTag TAG = new DescriptorTag( "requirement", true, RequirementElement.class );
 
-    public RequirementElement( Element element )
-    {
-        super( element );
-    }
-
-    public DescriptorTag[] getAllowedTags()
-    {
-        return new DescriptorTag[]{ComponentElement.ROLE, ComponentElement.ROLE_HINT, ComponentElement.FIELD_NAME};
-    }
-
-    public void merge( Mergeable me )
+    /**
+     * @see org.codehaus.plexus.metadata.merge.Merger#merge(org.jdom.Document, org.jdom.Document)
+     */
+    public Document merge( Document dDocument, Document rDocument )
         throws MergeException
     {
-        super.merge( me );
+        // TODO: Ideally we don't want to manipulate the original
+        // dominant document but use its copy for merge.
+        //Document mDoc = (Document) dDocument.clone();        // doesn't merge properly
+        Document mDoc = dDocument;
+        PlexusRootElement dCSE = new PlexusRootElement( mDoc.getRootElement() );
+        PlexusRootElement rCSE = new PlexusRootElement( rDocument.getRootElement() );
+        dCSE.merge( rCSE );
+        // the contents are merged into the dominant document DOM.
+        return mDoc;
     }
 
-    protected boolean isExpectedElementType( Mergeable me )
-    {
-        return me instanceof RequirementElement;
-    }
 }

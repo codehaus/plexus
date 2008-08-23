@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cdc.merge;
+package org.codehaus.plexus.metadata.merge.support;
 
 /*
  * The MIT License
@@ -24,34 +24,27 @@ package org.codehaus.plexus.cdc.merge;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.cdc.merge.support.PlexusRootElement;
-import org.jdom.Document;
+import org.jdom.Element;
 
 /**
- * Plexus XML merger. This is a superset of the components xml merger so can be used in its place if necessary.
- *
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  * @version $Id$
  */
-public class PlexusXmlMerger
-    extends AbstractMerger
+public class ComponentSetElement
+    extends AbstractMergeableElement
 {
-
-    /**
-     * @see org.codehaus.plexus.cdc.merge.Merger#merge(org.jdom.Document, org.jdom.Document)
-     */
-    public Document merge( Document dDocument, Document rDocument )
-        throws MergeException
+    public ComponentSetElement( Element element )
     {
-        // TODO: Ideally we don't want to manipulate the original
-        // dominant document but use its copy for merge.
-        //Document mDoc = (Document) dDocument.clone();        // doesn't merge properly
-        Document mDoc = dDocument;
-        PlexusRootElement dCSE = new PlexusRootElement( mDoc.getRootElement() );
-        PlexusRootElement rCSE = new PlexusRootElement( rDocument.getRootElement() );
-        dCSE.merge( rCSE );
-        // the contents are merged into the dominant document DOM.
-        return mDoc;
+        super( element );
     }
 
+    public DescriptorTag[] getAllowedTags()
+    {
+        return new DescriptorTag[]{ComponentsElement.TAG};
+    }
+
+    protected boolean isExpectedElementType( Mergeable me )
+    {
+        return me instanceof ComponentSetElement;
+    }
 }

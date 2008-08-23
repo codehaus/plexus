@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cdc.merge.support;
+package org.codehaus.plexus.metadata.merge.support;
 
 /*
  * The MIT License
@@ -30,8 +30,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.codehaus.plexus.cdc.merge.MergeException;
-import org.codehaus.plexus.cdc.merge.MergeStrategy;
+import org.codehaus.plexus.metadata.merge.MergeException;
+import org.codehaus.plexus.metadata.merge.MergeStrategy;
 import org.jdom.Content;
 import org.jdom.Element;
 
@@ -121,7 +121,7 @@ public abstract class AbstractMergeableElement
     /**
      * Simply delegate to
      *
-     * @see Mergeable#merge(Mergeable,org.codehaus.plexus.cdc.merge.MergeStrategy)
+     * @see Mergeable#merge(Mergeable,org.codehaus.plexus.metadata.merge.MergeStrategy)
      */
     public void merge( Mergeable me, MergeStrategy strategy )
         throws MergeException

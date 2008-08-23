@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cdc.merge.support;
+package org.codehaus.plexus.metadata.merge.support;
 
 /*
  * The MIT License
@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.codehaus.plexus.cdc.merge.MergeException;
+import org.codehaus.plexus.metadata.merge.MergeException;
 import org.jdom.Element;
 
 /**

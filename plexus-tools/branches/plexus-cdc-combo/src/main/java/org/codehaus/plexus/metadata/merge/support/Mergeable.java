@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cdc.merge.support;
+package org.codehaus.plexus.metadata.merge.support;
 
 /*
  * The MIT License
@@ -24,8 +24,8 @@ package org.codehaus.plexus.cdc.merge.support;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.cdc.merge.MergeException;
-import org.codehaus.plexus.cdc.merge.MergeStrategy;
+import org.codehaus.plexus.metadata.merge.MergeException;
+import org.codehaus.plexus.metadata.merge.MergeStrategy;
 import org.jdom.Element;
 
 /**

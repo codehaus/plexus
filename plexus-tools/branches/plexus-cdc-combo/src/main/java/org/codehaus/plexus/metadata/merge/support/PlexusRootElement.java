@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cdc.merge;
+package org.codehaus.plexus.metadata.merge.support;
 
 /*
  * The MIT License
@@ -24,43 +24,28 @@ package org.codehaus.plexus.cdc.merge;
  * SOFTWARE.
  */
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
-import org.codehaus.plexus.util.IOUtil;
-import org.jdom.Document;
-import org.jdom.output.XMLOutputter;
+import org.jdom.Element;
 
 /**
- * Base class for common mergers.
- *
- * @author <a href="mailto:brett@codehaus.org">Brett Porter</a>
+ * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
+ * @version $Id$
  */
-public abstract class AbstractMerger
-    implements Merger
+public class PlexusRootElement
+    extends AbstractMergeableElement
 {
-    /**
-     * @see org.codehaus.plexus.cdc.merge.Merger#writeMergedDocument(org.jdom.Document, java.io.File)
-     */
-    public void writeMergedDocument( Document mergedDocument, File file )
-        throws IOException
+    public PlexusRootElement( Element element )
     {
-        if ( !file.getParentFile().exists() )
-        {
-            file.getParentFile().mkdirs();
-        }
+        super( element );
+    }
 
-        XMLOutputter out = new XMLOutputter();
-        FileWriter fw = null;
-        try
-        {
-            fw = new FileWriter( file );
-            out.output( mergedDocument, fw );
-        }
-        finally
-        {
-            IOUtil.close( fw );
-        }
+    public DescriptorTag[] getAllowedTags()
+    {
+        // TODO: add the managers, etc
+        return new DescriptorTag[]{ComponentsElement.TAG};
+    }
+
+    protected boolean isExpectedElementType( Mergeable me )
+    {
+        return me instanceof PlexusRootElement;
     }
 }

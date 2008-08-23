@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cdc.merge;
+package org.codehaus.plexus.metadata.merge;
 
 /*
  * The MIT License
@@ -24,21 +24,20 @@ package org.codehaus.plexus.cdc.merge;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.cdc.merge.support.Mergeable;
-
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  * @version $Id$
  */
-public interface MergeStrategy
+public class MergeException
+    extends Exception
 {
-    /**
-     * Merges a <b>dominant</b> {@link Mergeable} instance with a <b>recessive</b> one.
-     *
-     * @param dElt Dominant {@link Mergeable} instance.
-     * @param rElt Recessive {@link Mergeable} instance.
-     * @throws MergeException TODO
-     */
-    void apply( Mergeable dElt, Mergeable rElt )
-        throws MergeException;
+    public MergeException( String message, Throwable cause )
+    {
+        super( message, cause );
+    }
+
+    public MergeException( String message )
+    {
+        super( message );
+    }
 }

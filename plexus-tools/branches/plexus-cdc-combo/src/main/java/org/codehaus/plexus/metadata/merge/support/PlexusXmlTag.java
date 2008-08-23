@@ -1,8 +1,8 @@
-package org.codehaus.plexus.cdc.merge.support;
+package org.codehaus.plexus.metadata.merge.support;
 
 /**
  * All allowable tags in <code>components.xml</code> and their bindings to
- * {@link org.codehaus.plexus.cdc.merge.support.Mergeable} counterparts (if required).
+ * {@link org.codehaus.plexus.metadata.merge.support.Mergeable} counterparts (if required).
  * <p/>
  * <em>This implementation may change.</em> <br>
  * TODO Might be an idea factor and set up the list of allowed tags here itself.

@@ -25,11 +25,14 @@ package org.codehaus.plexus.cdc.merge;
  */
 
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.cdc.merge.support.AbstractMergeableElement;
-import org.codehaus.plexus.cdc.merge.support.AbstractMergeableElementList;
-import org.codehaus.plexus.cdc.merge.support.ComponentElement;
-import org.codehaus.plexus.cdc.merge.support.ComponentsElement;
-import org.codehaus.plexus.cdc.merge.support.RequirementsElement;
+import org.codehaus.plexus.metadata.merge.ComponentsXmlMerger;
+import org.codehaus.plexus.metadata.merge.MergeException;
+import org.codehaus.plexus.metadata.merge.Merger;
+import org.codehaus.plexus.metadata.merge.support.AbstractMergeableElement;
+import org.codehaus.plexus.metadata.merge.support.AbstractMergeableElementList;
+import org.codehaus.plexus.metadata.merge.support.ComponentElement;
+import org.codehaus.plexus.metadata.merge.support.ComponentsElement;
+import org.codehaus.plexus.metadata.merge.support.RequirementsElement;
 import org.codehaus.plexus.util.FileUtils;
 import org.jdom.Document;
 import org.jdom.Element;

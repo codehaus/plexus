@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package org.codehaus.plexus.cdc.gleaner;
+package org.codehaus.plexus.metadata.gleaner;
 
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaClassCache;
-import org.codehaus.plexus.cdc.gleaner.ComponentGleanerException;
 import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
+import org.codehaus.plexus.metadata.gleaner.ComponentGleanerException;
 
 /**
  * Interface for component gleaners which glean off of source code.
