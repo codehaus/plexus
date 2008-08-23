@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.plexus.cdc.gleaner;
+package org.codehaus.plexus.metadata.gleaner;
 
 import java.util.Collection;
 import java.util.Map;

@@ -26,8 +26,8 @@ import java.util.Map;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.cdc.gleaner.ClassComponentGleaner;
 import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
+import org.codehaus.plexus.metadata.gleaner.ClassComponentGleaner;
 import org.codehaus.plexus.util.DirectoryScanner;
 
 /**

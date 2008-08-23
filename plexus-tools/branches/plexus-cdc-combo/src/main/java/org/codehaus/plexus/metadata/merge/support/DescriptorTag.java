@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cdc.merge.support;
+package org.codehaus.plexus.metadata.merge.support;
 
 /* 
  * ========================================================================

@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cdc.merge.support;
+package org.codehaus.plexus.metadata.merge;
 
 /*
  * The MIT License
@@ -24,48 +24,32 @@ package org.codehaus.plexus.cdc.merge.support;
  * SOFTWARE.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jdom.Element;
+import org.codehaus.plexus.metadata.merge.support.ComponentSetElement;
+import org.jdom.Document;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  * @version $Id$
  */
-public class RequirementsElement
-    extends AbstractMergeableElementList
+public class ComponentsXmlMerger
+    extends AbstractMerger
 {
-    public static final DescriptorTag TAG = new DescriptorTag( "requirements", true, RequirementsElement.class );
 
-    public RequirementsElement( Element element )
+    /**
+     * @see Merger#merge(Document, Document)
+     */
+    public Document merge( Document dDocument, Document rDocument )
+        throws MergeException
     {
-        super( element );
+        // TODO: Ideally we don't want to manipulate the original
+        // dominant document but use its copy for merge.
+        //Document mDoc = (Document) dDocument.clone();        // doesn't merge properly
+        Document mDoc = dDocument;
+        ComponentSetElement dCSE = new ComponentSetElement( mDoc.getRootElement() );
+        ComponentSetElement rCSE = new ComponentSetElement( rDocument.getRootElement() );
+        dCSE.merge( rCSE );
+        // the contents are merged into the dominant document DOM.
+        return mDoc;
     }
 
-    protected boolean isExpectedElementType( Mergeable me )
-    {
-        return me instanceof RequirementsElement;
-    }
-
-    public DescriptorTag[] getAllowedTags()
-    {
-        return new DescriptorTag[]{RequirementElement.TAG};
-    }
-
-    protected List getElementNamesForConflictResolution( List defaultList )
-    {
-        // we return the keys that we know we want to lookup to identify and
-        // resolve conflicts.
-        List l = new ArrayList();
-        l.add( ComponentElement.ROLE.getTagName() );
-        // TODO: add this back, but a test will fail (based on a role with no hint, which shouldn't be legal)
-//        l.add( ComponentElement.ROLE_HINT.getTagName() );
-        return l;
-    }
-
-    protected String getTagNameForRecurringMergeable()
-    {
-        return RequirementElement.TAG.getTagName();
-    }
 }

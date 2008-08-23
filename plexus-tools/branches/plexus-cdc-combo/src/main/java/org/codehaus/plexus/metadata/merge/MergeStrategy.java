@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cdc.merge;
+package org.codehaus.plexus.metadata.merge;
 
 /*
  * The MIT License
@@ -24,32 +24,21 @@ package org.codehaus.plexus.cdc.merge;
  * SOFTWARE.
  */
 
-import org.codehaus.plexus.cdc.merge.support.ComponentSetElement;
-import org.jdom.Document;
+import org.codehaus.plexus.metadata.merge.support.Mergeable;
 
 /**
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  * @version $Id$
  */
-public class ComponentsXmlMerger
-    extends AbstractMerger
+public interface MergeStrategy
 {
-
     /**
-     * @see Merger#merge(Document, Document)
+     * Merges a <b>dominant</b> {@link Mergeable} instance with a <b>recessive</b> one.
+     *
+     * @param dElt Dominant {@link Mergeable} instance.
+     * @param rElt Recessive {@link Mergeable} instance.
+     * @throws MergeException TODO
      */
-    public Document merge( Document dDocument, Document rDocument )
-        throws MergeException
-    {
-        // TODO: Ideally we don't want to manipulate the original
-        // dominant document but use its copy for merge.
-        //Document mDoc = (Document) dDocument.clone();        // doesn't merge properly
-        Document mDoc = dDocument;
-        ComponentSetElement dCSE = new ComponentSetElement( mDoc.getRootElement() );
-        ComponentSetElement rCSE = new ComponentSetElement( rDocument.getRootElement() );
-        dCSE.merge( rCSE );
-        // the contents are merged into the dominant document DOM.
-        return mDoc;
-    }
-
+    void apply( Mergeable dElt, Mergeable rElt )
+        throws MergeException;
 }

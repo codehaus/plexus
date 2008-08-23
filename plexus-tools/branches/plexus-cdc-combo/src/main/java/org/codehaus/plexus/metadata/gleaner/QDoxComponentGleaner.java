@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cdc.gleaner;
+package org.codehaus.plexus.metadata.gleaner;
 
 /*
  * The MIT License

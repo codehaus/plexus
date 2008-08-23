@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cdc.merge.support;
+package org.codehaus.plexus.metadata.merge.support;
 
 /*
  * The MIT License
@@ -27,24 +27,27 @@ package org.codehaus.plexus.cdc.merge.support;
 import org.jdom.Element;
 
 /**
+ * TODO Implement merge for this.
+ *
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  * @version $Id$
  */
-public class ComponentSetElement
+public class ConfigurationElement
     extends AbstractMergeableElement
 {
-    public ComponentSetElement( Element element )
+    public ConfigurationElement( Element element )
     {
         super( element );
     }
 
-    public DescriptorTag[] getAllowedTags()
-    {
-        return new DescriptorTag[]{ComponentsElement.TAG};
-    }
-
     protected boolean isExpectedElementType( Mergeable me )
     {
-        return me instanceof ComponentSetElement;
+        return me instanceof ConfigurationElement;
+    }
+
+    public DescriptorTag[] getAllowedTags()
+    {
+        // TODO Implement!
+        return new DescriptorTag[0];
     }
 }

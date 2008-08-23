@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cdc.merge;
+package org.codehaus.plexus.metadata.merge;
 
 /*
  * The MIT License
@@ -24,20 +24,43 @@ package org.codehaus.plexus.cdc.merge;
  * SOFTWARE.
  */
 
-/**
- * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
- * @version $Id$
- */
-public class MergeException
-    extends Exception
-{
-    public MergeException( String message, Throwable cause )
-    {
-        super( message, cause );
-    }
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
-    public MergeException( String message )
+import org.codehaus.plexus.util.IOUtil;
+import org.jdom.Document;
+import org.jdom.output.XMLOutputter;
+
+/**
+ * Base class for common mergers.
+ *
+ * @author <a href="mailto:brett@codehaus.org">Brett Porter</a>
+ */
+public abstract class AbstractMerger
+    implements Merger
+{
+    /**
+     * @see org.codehaus.plexus.metadata.merge.Merger#writeMergedDocument(org.jdom.Document, java.io.File)
+     */
+    public void writeMergedDocument( Document mergedDocument, File file )
+        throws IOException
     {
-        super( message );
+        if ( !file.getParentFile().exists() )
+        {
+            file.getParentFile().mkdirs();
+        }
+
+        XMLOutputter out = new XMLOutputter();
+        FileWriter fw = null;
+        try
+        {
+            fw = new FileWriter( file );
+            out.output( mergedDocument, fw );
+        }
+        finally
+        {
+            IOUtil.close( fw );
+        }
     }
 }

@@ -1,4 +1,4 @@
-package org.codehaus.plexus.cdc.merge.support;
+package org.codehaus.plexus.metadata.merge;
 
 /*
  * The MIT License
@@ -24,30 +24,38 @@ package org.codehaus.plexus.cdc.merge.support;
  * SOFTWARE.
  */
 
-import org.jdom.Element;
+import java.io.File;
+import java.io.IOException;
+
+import org.jdom.Document;
 
 /**
- * TODO Implement merge for this.
- *
  * @author <a href='mailto:rahul.thakur.xdev@gmail.com'>Rahul Thakur</a>
  * @version $Id$
  */
-public class ConfigurationElement
-    extends AbstractMergeableElement
+public interface Merger
 {
-    public ConfigurationElement( Element element )
-    {
-        super( element );
-    }
+    String ROLE = Merger.class.getName();
 
-    protected boolean isExpectedElementType( Mergeable me )
-    {
-        return me instanceof ConfigurationElement;
-    }
+    /**
+     * Merge with the recessive document.
+     * 
+     * @param dDocument the dominant document.
+     * @param rDocument the recessive document.
+     * @return the merged {@link Document} instance.
+     *
+     * @throws MergeException if there was an error in merge.
+     */
+    Document merge( Document dDocument, Document rDocument )
+        throws MergeException;
 
-    public DescriptorTag[] getAllowedTags()
-    {
-        // TODO Implement!
-        return new DescriptorTag[0];
-    }
+    /**
+     * Allows writing out a merged JDom Document to the specified file.
+     * 
+     * @param mergedDocument the merged {@link Document} instance.
+     * @param file File to write the merged contents to.
+     * @throws IOException if there was an error while writing merged contents to the specified file.
+     */
+    void writeMergedDocument( Document mergedDocument, File file )
+        throws IOException;
 }
