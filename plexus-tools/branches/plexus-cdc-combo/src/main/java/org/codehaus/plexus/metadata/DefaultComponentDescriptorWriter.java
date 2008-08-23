@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package org.codehaus.plexus.cdc;
+package org.codehaus.plexus.metadata;
 
 import java.io.IOException;
 import java.io.Writer;

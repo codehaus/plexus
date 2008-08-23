@@ -1,9 +1,7 @@
-package org.codehaus.plexus.cdc;
-
 /*
  * The MIT License
  *
- * Copyright (c) 2004, The Codehaus
+ * Copyright (c) 2007, The Codehaus
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -24,28 +22,18 @@ package org.codehaus.plexus.cdc;
  * SOFTWARE.
  */
 
-import java.io.File;
-import java.util.List;
+package org.codehaus.plexus.metadata;
 
-import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
+import java.io.IOException;
+import java.io.Writer;
+
+import org.codehaus.plexus.component.repository.cdc.ComponentSetDescriptor;
 
 /**
- * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
- * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
- *
- * @deprecated Use {#link ComponentDescriptorExtractor}.
+ * @author <a href="mailto:kenney@neonics.com">Kenney Westerhof</a>
  */
-public interface ComponentDescriptorCreator
+public interface ComponentDescriptorWriter
 {
-    String ROLE = ComponentDescriptorCreator.class.getName();
-
-    void processSources( File[] sourceDirectories, File outputDirectory )
-        throws ComponentDescriptorCreatorException;
-
-    void processSources( File[] sourceDirectories, File outputDirectory, boolean containerDescriptor, ComponentDescriptor[] roleDefaults )
-        throws ComponentDescriptorCreatorException;
-
-    void mergeDescriptors( File outputDescriptor, List descriptors )
-        throws ComponentDescriptorCreatorException;
+    void writeDescriptorSet( Writer writer, ComponentSetDescriptor componentSetDescriptor, boolean containerDescriptor )
+        throws ComponentDescriptorWriteException, IOException;
 }
