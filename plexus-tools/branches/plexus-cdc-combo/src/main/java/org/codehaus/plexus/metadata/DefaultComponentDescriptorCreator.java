@@ -24,22 +24,6 @@ package org.codehaus.plexus.metadata;
  * SOFTWARE.
  */
 
-import com.thoughtworks.qdox.JavaDocBuilder;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaSource;
-import org.codehaus.plexus.component.repository.ComponentDependency;
-import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
-import org.codehaus.plexus.component.repository.cdc.ComponentRequirement;
-import org.codehaus.plexus.component.repository.cdc.ComponentSetDescriptor;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.metadata.merge.MergeException;
-import org.codehaus.plexus.metadata.merge.Merger;
-import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.xml.XMLWriter;
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -49,6 +33,24 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.codehaus.plexus.component.repository.ComponentDependency;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.ComponentRequirement;
+import org.codehaus.plexus.component.repository.ComponentSetDescriptor;
+
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.metadata.merge.MergeException;
+import org.codehaus.plexus.metadata.merge.Merger;
+import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.xml.XMLWriter;
+import org.jdom.Document;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+
+import com.thoughtworks.qdox.JavaDocBuilder;
+import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.model.JavaSource;
 
 /**
  * So, in this case it is easy enough to determine the role and the implementation.

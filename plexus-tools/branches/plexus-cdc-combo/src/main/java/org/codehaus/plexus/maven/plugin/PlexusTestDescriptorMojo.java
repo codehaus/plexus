@@ -29,7 +29,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  * Generates a Plexus <tt>components.xml</tt> component descriptor file from test source (javadoc)
  * or test class annotations.
  * 
- * @goal test-descriptor
+ * @goal generate-test-metadata
  * @phase process-test-classes
  * @requiresDependencyResolution test
  * 

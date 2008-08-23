@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package org.codehaus.plexus.cdc.gleaner;
+package org.codehaus.plexus.metadata.gleaner;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
+import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.ComponentRequirement;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+
 import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaSource;
-import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
-import org.codehaus.plexus.component.repository.cdc.ComponentRequirement;
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.metadata.gleaner.QDoxComponentGleaner;
 
 /**
  * Tests for the {@link QDoxComponentGleaner} class.

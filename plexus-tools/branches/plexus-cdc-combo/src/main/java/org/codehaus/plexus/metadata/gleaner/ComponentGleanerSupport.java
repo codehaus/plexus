@@ -19,7 +19,7 @@ package org.codehaus.plexus.metadata.gleaner;
 import java.util.Collection;
 import java.util.Map;
 
-import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 

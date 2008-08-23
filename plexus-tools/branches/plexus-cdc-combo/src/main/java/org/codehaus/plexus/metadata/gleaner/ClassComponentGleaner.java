@@ -16,7 +16,7 @@
 
 package org.codehaus.plexus.metadata.gleaner;
 
-import org.codehaus.plexus.component.repository.cdc.ComponentDescriptor;
+import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.metadata.gleaner.ComponentGleanerException;
 
 /**

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package org.codehaus.plexus.cdc.gleaner;
+package org.codehaus.plexus.metadata.gleaner;
 
 /**
  * ???
  *
  * @version $Id$
  */
-public interface NoAnnotationsIntf
+public class NoAnnotationsClass
 {
 }

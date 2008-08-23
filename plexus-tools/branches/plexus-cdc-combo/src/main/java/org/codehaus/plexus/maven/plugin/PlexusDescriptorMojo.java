@@ -28,7 +28,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  * Generates a Plexus <tt>components.xml</tt> component descriptor file from source (javadoc) or
  * class annotations.
  * 
- * @goal descriptor
+ * @goal generate-metadata
  * @phase process-classes
  * @requiresDependencyResolution compile
  * 
