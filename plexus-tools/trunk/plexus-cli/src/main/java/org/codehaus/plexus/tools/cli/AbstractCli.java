@@ -156,6 +156,8 @@ public abstract class AbstractCli
             ContainerConfiguration configuration = new DefaultContainerConfiguration()
                 .setClassWorld( classWorld );
 
+            customizeContainerConfiguration( configuration );
+            
             PlexusContainer plexus = new DefaultPlexusContainer( configuration );
 
             invokePlexusComponent( cli, plexus );
@@ -176,6 +178,8 @@ public abstract class AbstractCli
         return 0;
     }
 
+    protected abstract void customizeContainerConfiguration( ContainerConfiguration configuration );
+    
     protected int showFatalError( String message,
                                   Exception e,
                                   boolean show )
