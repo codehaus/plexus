@@ -156,7 +156,7 @@ public abstract class AbstractCli
             ContainerConfiguration configuration = new DefaultContainerConfiguration()
                 .setClassWorld( classWorld );
 
-            customizeContainerConfiguration( configuration );
+            customizeContainerConfiguration( configuration, cli );
             
             PlexusContainer plexus = new DefaultPlexusContainer( configuration );
 
@@ -178,7 +178,7 @@ public abstract class AbstractCli
         return 0;
     }
 
-    protected void customizeContainerConfiguration( ContainerConfiguration configuration )
+    protected void customizeContainerConfiguration( ContainerConfiguration configuration, CommandLine cli )
     {        
     }
     
