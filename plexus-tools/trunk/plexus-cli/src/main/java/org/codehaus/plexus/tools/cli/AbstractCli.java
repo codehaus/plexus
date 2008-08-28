@@ -178,7 +178,9 @@ public abstract class AbstractCli
         return 0;
     }
 
-    protected abstract void customizeContainerConfiguration( ContainerConfiguration configuration );
+    protected void customizeContainerConfiguration( ContainerConfiguration configuration )
+    {        
+    }
     
     protected int showFatalError( String message,
                                   Exception e,
