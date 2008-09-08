@@ -162,19 +162,32 @@ public class StringSearchInterpolator
 
                 if ( recursionInterceptor.hasRecursiveExpression( realExpr ) )
                 {
-                    throw new InterpolationException( "Detected the following recursive expression cycle: "
-                                                                      + recursionInterceptor.getExpressionCycle( realExpr ),
-                                                      wholeExpr );
+                    throw new InterpolationCycleException( recursionInterceptor, realExpr, wholeExpr );
                 }
 
                 recursionInterceptor.expressionResolutionStarted( realExpr );
 
                 Object value = existingAnswers.get( realExpr );
+                Object bestAnswer = null;
                 for ( Iterator it = valueSources.iterator(); it.hasNext() && value == null; )
                 {
                     ValueSource vs = (ValueSource) it.next();
 
                     value = vs.getValue( realExpr );
+                    
+                    if ( value != null && value.toString().indexOf( wholeExpr ) > -1 )
+                    {
+                        bestAnswer = value;
+                        value = null;
+                    }
+                }
+                
+                // this is the simplest recursion check to catch exact recursion 
+                // (non synonym), and avoid the extra effort of more string 
+                // searching.
+                if ( value == null && bestAnswer != null )
+                {
+                    throw new InterpolationCycleException( recursionInterceptor, realExpr, wholeExpr );
                 }
 
                 if ( value != null )
