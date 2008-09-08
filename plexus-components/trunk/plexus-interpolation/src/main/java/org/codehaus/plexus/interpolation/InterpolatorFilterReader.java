@@ -90,6 +90,9 @@ public class InterpolatorFilterReader
     private String beginToken;
     
     private String endToken;
+    
+    /** true by default to preserve backward comp */
+    private boolean interpolateWithPrefixPattern = true;
 
     /**
      * this constructor use default begin token ${ and default end token } 
@@ -290,7 +293,14 @@ public class InterpolatorFilterReader
             String value;
             try
             {
-                value = interpolator.interpolate( key.toString(), "" );
+                if ( interpolateWithPrefixPattern )
+                {
+                    value = interpolator.interpolate( key.toString(), "" );
+                }
+                else
+                {
+                    value = interpolator.interpolate( key.toString() );
+                }
             }
             catch ( InterpolationException e )
             {
@@ -319,5 +329,15 @@ public class InterpolatorFilterReader
         }
 
         return ch;
+    }
+
+    public boolean isInterpolateWithPrefixPattern()
+    {
+        return interpolateWithPrefixPattern;
+    }
+
+    public void setInterpolateWithPrefixPattern( boolean interpolateWithPrefixPattern )
+    {
+        this.interpolateWithPrefixPattern = interpolateWithPrefixPattern;
     }
 }
