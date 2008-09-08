@@ -33,9 +33,7 @@ public class StringSearchInterpolator
     private List valueSources = new ArrayList();
     
     private List postProcessors = new ArrayList();
-    
-    private boolean reusePatterns = false;
-    
+   
     private boolean cacheAnswers = false;
     
     public static final String DEFAULT_START_EXPR = "${";
@@ -275,16 +273,6 @@ public class StringSearchInterpolator
             ValueSource vs = (ValueSource) it.next();
             vs.clearFeedback();
         }
-    }
-
-    public boolean isReusePatterns()
-    {
-        return reusePatterns;
-    }
-
-    public void setReusePatterns( boolean reusePatterns )
-    {
-        this.reusePatterns = reusePatterns;
     }
 
     public boolean isCacheAnswers()
