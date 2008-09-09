@@ -154,7 +154,7 @@ public class StringSearchInterpolator
 
             if ( startIdx >= 0 && escapeString != null && escapeString.length() > 0 )
             {
-                int startEscapeIdx = startIdx - escapeString.length();
+                int startEscapeIdx = startIdx == 0 ? 0 : startIdx - escapeString.length();
                 if ( startEscapeIdx >= 0 )
                 {
                     String escape = input.substring( startEscapeIdx, startIdx );

@@ -24,7 +24,6 @@ package org.codehaus.plexus.interpolation;
  * SOFTWARE.
  */
 
-import java.io.Reader;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
@@ -126,20 +125,44 @@ public class InterpolatorFilterReaderTest
 
         String foo = "@{name} is an @{noun}";
 
-        assertEquals( "jason is an asshole", interpolate( foo, m, "@{", "}", "\\@\\{", "(.+?)\\}" ) );
+        assertEquals( "jason is an asshole", interpolate( foo, m, "@{", "}", "@{", "}" ) );
+    }
+
+    public void testInterpolationWithInterpolatedValueAtEndWithCustomTokenAndCustomString()
+        throws Exception
+    {
+        Map m = new HashMap();
+        m.put( "name", "jason" );
+        m.put( "noun", "asshole" );
+
+        String foo = "@name@ is an @noun@";
+
+        assertEquals( "jason is an asshole", interpolate( foo, m, "@", "@", "@", "@" ) );
+    }
+
+    public void testEscape()
+        throws Exception
+    {
+        Map m = new HashMap();
+        m.put( "name", "jason" );
+        m.put( "noun", "asshole" );
+
+        String foo = "${name} is an \\${noun}";
+
+        assertEquals( "jason is an ${noun}", interpolate( foo, m, "\\" ) );
+    }
+
+    public void testEscapeAtStart()
+        throws Exception
+    {
+        Map m = new HashMap();
+        m.put( "name", "jason" );
+        m.put( "noun", "asshole" );
+
+        String foo = "\\${name} is an \\${noun}";
+
+        assertEquals( "${name} is an ${noun}", interpolate( foo, m, "\\" ) );
     }    
-    
-    public void testInterpolationWithInterpolatedValueAtEndWithCustomTokenAndCustomRegExp()
-    throws Exception
-{
-    Map m = new HashMap();
-    m.put( "name", "jason" );
-    m.put( "noun", "asshole" );
-
-    String foo = "@name@ is an @noun@";
-
-    assertEquals( "jason is an asshole", interpolate( foo, m, "@", "@", "\\@", "(.+?)\\@" ) );
-}    
     
     // ----------------------------------------------------------------------
     //
@@ -148,12 +171,22 @@ public class InterpolatorFilterReaderTest
     private String interpolate( String input, Map context )
         throws Exception
     {
-        Interpolator interpolator = new RegexBasedInterpolator();
+        return interpolate( input, context, null );
+    }
+
+    private String interpolate( String input, Map context, String escapeStr )
+        throws Exception
+    {
+        Interpolator interpolator = new StringSearchInterpolator();
 
         interpolator.addValueSource( new MapBasedValueSource( context ) );
 
-        Reader r = new InterpolatorFilterReader( new StringReader( input ), interpolator );
-
+        InterpolatorFilterReader r = new InterpolatorFilterReader( new StringReader( input ), interpolator );
+        r.setInterpolateWithPrefixPattern( false );
+        if ( escapeStr != null )
+        {
+            r.setEscapeString( escapeStr );
+        }
         StringBuffer buf = new StringBuffer();
         int read = -1;
         char[] cbuf = new char[1024];
@@ -169,12 +202,14 @@ public class InterpolatorFilterReaderTest
                                 String endRegExp )
         throws Exception
     {
-        Interpolator interpolator = new RegexBasedInterpolator( startRegExp, endRegExp );
+        StringSearchInterpolator interpolator = new StringSearchInterpolator( startRegExp, endRegExp );
 
         interpolator.addValueSource( new MapBasedValueSource( context ) );
 
-        Reader r = new InterpolatorFilterReader( new StringReader( input ), interpolator, beginToken, endToken );
-
+        InterpolatorFilterReader r = new InterpolatorFilterReader( new StringReader( input ), interpolator, beginToken,
+                                                                   endToken );
+        r.setInterpolateWithPrefixPattern( false );
+        r.setEscapeString( "\\" );
         StringBuffer buf = new StringBuffer();
         int read = -1;
         char[] cbuf = new char[1024];
