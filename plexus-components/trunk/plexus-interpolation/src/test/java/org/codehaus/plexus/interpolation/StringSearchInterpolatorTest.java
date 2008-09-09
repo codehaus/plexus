@@ -167,6 +167,111 @@ public class StringSearchInterpolatorTest
         assertEquals( "This is a test value.", interpolator.interpolate( "This is a test @{key}." ) );
     }    
     
+    public void testEscape()
+        throws InterpolationException
+    {
+        Properties p = new Properties();
+        p.setProperty( "key", "value" );
+
+        StringSearchInterpolator interpolator = new StringSearchInterpolator( "@{", "}" );
+        interpolator.setEscapeString( "\\" );
+        interpolator.addValueSource( new PropertiesBasedValueSource( p ) );
+
+        String result = interpolator.interpolate( "This is a test \\@{key}." );
+        
+        assertEquals( "This is a test @{key}.", result);
+    }    
+    
+    public void testEscapeWithLongEscapeStr()
+        throws InterpolationException
+    {
+        Properties p = new Properties();
+        p.setProperty( "key", "value" );
+
+        StringSearchInterpolator interpolator = new StringSearchInterpolator( "@{", "}" );
+        interpolator.setEscapeString( "$$" );
+        interpolator.addValueSource( new PropertiesBasedValueSource( p ) );
+
+        String result = interpolator.interpolate( "This is a test $$@{key}." );
+
+        assertEquals( "This is a test @{key}.", result );
+    }    
+    
+    public void testEscapeWithLongEscapeStrAtStart()
+        throws InterpolationException
+    {
+        Properties p = new Properties();
+        p.setProperty( "key", "value" );
+
+        StringSearchInterpolator interpolator = new StringSearchInterpolator( "@{", "}" );
+        interpolator.setEscapeString( "$$" );
+        interpolator.addValueSource( new PropertiesBasedValueSource( p ) );
+
+        String result = interpolator.interpolate( "$$@{key} This is a test." );
+
+        assertEquals( "@{key} This is a test.", result );
+    }     
+    
+    public void testNotEscapeWithLongEscapeStrAtStart()
+        throws InterpolationException
+    {
+        Properties p = new Properties();
+        p.setProperty( "key", "value" );
+
+        StringSearchInterpolator interpolator = new StringSearchInterpolator( "@{", "}" );
+        interpolator.setEscapeString( "$$" );
+        interpolator.addValueSource( new PropertiesBasedValueSource( p ) );
+
+        String result = interpolator.interpolate( "@{key} This is a test." );
+
+        assertEquals( "value This is a test.", result );
+    }     
+    
+    public void testEscapeNotFailWithNullEscapeStr()
+        throws InterpolationException
+    {
+        Properties p = new Properties();
+        p.setProperty( "key", "value" );
+
+        StringSearchInterpolator interpolator = new StringSearchInterpolator( "@{", "}" );
+        interpolator.setEscapeString( null );
+        interpolator.addValueSource( new PropertiesBasedValueSource( p ) );
+
+        String result = interpolator.interpolate( "This is a test @{key}." );
+
+        assertEquals( "This is a test value.", result );
+    }    
+    
+    public void testEscapeExprAtStart()
+        throws InterpolationException
+    {
+        Properties p = new Properties();
+        p.setProperty( "key", "value" );
+
+        StringSearchInterpolator interpolator = new StringSearchInterpolator( "@{", "}" );
+        interpolator.setEscapeString( "\\" );
+        interpolator.addValueSource( new PropertiesBasedValueSource( p ) );
+
+        String result = interpolator.interpolate( "\\@{key} This is a test." );
+
+        assertEquals( "@{key} This is a test.", result );
+    }    
+    
+    public void testNotEscapeExprAtStart()
+        throws InterpolationException
+    {
+        Properties p = new Properties();
+        p.setProperty( "key", "value" );
+
+        StringSearchInterpolator interpolator = new StringSearchInterpolator( "@{", "}" );
+        interpolator.setEscapeString( "\\" );
+        interpolator.addValueSource( new PropertiesBasedValueSource( p ) );
+
+        String result = interpolator.interpolate( "@{key} This is a test." );
+
+        assertEquals( "value This is a test.", result );
+    }    
+    
     public String getVar()
     {
         return "testVar";

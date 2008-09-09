@@ -44,6 +44,8 @@ public class StringSearchInterpolator
     
     private String endExpr;
     
+    private String escapeString;
+    
     public StringSearchInterpolator()
     {
         this.startExpr = DEFAULT_START_EXPR;
@@ -149,6 +151,21 @@ public class StringSearchInterpolator
             
             String wholeExpr = input.substring( startIdx, endIdx + 1 );
             String realExpr = wholeExpr.substring( 2, wholeExpr.length() - 1 );
+
+            if ( startIdx >= 0 && escapeString != null && escapeString.length() > 0 )
+            {
+                int startEscapeIdx = startIdx - escapeString.length();
+                if ( startEscapeIdx >= 0 )
+                {
+                    String escape = input.substring( startEscapeIdx, startIdx );
+                    if ( escape != null && escapeString.equals( escape ) )
+                    {
+                        result.append( wholeExpr );
+                        result.replace( startEscapeIdx, startEscapeIdx + escapeString.length(), "" );
+                        continue;
+                    }
+                }
+            }            
             
             boolean resolved = false;
             if ( !unresolvable.contains( wholeExpr ) )
@@ -288,6 +305,16 @@ public class StringSearchInterpolator
     public void clearAnswers()
     {
         existingAnswers.clear();
+    }
+
+    public String getEscapeString()
+    {
+        return escapeString;
+    }
+
+    public void setEscapeString( String escapeString )
+    {
+        this.escapeString = escapeString;
     }
 
 }
