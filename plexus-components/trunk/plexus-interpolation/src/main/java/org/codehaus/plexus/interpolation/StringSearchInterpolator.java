@@ -150,7 +150,7 @@ public class StringSearchInterpolator
             }
             
             String wholeExpr = input.substring( startIdx, endIdx + 1 );
-            String realExpr = wholeExpr.substring( 2, wholeExpr.length() - 1 );
+            String realExpr = wholeExpr.substring( startExpr.length(), wholeExpr.length() - 1 );
 
             if ( startIdx >= 0 && escapeString != null && escapeString.length() > 0 )
             {
