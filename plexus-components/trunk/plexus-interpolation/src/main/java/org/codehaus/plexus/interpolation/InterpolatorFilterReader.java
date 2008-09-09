@@ -89,11 +89,15 @@ public class InterpolatorFilterReader
     
     private String beginToken;
     
+    private String orginalBeginToken;
+    
     private String endToken;
     
     /** true by default to preserve backward comp */
     private boolean interpolateWithPrefixPattern = true;
 
+    private String escapeString;
+    
     /**
      * this constructor use default begin token ${ and default end token } 
      * @param in reader to use
@@ -119,6 +123,8 @@ public class InterpolatorFilterReader
         this.beginToken = beginToken;
         
         this.endToken = endToken;
+        
+        this.orginalBeginToken = this.beginToken;
     }    
 
     /**
@@ -209,7 +215,9 @@ public class InterpolatorFilterReader
             ch = in.read();
         }
 
-        if ( ch == this.beginToken.charAt( 0 ) )
+        boolean useEscape = useEscape();
+        
+        if ( ch == this.beginToken.charAt( 0 ) || ( useEscape && ch == this.orginalBeginToken.charAt( 0 ) ) )
         {
             StringBuffer key = new StringBuffer( );
 
@@ -230,9 +238,10 @@ public class InterpolatorFilterReader
                 if ( ch != -1 )
                 {
                     key.append( (char) ch );
-
                     if ( ( beginTokenMatchPos < this.beginToken.length() )
-                        && ( ch != this.beginToken.charAt( beginTokenMatchPos++ ) ) )
+                        && ( ch != this.beginToken.charAt( beginTokenMatchPos++ ) )
+                        && ( useEscape && this.orginalBeginToken.length() > ( beginTokenMatchPos - 1 ) && ch != this.orginalBeginToken
+                            .charAt( beginTokenMatchPos - 1 ) ) )
                     {
                         ch = -1; // not really EOF but to trigger code below
                         break;
@@ -290,16 +299,29 @@ public class InterpolatorFilterReader
                 return replaceData.charAt( 0 );
             }
 
-            String value;
+            String value = null;
             try
             {
-                if ( interpolateWithPrefixPattern )
+                boolean escapeFound = false;
+                if ( useEscape )
                 {
-                    value = interpolator.interpolate( key.toString(), "" );
+                    if (key.toString().startsWith( escapeString + orginalBeginToken ))
+                    {
+                        String keyStr = key.toString();
+                        value = keyStr.substring( escapeString.length(), keyStr.length() );
+                        escapeFound = true;
+                    }
                 }
-                else
+                if ( !escapeFound )
                 {
-                    value = interpolator.interpolate( key.toString() );
+                    if ( interpolateWithPrefixPattern )
+                    {
+                        value = interpolator.interpolate( key.toString(), "" );
+                    }
+                    else
+                    {
+                        value = interpolator.interpolate( key.toString() );
+                    }
                 }
             }
             catch ( InterpolationException e )
@@ -339,5 +361,23 @@ public class InterpolatorFilterReader
     public void setInterpolateWithPrefixPattern( boolean interpolateWithPrefixPattern )
     {
         this.interpolateWithPrefixPattern = interpolateWithPrefixPattern;
+    }
+
+    private boolean useEscape()
+    {
+        return escapeString != null && escapeString.length() >= 1;
+    }
+    
+    public String getEscapeString()
+    {
+        return escapeString;
+    }
+
+    public void setEscapeString( String escapeString )
+    {
+        // TODO NPE if escapeString is null ?
+        this.escapeString = escapeString;
+        this.orginalBeginToken = beginToken;
+        this.beginToken = escapeString + beginToken;
     }
 }
