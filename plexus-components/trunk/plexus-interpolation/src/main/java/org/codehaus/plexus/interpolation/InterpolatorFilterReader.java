@@ -98,6 +98,8 @@ public class InterpolatorFilterReader
 
     private String escapeString;
     
+    private boolean useEscape = false;
+    
     /**
      * this constructor use default begin token ${ and default end token } 
      * @param in reader to use
@@ -214,8 +216,6 @@ public class InterpolatorFilterReader
         {
             ch = in.read();
         }
-
-        boolean useEscape = useEscape();
         
         if ( ch == this.beginToken.charAt( 0 ) || ( useEscape && ch == this.orginalBeginToken.charAt( 0 ) ) )
         {
@@ -362,12 +362,6 @@ public class InterpolatorFilterReader
     {
         this.interpolateWithPrefixPattern = interpolateWithPrefixPattern;
     }
-
-    private boolean useEscape()
-    {
-        return escapeString != null && escapeString.length() >= 1;
-    }
-    
     public String getEscapeString()
     {
         return escapeString;
@@ -376,8 +370,12 @@ public class InterpolatorFilterReader
     public void setEscapeString( String escapeString )
     {
         // TODO NPE if escapeString is null ?
-        this.escapeString = escapeString;
-        this.orginalBeginToken = beginToken;
-        this.beginToken = escapeString + beginToken;
+        if ( escapeString != null && escapeString.length() >= 1 )
+        {
+            this.escapeString = escapeString;
+            this.orginalBeginToken = beginToken;
+            this.beginToken = escapeString + beginToken;
+            this.useEscape = escapeString != null && escapeString.length() >= 1;
+        }
     }
 }
