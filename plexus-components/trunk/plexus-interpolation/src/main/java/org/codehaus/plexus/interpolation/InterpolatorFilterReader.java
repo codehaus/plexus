@@ -100,6 +100,9 @@ public class InterpolatorFilterReader
     
     private boolean useEscape = false;
     
+    /** if true escapeString will be preserved \{foo} -> \{foo} */
+    private boolean preserveEscapeString = false;
+    
     /**
      * this constructor use default begin token ${ and default end token } 
      * @param in reader to use
@@ -308,7 +311,13 @@ public class InterpolatorFilterReader
                     if (key.toString().startsWith( escapeString + orginalBeginToken ))
                     {
                         String keyStr = key.toString();
-                        value = keyStr.substring( escapeString.length(), keyStr.length() );
+                        if ( !preserveEscapeString )
+                        {
+                            value = keyStr.substring( escapeString.length(), keyStr.length() );
+                        } else
+                        {
+                            value = keyStr;
+                        }
                         escapeFound = true;
                     }
                 }
@@ -377,5 +386,15 @@ public class InterpolatorFilterReader
             this.beginToken = escapeString + beginToken;
             this.useEscape = escapeString != null && escapeString.length() >= 1;
         }
+    }
+
+    public boolean isPreserveEscapeString()
+    {
+        return preserveEscapeString;
+    }
+
+    public void setPreserveEscapeString( boolean preserveEscapeString )
+    {
+        this.preserveEscapeString = preserveEscapeString;
     }
 }
