@@ -15,10 +15,8 @@ package org.codehaus.plexus.interpolation;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import org.codehaus.plexus.interpolation.reflection.ReflectionValueExtractor;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.codehaus.plexus.interpolation.reflection.ReflectionValueExtractor;
 
 /**
  * Wraps an object, providing reflective access to the object graph of which the
