@@ -77,7 +77,15 @@
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
       <version>1.5.1</version>
-    </dependency>	  
+    </dependency>	
+
+    <!-- for struts2 integration -->
+    <dependency>
+      <groupId>org.apache.struts</groupId>
+      <artifactId>struts2-spring-plugin</artifactId>
+      <version>2.1.2</version>
+      <optional>true</optional>
+    </dependency>
     
     <dependency>
       <groupId>org.slf4j</groupId>
