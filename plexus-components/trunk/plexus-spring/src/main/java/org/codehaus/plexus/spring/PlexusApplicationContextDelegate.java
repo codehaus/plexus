@@ -21,11 +21,14 @@ package org.codehaus.plexus.spring;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.codehaus.plexus.spring.editors.CollectionPropertyEditor;
+import org.codehaus.plexus.spring.editors.MapPropertyEditor;
 import org.codehaus.plexus.spring.editors.PropertiesPropertyEditor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,6 +81,7 @@ public class PlexusApplicationContextDelegate
         beanFactory.addPropertyEditorRegistrar( new PropertiesPropertyEditor() );
         beanFactory.addPropertyEditorRegistrar( new CollectionPropertyEditor( List.class, ArrayList.class ) );
         beanFactory.addPropertyEditorRegistrar( new CollectionPropertyEditor( Set.class, HashSet.class ) );
+        beanFactory.addPropertyEditorRegistrar( new MapPropertyEditor( Map.class, HashMap.class ) );
     }
 
     /**

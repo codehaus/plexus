@@ -29,7 +29,7 @@ public abstract class AbstractPlexusApplicationContextTest
     extends TestCase
 {
     protected abstract ConfigurableApplicationContext createApplicationContest( String[] strings );
-
+   
     public void testInjectSpringBeansInPlexusComponent()
         throws Exception
     {
@@ -100,6 +100,15 @@ public abstract class AbstractPlexusApplicationContextTest
         PropertiesPlexusBean plexusBean = (PropertiesPlexusBean) applicationContext.getBean( "plexusBean" );
         assertEquals( "expected", plexusBean.getProperties().getProperty( "test" ) );
     }
+    
+    public void testInjectPlexusMap()
+        throws Exception
+    {
+        ConfigurableApplicationContext applicationContext = createApplicationContest( new String[] { "testInjectPlexusProperties.xml" } );
+        PropertiesPlexusBean plexusBean = (PropertiesPlexusBean) applicationContext.getBean( "plexusBean" );
+        assertEquals( "foo", plexusBean.getMap().get( "name" ) );
+        assertEquals( "bar", plexusBean.getMap().get( "type" ) );
+    }    
 
     public void testInjectSpringProperties()
         throws Exception

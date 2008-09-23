@@ -1,5 +1,6 @@
 package org.codehaus.plexus.spring;
 
+import java.util.Map;
 import java.util.Properties;
 
 /*
@@ -29,6 +30,8 @@ import java.util.Properties;
 public class PropertiesPlexusBean
 {
     private Properties properties;
+    
+    private Map<?, ?> map;
 
     public Properties getProperties()
     {
@@ -38,6 +41,16 @@ public class PropertiesPlexusBean
     public void setProperties( Properties properties )
     {
         this.properties = properties;
+    }
+
+    public Map<?, ?> getMap()
+    {
+        return map;
+    }
+
+    public void setMap( Map<?, ?> map )
+    {
+        this.map = map;
     }
 
 }
