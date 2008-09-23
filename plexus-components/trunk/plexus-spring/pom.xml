@@ -21,7 +21,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus-spring</artifactId>
-  <version>1.0.2-SNAPSHOT</version>
+  <version>1.1-SNAPSHOT</version>
   <name>Plexus to Spring Adapter</name>
 
   <description>Bridge utility to use plexus components in a SpringFramework context.</description>
