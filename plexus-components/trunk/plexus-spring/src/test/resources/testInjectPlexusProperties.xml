@@ -14,6 +14,10 @@
               <value>value</value>
             </property>
         </properties>
+        <map>
+          <name>foo</name>
+          <type>bar</type>
+        </map>
       </configuration>
     </component>
   </components>
