@@ -4,9 +4,8 @@
   <artifactId>plexus</artifactId>
   <packaging>pom</packaging>
   <name>Plexus</name>
-  <version>1.0.14-SNAPSHOT</version>
-  <url>http://plexus.codehaus.org/</url>
-  <!-- ciManagement>
+  <version>1.0.12-SNAPSHOT</version>
+  <ciManagement>
     <notifiers>
       <notifier>
         <type>mail</type>
@@ -14,16 +13,8 @@
           <address>dev@plexus.codehaus.org</address>
         </configuration>
       </notifier>
-      <notifier>
-        <type>irc</type>
-        <configuration>
-          <host>irc.codehaus.org</host>
-          <port>6667</port>
-          <channel>#plexus</channel>
-        </configuration>
-      </notifier>      
     </notifiers>
-  </ciManagement -->
+  </ciManagement>
   <inceptionYear>2001</inceptionYear>
   <licenses>
     <license>
@@ -38,14 +29,12 @@
       <subscribe>http://xircles.codehaus.org/manage_email/user%40plexus.codehaus.org</subscribe>
       <unsubscribe>http://xircles.codehaus.org/manage_email/user%40plexus.codehaus.org</unsubscribe>
       <archive>http://archive.plexus.codehaus.org/user</archive>
-      <post>user@plexus.codehaus.org</post>
     </mailingList>
     <mailingList>
       <name>Plexus Developer List</name>
       <subscribe>http://xircles.codehaus.org/manage_email/dev%40plexus.codehaus.org</subscribe>
       <unsubscribe>http://xircles.codehaus.org/manage_email/dev%40plexus.codehaus.org</unsubscribe>
       <archive>http://archive.plexus.codehaus.org/dev</archive>
-      <post>dev@plexus.codehaus.org</post>
     </mailingList>
     <mailingList>
       <name>Plexus Announce List</name>
@@ -64,50 +53,22 @@
     <system>JIRA</system>
     <url>http://jira.codehaus.org/browse/PLX</url>
   </issueManagement>
-
   <distributionManagement>
     <repository>
-      <id>codehaus.org</id>
-      <name>Plexus Central Repository</name>
-      <url>dav:https://dav.codehaus.org/repository/plexus</url>
+      <id>plexus-releases</id>
+      <name>Plexus Release Repository</name>
+      <url>http://oss.repository.sonatype.org/content/repositories/plexus-releases</url>
     </repository>
     <snapshotRepository>
-      <id>codehaus.org</id>
-      <name>Plexus Central Development Repository</name>
-      <url>dav:https://dav.codehaus.org/snapshots.repository/plexus</url>
+      <id>plexus-snapshots</id>
+      <name>Plexus Snapshot Repository</name>
+      <url>http://oss.repository.sonatype.org/content/repositories/plexus-snapshots</url>
     </snapshotRepository>
     <site>
       <id>codehaus.org</id>
       <url>dav:https://dav.codehaus.org/plexus</url>
     </site>
   </distributionManagement>
-  <repositories>
-    <repository>
-      <id>codehaus.snapshots</id>
-      <name>Codehaus Snapshot Development Repository</name>
-      <url>http://snapshots.repository.codehaus.org</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-    <!-- only here for wagon-webdav rc1-snapshot, remove
-        as soon as it is released. It contains bugfixes
-        to deploy. -->
-    <repository>
-      <id>apache.snapshots</id>
-      <name>Maven Snapshot Repository</name>
-      <url>http://people.apache.org/maven-snapshot-repository</url>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>daily</updatePolicy>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-    </repository>
-  </repositories>
-  
   <developers>
     <developer>
       <id>jvanzyl</id>
@@ -188,7 +149,7 @@
       </roles>
     </developer>
     <developer>
-      <name>Trygve Laugstøl</name>
+      <name>Trygve Laugst&#248;l</name>
       <id>trygvis</id>
       <email>trygvis@codehaus.org</email>
       <roles>
@@ -260,17 +221,9 @@
       </roles>
     </developer>
     <developer>
-      <name>Hervé Boutemy</name>
+      <name>Herv&#233; Boutemy</name>
       <id>hboutemy</id>
       <email>hboutemy@codehaus.org</email>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Oleg Gusakov</name>
-      <id>oleg</id>
-      <email>olegy@codehaus.org</email>
       <roles>
         <role>Developer</role>
       </roles>
@@ -280,7 +233,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.2</version>
+      <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -303,80 +256,16 @@
           <target>1.4</target>
         </configuration>
       </plugin>
-      <!--
-      <plugin>
-        <artifactId>maven-remote-resources-plugin</artifactId>
-        <version>1.0-alpha-2</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>process</goal>
-            </goals>
-            <configuration>
-              <resourceBundles>
-                <resourceBundle>org.apache:apache-jar-resource-bundle:1.1.1-SNAPSHOT</resourceBundle>
-              </resourceBundles>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      -->
     </plugins>
-    <!-- As of 2.0.9, maven includes webdav.
-    <extensions>
-      <extension>
-        <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-webdav</artifactId>
-        <version>1.0-rc1-SNAPSHOT</version>
-      </extension>
-    </extensions>
-    -->
     <pluginManagement>
       <plugins>
         <plugin>
           <artifactId>maven-release-plugin</artifactId>
-          <version>2.0-beta-7</version>
           <configuration>
             <goals>deploy</goals>
-            <useReleaseProfile>true</useReleaseProfile>
           </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
   </build>
-
-  <profiles>
-    <profile>
-      <id>release</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>attach-sources</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>attach-javadocs</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>      
-      </build>
-    </profile>
-  </profiles>  
-  
 </project>
