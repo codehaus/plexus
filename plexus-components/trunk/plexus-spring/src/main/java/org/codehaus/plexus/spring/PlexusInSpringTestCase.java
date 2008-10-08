@@ -20,9 +20,11 @@ package org.codehaus.plexus.spring;
  */
 
 import java.io.File;
+import java.io.InputStream;
 
 import junit.framework.TestCase;
 
+import org.codehaus.plexus.PlexusContainer;
 import org.springframework.context.ConfigurableApplicationContext;
 
 /**
@@ -153,4 +155,16 @@ public class PlexusInSpringTestCase
     {
         // nothing 
     }
+    
+    protected PlexusContainer getContainer()
+    {
+        return (PlexusContainer) applicationContext.getBean( "plexusContainer" );
+    }
+    
+    protected InputStream getResourceAsStream( String resource )
+    {
+        return getClass().getResourceAsStream( resource );
+    }
+    
+    
 }
