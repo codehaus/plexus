@@ -18,8 +18,6 @@
     </dependency>
   </dependencies>
   <modules>
-    <module>plexus-bsh-factory</module>
-    <module>plexus-ant-factory</module>
     <module>plexus-groovy-factory</module>
   </modules>
   <scm> 
