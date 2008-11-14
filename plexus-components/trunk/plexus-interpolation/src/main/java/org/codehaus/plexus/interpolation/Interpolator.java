@@ -71,7 +71,7 @@ public interface Interpolator
      * supplied recursion interceptor will provide protection from expression
      * cycles, ensuring that the input can be resolved or an exception is
      * thrown.
-     *
+     * <b>return an empty String if input is null</b>
      * @param input The input string to interpolate
      *
      * @param thisPrefixPattern An optional pattern that should be trimmed from

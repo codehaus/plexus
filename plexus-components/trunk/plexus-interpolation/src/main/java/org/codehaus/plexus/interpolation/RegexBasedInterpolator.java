@@ -181,6 +181,11 @@ public class RegexBasedInterpolator
                                RecursionInterceptor recursionInterceptor )
         throws InterpolationException
     {
+        if (input == null )
+        {
+            // return empty String to prevent NPE too
+            return "";
+        }
         if ( recursionInterceptor == null )
         {
             recursionInterceptor = new SimpleRecursionInterceptor();
@@ -265,6 +270,11 @@ public class RegexBasedInterpolator
                                 int realExprGroup )
         throws InterpolationException
     {
+        if (input == null )
+        {
+            // return empty String to prevent NPE too
+            return "";
+        }        
         String result = input;
         
         Matcher matcher = expressionPattern.matcher( result );

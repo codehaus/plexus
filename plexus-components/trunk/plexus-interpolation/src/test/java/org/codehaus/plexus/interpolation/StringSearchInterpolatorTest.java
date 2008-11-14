@@ -288,6 +288,21 @@ public class StringSearchInterpolatorTest
         assertEquals( "value This is a test.", result );
     }    
     
+    public void testNPEFree()
+        throws InterpolationException
+    {
+        Properties p = new Properties();
+        p.setProperty( "key", "value" );
+
+        StringSearchInterpolator interpolator = new StringSearchInterpolator( "@{", "}" );
+        interpolator.setEscapeString( "\\" );
+        interpolator.addValueSource( new PropertiesBasedValueSource( p ) );
+
+        String result = interpolator.interpolate( null );
+
+        assertEquals( "", result );
+    }      
+    
     public String getVar()
     {
         return "testVar";
