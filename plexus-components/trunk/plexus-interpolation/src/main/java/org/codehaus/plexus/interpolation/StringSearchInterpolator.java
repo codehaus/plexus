@@ -135,6 +135,11 @@ public class StringSearchInterpolator
     private String interpolate( String input, RecursionInterceptor recursionInterceptor, Set unresolvable )
         throws InterpolationException
     {
+        if (input == null )
+        {
+            // return empty String to prevent NPE too
+            return "";
+        }
         StringBuffer result = new StringBuffer( input.length() * 2 );
         
         int startIdx = -1;

@@ -106,6 +106,21 @@ public class RegexBasedInterpolatorTest
         assertEquals( "this is a testVar", result );
     }
 
+    public void testNPEFree()
+        throws Exception
+    {
+        RegexBasedInterpolator rbi = new RegexBasedInterpolator( "\\@\\{(", ")?([^}]+)\\}@" );
+
+        Map context = new HashMap();
+        context.put( "var", "testVar" );
+
+        rbi.addValueSource( new MapBasedValueSource( context ) );
+
+        String result = rbi.interpolate( null );
+
+        assertEquals( "", result );
+    }    
+    
     public void testUsePostProcessor_DoesNotChangeValue()
         throws InterpolationException
     {
