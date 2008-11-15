@@ -5,6 +5,7 @@
   <packaging>pom</packaging>
   <name>Plexus</name>
   <version>2.0.1-SNAPSHOT</version>
+  <url>http://plexus.codehaus.org/</url>
   <ciManagement>
     <notifiers>
       <notifier>
@@ -22,19 +23,21 @@
       <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
       <distribution>repo</distribution>
     </license>
-  </licenses>  
+  </licenses>
   <mailingLists>
     <mailingList>
       <name>Plexus User List</name>
       <subscribe>http://xircles.codehaus.org/manage_email/user%40plexus.codehaus.org</subscribe>
       <unsubscribe>http://xircles.codehaus.org/manage_email/user%40plexus.codehaus.org</unsubscribe>
       <archive>http://archive.plexus.codehaus.org/user</archive>
+      <post>user@plexus.codehaus.org</post>
     </mailingList>
     <mailingList>
       <name>Plexus Developer List</name>
       <subscribe>http://xircles.codehaus.org/manage_email/dev%40plexus.codehaus.org</subscribe>
       <unsubscribe>http://xircles.codehaus.org/manage_email/dev%40plexus.codehaus.org</unsubscribe>
       <archive>http://archive.plexus.codehaus.org/dev</archive>
+      <post>dev@plexus.codehaus.org</post>
     </mailingList>
     <mailingList>
       <name>Plexus Announce List</name>
@@ -49,6 +52,7 @@
       <archive>http://archive.plexus.codehaus.org/scm</archive>
     </mailingList>
   </mailingLists>
+
   <issueManagement>
     <system>JIRA</system>
     <url>http://jira.codehaus.org/browse/PLX</url>
@@ -69,6 +73,7 @@
       <url>dav:https://dav.codehaus.org/plexus</url>
     </site>
   </distributionManagement>
+
   <developers>
     <developer>
       <id>jvanzyl</id>
@@ -228,24 +233,35 @@
         <role>Developer</role>
       </roles>
     </developer>
+    <developer>
+      <name>Oleg Gusakov</name>
+      <id>oleg</id>
+      <email>olegy@codehaus.org</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
   </developers>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>3.8.2</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/pom/tags/plexus-1.0.12</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/pom/tags/plexus-1.0.12</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/pom/tags/plexus-1.0.12</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/pom/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/pom/trunk/</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/pom/trunk/</url>
   </scm>
   <organization>
     <name>Codehaus</name>
     <url>http://www.codehaus.org/</url>
   </organization>
+
   <build>
     <plugins>
       <plugin>
@@ -261,11 +277,46 @@
       <plugins>
         <plugin>
           <artifactId>maven-release-plugin</artifactId>
+          <version>2.0-beta-7</version>
           <configuration>
             <goals>deploy</goals>
+            <useReleaseProfile>true</useReleaseProfile>
           </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
   </build>
-</project>
+
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
