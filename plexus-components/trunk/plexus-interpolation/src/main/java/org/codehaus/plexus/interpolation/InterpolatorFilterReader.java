@@ -254,6 +254,13 @@ public class InterpolatorFilterReader
                 {
                     break;
                 }
+                // MSHARED-81 olamy : we must take care of token with length 1, escaping and same char : \@foo@
+                // here ch == endToken == beginToken -> not going to next char : bad :-)
+                if ( useEscape && this.orginalBeginToken == this.endToken && key.toString().startsWith( this.beginToken ) )
+                {
+                    ch = in.read();
+                    key.append( (char) ch );
+                }
             }
             while ( ch != this.endToken.charAt( 0 ) );
 
@@ -308,13 +315,14 @@ public class InterpolatorFilterReader
                 boolean escapeFound = false;
                 if ( useEscape )
                 {
-                    if (key.toString().startsWith( escapeString + orginalBeginToken ))
+                    if ( key.toString().startsWith( escapeString + orginalBeginToken ) )
                     {
                         String keyStr = key.toString();
                         if ( !preserveEscapeString )
                         {
                             value = keyStr.substring( escapeString.length(), keyStr.length() );
-                        } else
+                        }
+                        else
                         {
                             value = keyStr;
                         }

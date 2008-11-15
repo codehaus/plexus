@@ -258,7 +258,7 @@ public class StringSearchInterpolatorTest
         assertEquals( "This is a test value.", result );
     }    
     
-    public void testEscapeExprAtStart()
+    public void testOnlyEscapeExprAtStart()
         throws InterpolationException
     {
         Properties p = new Properties();
@@ -287,6 +287,21 @@ public class StringSearchInterpolatorTest
 
         assertEquals( "value This is a test.", result );
     }    
+    
+    public void testEscapeExprAtStart()
+        throws InterpolationException
+    {
+        Properties p = new Properties();
+        p.setProperty( "key", "value" );
+
+        StringSearchInterpolator interpolator = new StringSearchInterpolator( "@", "@" );
+        interpolator.setEscapeString( "\\" );
+        interpolator.addValueSource( new PropertiesBasedValueSource( p ) );
+
+        String result = interpolator.interpolate( "\\@key@ This is a test @key@." );
+
+        assertEquals( "@key@ This is a test value.", result );
+    }     
     
     public void testNPEFree()
         throws InterpolationException

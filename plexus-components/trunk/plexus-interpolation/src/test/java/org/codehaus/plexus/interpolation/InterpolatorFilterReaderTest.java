@@ -125,7 +125,7 @@ public class InterpolatorFilterReaderTest
 
         String foo = "@{name} is an @{noun}";
 
-        assertEquals( "jason is an asshole", interpolate( foo, m, "@{", "}", "@{", "}" ) );
+        assertEquals( "jason is an asshole", interpolate( foo, m, "@{", "}" ) );
     }
 
     public void testInterpolationWithInterpolatedValueAtEndWithCustomTokenAndCustomString()
@@ -137,7 +137,7 @@ public class InterpolatorFilterReaderTest
 
         String foo = "@name@ is an @noun@";
 
-        assertEquals( "jason is an asshole", interpolate( foo, m, "@", "@", "@", "@" ) );
+        assertEquals( "jason is an asshole", interpolate( foo, m, "@", "@" ) );
     }
 
     public void testEscape()
@@ -162,6 +162,32 @@ public class InterpolatorFilterReaderTest
         String foo = "\\${name} is an \\${noun}";
 
         assertEquals( "${name} is an ${noun}", interpolate( foo, m, "\\" ) );
+    }    
+    
+    public void testEscapeOnlyAtStart()
+        throws Exception
+    {
+        Map m = new HashMap();
+        m.put( "name", "jason" );
+        m.put( "noun", "asshole" );
+
+        String foo = "\\@name@ is an @noun@";
+
+        String result =  interpolate( foo, m, "@", "@" ); 
+        assertEquals( "@name@ is an asshole", result);
+    }    
+    
+    public void testEscapeOnlyAtStartDefaultToken()
+        throws Exception
+    {
+        Map m = new HashMap();
+        m.put( "name", "jason" );
+        m.put( "noun", "asshole" );
+
+        String foo = "\\${name} is an ${noun}";
+
+        String result = interpolate( foo, m, "${", "}" );
+        assertEquals( "${name} is an asshole", result );
     }    
     
     // ----------------------------------------------------------------------
@@ -198,11 +224,10 @@ public class InterpolatorFilterReaderTest
         return buf.toString();
     }
 
-    private String interpolate( String input, Map context, String beginToken, String endToken, String startRegExp,
-                                String endRegExp )
+    private String interpolate( String input, Map context, String beginToken, String endToken )
         throws Exception
     {
-        StringSearchInterpolator interpolator = new StringSearchInterpolator( startRegExp, endRegExp );
+        StringSearchInterpolator interpolator = new StringSearchInterpolator( beginToken, endToken );
 
         interpolator.addValueSource( new MapBasedValueSource( context ) );
 
