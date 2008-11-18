@@ -1,0 +1,14 @@
+<plexus>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.resource.loader.ResourceLoader</role>
+      <role-hint>file</role-hint>
+      <implementation>org.codehaus.plexus.resource.loader.FileResourceLoader</implementation>
+      <configuration>
+        <paths>
+          <path implementation="java.lang.String">${basedir}/src/test/file-resources</path>
+        </paths>
+      </configuration>
+    </component>
+  </components>
+</plexus>
