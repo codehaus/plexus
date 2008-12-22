@@ -38,7 +38,9 @@
     <module>plexus-interpolation</module>
     <module>plexus-io</module>
     <module>plexus-spring</module>
+    <!-- disabled, currently failing due to API changes in JIRA which require a swizzle update
     <module>plexus-swizzle</module>
+    -->
     <module>plexus-velocity</module>
   </modules>
   <scm>
