@@ -58,6 +58,12 @@
     <system>JIRA</system>
     <url>http://jira.codehaus.org/browse/PLX</url>
   </issueManagement>
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <plexusDistMgmtSnapshotsUrl>http://oss.repository.sonatype.org/content/repositories/plexus-snapshots</plexusDistMgmtSnapshotsUrl>    
+  </properties>
+  
   <distributionManagement>
     <repository>
       <id>plexus-releases</id>
@@ -262,11 +268,6 @@
     <name>Codehaus</name>
     <url>http://www.codehaus.org/</url>
   </organization>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <plexusDistMgmtSnapshotsUrl>http://oss.repository.sonatype.org/content/repositories/plexus-snapshots</plexusDistMgmtSnapshotsUrl>    
-  </properties>
 
   <build>
     <pluginManagement>
