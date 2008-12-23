@@ -67,7 +67,7 @@
     <snapshotRepository>
       <id>plexus-snapshots</id>
       <name>Plexus Snapshot Repository</name>
-      <url>http://oss.repository.sonatype.org/content/repositories/plexus-snapshots</url>
+      <url>${distMgmtSnapshotsUrl}</url>
     </snapshotRepository>
     <site>
       <id>codehaus.org</id>
@@ -265,6 +265,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <distMgmtSnapshotsUrl>http://oss.repository.sonatype.org/content/repositories/plexus-snapshots</distMgmtSnapshotsUrl>    
   </properties>
 
   <build>
