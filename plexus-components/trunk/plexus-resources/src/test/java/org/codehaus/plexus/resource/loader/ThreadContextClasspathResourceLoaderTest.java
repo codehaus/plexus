@@ -1,6 +1,5 @@
 package org.codehaus.plexus.resource.loader;
 
-import java.io.InputStream;
 import java.net.URL;
 
 import org.codehaus.plexus.resource.PlexusResource;

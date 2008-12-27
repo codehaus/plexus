@@ -40,13 +40,13 @@ public class ResourceManagerTest
     {
         ResourceManager resourceManager = (ResourceManager) lookup( ResourceManager.ROLE );
 
-        assertEquals( "file.txt", IOUtil.toString( resourceManager.getResourceAsInputStream( "/dir/file.txt" ) ) );
+        assertEquals( "file.txt", IOUtil.toString( resourceManager.getResourceAsInputStream( "/dir/file.txt" ), "UTF-8" ) );
 
-        assertEquals( "file.txt", IOUtil.toString( resourceManager.getResourceAsInputStream( "dir/file.txt" ) ) );
+        assertEquals( "file.txt", IOUtil.toString( resourceManager.getResourceAsInputStream( "dir/file.txt" ), "UTF-8" ) );
 
-        assertEquals( "classpath.txt", IOUtil.toString( resourceManager.getResourceAsInputStream( "/dir/classpath.txt" ) ) );
+        assertEquals( "classpath.txt", IOUtil.toString( resourceManager.getResourceAsInputStream( "/dir/classpath.txt" ), "UTF-8" ) );
 
-        assertEquals( "classpath.txt", IOUtil.toString( resourceManager.getResourceAsInputStream( "dir/classpath.txt" ) ) );
+        assertEquals( "classpath.txt", IOUtil.toString( resourceManager.getResourceAsInputStream( "dir/classpath.txt" ), "UTF-8" ) );
     }
 
     public void testResourceManagerRetrievingFiles()
@@ -54,12 +54,12 @@ public class ResourceManagerTest
     {
         ResourceManager resourceManager = (ResourceManager) lookup( ResourceManager.ROLE );
 
-        assertEquals( "file.txt", FileUtils.fileRead( resourceManager.getResourceAsFile( "/dir/file.txt" ) ) );
+        assertEquals( "file.txt", FileUtils.fileRead( resourceManager.getResourceAsFile( "/dir/file.txt" ), "UTF-8" ) );
 
-        assertEquals( "file.txt", FileUtils.fileRead( resourceManager.getResourceAsFile( "dir/file.txt" ) ) );
+        assertEquals( "file.txt", FileUtils.fileRead( resourceManager.getResourceAsFile( "dir/file.txt" ), "UTF-8" ) );
 
-        assertEquals( "classpath.txt", FileUtils.fileRead( resourceManager.getResourceAsFile( "/dir/classpath.txt" ) ) );
+        assertEquals( "classpath.txt", FileUtils.fileRead( resourceManager.getResourceAsFile( "/dir/classpath.txt" ), "UTF-8" ) );
 
-        assertEquals( "classpath.txt", FileUtils.fileRead( resourceManager.getResourceAsFile( "dir/classpath.txt" ) ) );
+        assertEquals( "classpath.txt", FileUtils.fileRead( resourceManager.getResourceAsFile( "dir/classpath.txt" ), "UTF-8" ) );
     }
 }
