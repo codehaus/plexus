@@ -25,7 +25,6 @@ package org.codehaus.plexus.resource.loader;
  */
 
 import java.io.File;
-import java.io.InputStream;
 
 import org.codehaus.plexus.resource.PlexusResource;
 import org.codehaus.plexus.resource.loader.AbstractResourceLoaderTest;

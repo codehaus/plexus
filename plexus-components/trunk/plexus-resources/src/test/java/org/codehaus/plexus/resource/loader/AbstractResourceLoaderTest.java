@@ -43,13 +43,13 @@ public abstract class AbstractResourceLoaderTest
     {
         ResourceLoader resourceLoader = (ResourceLoader) lookup( ResourceLoader.ROLE );
 
-        InputStream is = resourceLoader.getResourceAsInputStream( name );
+        InputStream is = resourceLoader.getResource( name ).getInputStream();
 
         assertNotNull( "The returned input stream is null, name: '" + name + "'.", is );
 
-        String actialContent = IOUtil.toString( is );
+        String actualContent = IOUtil.toString( is, "UTF-8" );
 
-        assertEquals( expectedContent, actialContent );
+        assertEquals( expectedContent, actualContent );
     }
 
     protected void assertMissingResource( String name )
@@ -59,9 +59,9 @@ public abstract class AbstractResourceLoaderTest
 
         try
         {
-            InputStream is = resourceLoader.getResourceAsInputStream( name );
+            InputStream is = resourceLoader.getResource( name ).getInputStream();
 
-            String content = IOUtil.toString( is );
+            String content = IOUtil.toString( is, "UTF-8" );
 
             fail( "Expected ResourceNotFoundException while looking for a resource named '" + name + "'. Content:\n" + content );
         }
