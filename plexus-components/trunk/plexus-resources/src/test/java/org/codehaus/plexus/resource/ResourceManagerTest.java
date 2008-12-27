@@ -24,6 +24,8 @@ package org.codehaus.plexus.resource;
  * SOFTWARE.
  */
 
+import java.io.File;
+
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.FileUtils;
@@ -62,4 +64,29 @@ public class ResourceManagerTest
 
         assertEquals( "classpath.txt", FileUtils.fileRead( resourceManager.getResourceAsFile( "dir/classpath.txt" ), "UTF-8" ) );
     }
+
+    public void testResourceManagerRetrievingFilesToSpecificLocation()
+        throws Exception
+    {
+        File outDir = new File( getBasedir(), "target/unit/output-directory" );
+
+        ResourceManager resourceManager = (ResourceManager) lookup( ResourceManager.ROLE );
+
+        resourceManager.setOutputDirectory( outDir );
+
+        File ef = new File( outDir, "test/f.txt" );
+        FileUtils.forceDelete( ef );
+        assertFalse( ef.exists() );
+        File f = resourceManager.getResourceAsFile( "dir/file.txt", "test/f.txt" );
+        assertEquals( "file.txt", FileUtils.fileRead( f, "UTF-8" ) );
+        assertEquals( ef, f );
+
+        File ec = new File( outDir, "test/c.txt" );
+        FileUtils.forceDelete( ec );
+        assertFalse( ec.exists() );
+        File c = resourceManager.getResourceAsFile( "dir/classpath.txt", "test/c.txt" );
+        assertEquals( "classpath.txt", FileUtils.fileRead( c, "UTF-8" ) );
+        assertEquals( ec, c );
+    }
+
 }
