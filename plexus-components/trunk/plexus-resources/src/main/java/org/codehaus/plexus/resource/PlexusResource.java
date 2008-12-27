@@ -46,7 +46,7 @@ public interface PlexusResource {
      * contents change with every call.</p>
      * <p>If you need a reliable way of reloading the resource more than
      * once, then you should use
-     * {@link ResourceManager#getResourceAsFile(Resource)}.</p>
+     * {@link ResourceManager#getResourceAsFile(PlexusResource)}.</p>
      * @return An {@link InputStream} with the resources contents,
      *   never null.
      */
@@ -55,7 +55,7 @@ public interface PlexusResource {
     /**
      * <p>Returns the resource as a file, if possible. A resource
      * doesn't need to be available as a file: If you require a file,
-     * use {@link ResourceManager#getResourceAsFile(Resource)}.</p>
+     * use {@link ResourceManager#getResourceAsFile(PlexusResource)}.</p>
      * @return A {@link File} containing the resources contents,
      *   if available, or null.
      */

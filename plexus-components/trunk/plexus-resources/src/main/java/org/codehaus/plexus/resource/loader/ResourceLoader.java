@@ -37,7 +37,7 @@ public interface ResourceLoader
     String ROLE = ResourceLoader.class.getName();
 
     /**
-     * @deprecated Use {@link getResource(String)}.
+     * @deprecated Use {@link #getResource(String)}.
      */
     InputStream getResourceAsInputStream( String name )
         throws ResourceNotFoundException;

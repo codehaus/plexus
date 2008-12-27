@@ -26,8 +26,8 @@ package org.codehaus.plexus.resource.loader;
 
 
 /**
- * An instance of this class is thrown, if the {@link ResourceManager}, or
- * {@link ResourceLoader} encounters an {@link IOException}, which indicates
+ * An instance of this class is thrown, if the {@link org.codehaus.plexus.resource.ResourceManager}, or
+ * {@link ResourceLoader} encounters an {@link java.io.IOException}, which indicates
  * that the resource exists, but wasn't accessible.
  */
 public class ResourceIOException extends ResourceNotFoundException {
