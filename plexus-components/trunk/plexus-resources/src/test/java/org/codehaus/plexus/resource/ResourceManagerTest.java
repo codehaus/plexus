@@ -94,7 +94,7 @@ public class ResourceManagerTest
     public void testResourceManagerRetrievingFilesToSpecificLocation()
         throws Exception
     {
-        File outDir = new File( getBasedir(), "target/unit/output-directory" );
+        File outDir = new File( getBasedir(), "target/test/unit/output-directory" );
 
         ResourceManager resourceManager = (ResourceManager) lookup( ResourceManager.ROLE );
 
