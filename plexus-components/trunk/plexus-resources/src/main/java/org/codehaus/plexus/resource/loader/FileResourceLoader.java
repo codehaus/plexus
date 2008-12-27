@@ -33,8 +33,6 @@ import org.codehaus.plexus.resource.loader.AbstractResourceLoader;
 import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
 import org.codehaus.plexus.util.FileUtils;
 
-import com.sun.naming.internal.ResourceManager;
-
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @author Jason van Zyl
@@ -64,11 +62,16 @@ public class FileResourceLoader
                 return new FilePlexusResource( file );
             }
         }
+        File file = new File( name );
+        if ( file.isAbsolute() && file.canRead() )
+        {
+            return new FilePlexusResource( file );
+        }
         throw new ResourceNotFoundException( name );
     }
 
     /**
-     * @deprecated Use {@link ResourceManager#getResourceAsFile( PlexusResource )}.
+     * @deprecated Use {@link org.codehaus.plexus.resource.ResourceManager#getResourceAsFile( PlexusResource )}.
      */
     public static File getResourceAsFile( String name,
                                           String outputPath,
