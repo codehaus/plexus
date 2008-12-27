@@ -25,6 +25,7 @@ package org.codehaus.plexus.resource;
  */
 
 import java.io.File;
+import java.io.InputStream;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.IOUtil;
@@ -37,18 +38,31 @@ import org.codehaus.plexus.util.FileUtils;
 public class ResourceManagerTest
     extends PlexusTestCase
 {
+
     public void testResourceManagerRetrievingInputStreams()
         throws Exception
     {
         ResourceManager resourceManager = (ResourceManager) lookup( ResourceManager.ROLE );
 
-        assertEquals( "file.txt", IOUtil.toString( resourceManager.getResourceAsInputStream( "/dir/file.txt" ), "UTF-8" ) );
+        InputStream in;
 
-        assertEquals( "file.txt", IOUtil.toString( resourceManager.getResourceAsInputStream( "dir/file.txt" ), "UTF-8" ) );
+        File absoluteFile = new File( getBasedir(), "src/test/file-resources/dir/file.txt" ).getAbsoluteFile();
+        assertTrue( absoluteFile.isFile() );
+        assertTrue( absoluteFile.isAbsolute() );
+        in = resourceManager.getResourceAsInputStream( absoluteFile.getAbsolutePath() );
+        assertEquals( "file.txt", IOUtil.toString( in, "UTF-8" ) );
 
-        assertEquals( "classpath.txt", IOUtil.toString( resourceManager.getResourceAsInputStream( "/dir/classpath.txt" ), "UTF-8" ) );
+        in = resourceManager.getResourceAsInputStream( "/dir/file.txt" );
+        assertEquals( "file.txt", IOUtil.toString( in, "UTF-8" ) );
 
-        assertEquals( "classpath.txt", IOUtil.toString( resourceManager.getResourceAsInputStream( "dir/classpath.txt" ), "UTF-8" ) );
+        in = resourceManager.getResourceAsInputStream( "dir/file.txt" );
+        assertEquals( "file.txt", IOUtil.toString( in, "UTF-8" ) );
+
+        in = resourceManager.getResourceAsInputStream( "/dir/classpath.txt" );
+        assertEquals( "classpath.txt", IOUtil.toString( in, "UTF-8" ) );
+
+        in = resourceManager.getResourceAsInputStream( "dir/classpath.txt" );
+        assertEquals( "classpath.txt", IOUtil.toString( in, "UTF-8" ) );
     }
 
     public void testResourceManagerRetrievingFiles()
@@ -56,13 +70,25 @@ public class ResourceManagerTest
     {
         ResourceManager resourceManager = (ResourceManager) lookup( ResourceManager.ROLE );
 
-        assertEquals( "file.txt", FileUtils.fileRead( resourceManager.getResourceAsFile( "/dir/file.txt" ), "UTF-8" ) );
+        File f;
 
-        assertEquals( "file.txt", FileUtils.fileRead( resourceManager.getResourceAsFile( "dir/file.txt" ), "UTF-8" ) );
+        File absoluteFile = new File( getBasedir(), "src/test/file-resources/dir/file.txt" ).getAbsoluteFile();
+        assertTrue( absoluteFile.isFile() );
+        assertTrue( absoluteFile.isAbsolute() );
+        f = resourceManager.getResourceAsFile( absoluteFile.getAbsolutePath() );
+        assertEquals( "file.txt", FileUtils.fileRead( f, "UTF-8" ) );
 
-        assertEquals( "classpath.txt", FileUtils.fileRead( resourceManager.getResourceAsFile( "/dir/classpath.txt" ), "UTF-8" ) );
+        f = resourceManager.getResourceAsFile( "/dir/file.txt" );
+        assertEquals( "file.txt", FileUtils.fileRead( f, "UTF-8" ) );
 
-        assertEquals( "classpath.txt", FileUtils.fileRead( resourceManager.getResourceAsFile( "dir/classpath.txt" ), "UTF-8" ) );
+        f = resourceManager.getResourceAsFile( "dir/file.txt" );
+        assertEquals( "file.txt", FileUtils.fileRead( f, "UTF-8" ) );
+
+        f = resourceManager.getResourceAsFile( "/dir/classpath.txt" );
+        assertEquals( "classpath.txt", FileUtils.fileRead( f, "UTF-8" ) );
+
+        f = resourceManager.getResourceAsFile( "dir/classpath.txt" );
+        assertEquals( "classpath.txt", FileUtils.fileRead( f, "UTF-8" ) );
     }
 
     public void testResourceManagerRetrievingFilesToSpecificLocation()
