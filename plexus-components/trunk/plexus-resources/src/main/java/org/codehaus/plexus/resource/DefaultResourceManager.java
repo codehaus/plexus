@@ -90,21 +90,17 @@ public class DefaultResourceManager
             return getResourceAsFile( name );
         }
         PlexusResource resource = getResource( name );
-        try
+        File outputFile;
+        if ( outputDirectory != null )
         {
-            File f = resource.getFile();
-            if ( f != null )
-            {
-                return f;
-            }
+            outputFile = new File( outputDirectory, outputPath );
         }
-        catch ( IOException e )
+        else
         {
-            // Ignore this, try to make use of resource.getInputStream().
+            outputFile = new File( outputPath );
         }
-        File f = new File( outputPath );
-        createResourceAsFile( resource, f );
-        return f;
+        createResourceAsFile( resource, outputFile );
+        return outputFile;
     }
 
     public File resolveLocation( String name,
@@ -126,9 +122,6 @@ public class DefaultResourceManager
         throws IOException
     {
         // Honour what the original locator does and return null ...
-
-        System.out.println( "name = " + name );
-
         try
         {
             return getResourceAsFile( name );
@@ -148,6 +141,11 @@ public class DefaultResourceManager
                                String path )
     {
         ResourceLoader loader = (ResourceLoader) resourceLoaders.get( id );
+
+        if ( loader == null )
+        {
+            throw new IllegalArgumentException( "unknown resource loader: " + id );
+        }
 
         loader.addSearchPath( path );
     }
