@@ -27,14 +27,7 @@ package org.codehaus.plexus.resource.loader;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.resource.PlexusResource;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.UndeclaredThrowableException;
-import java.net.URI;
-import java.net.URL;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 
 /**
@@ -83,11 +76,13 @@ public class JarResourceLoader
         if ( path == null )
         {
             getLogger().error( "JarResourceLoader : can not load JAR - JAR path is null" );
+            return;
         }
         if ( !path.startsWith( "jar:" ) )
         {
             getLogger().error( "JarResourceLoader : JAR path must start with jar: -> " +
                 "see java.net.JarURLConnection for information" );
+            return;
         }
         if ( !path.endsWith( "!/" ) )
         {
@@ -126,7 +121,7 @@ public class JarResourceLoader
      * Copy all the entries into the entryDirectory
      * It will overwrite any duplicate keys.
      */
-    private void addEntries( Hashtable entries )
+    private void addEntries( Map entries )
     {
         entryDirectory.putAll( entries );
     }

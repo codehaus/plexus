@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.codehaus.plexus.resource.PlexusResource;
 
@@ -15,7 +16,7 @@ import org.codehaus.plexus.resource.PlexusResource;
 public class URLResourceLoader
     extends AbstractResourceLoader
 {
-    protected HashMap templateRoots = new HashMap();
+    protected Map templateRoots = new HashMap();
 
     /**
      * Get an InputStream so that the Runtime can build a
