@@ -16,6 +16,9 @@ import org.codehaus.plexus.resource.PlexusResource;
 public class URLResourceLoader
     extends AbstractResourceLoader
 {
+
+    public static final String ID = "url";
+
     protected Map templateRoots = new HashMap();
 
     /**

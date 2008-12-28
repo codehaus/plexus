@@ -38,6 +38,9 @@ import org.codehaus.plexus.resource.loader.ResourceNotFoundException;
 public class ThreadContextClasspathResourceLoader
     extends AbstractResourceLoader
 {
+
+    public static final String ID = "classloader";
+
     // ----------------------------------------------------------------------
     // ResourceLoader Implementation
     // ----------------------------------------------------------------------
