@@ -29,7 +29,6 @@ import java.io.File;
 import org.codehaus.plexus.resource.PlexusResource;
 import org.codehaus.plexus.resource.loader.AbstractResourceLoaderTest;
 
-
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
@@ -62,7 +61,7 @@ public class FileResourceLoaderTest
     {
         ResourceLoader resourceLoader = (ResourceLoader) lookup( ResourceLoader.ROLE );
         PlexusResource resource = resourceLoader.getResource( "/dir/file.txt" );
-        final File f = new File( "src/test/file-resources", "/dir/file.txt");
+        final File f = new File( "src/test/file-resources", "/dir/file.txt" );
         assertEquals( f.getAbsolutePath(), resource.getFile().getPath() );
         assertEquals( f.toURI(), resource.getURI() );
         assertEquals( f.toURI().toURL(), resource.getURL() );

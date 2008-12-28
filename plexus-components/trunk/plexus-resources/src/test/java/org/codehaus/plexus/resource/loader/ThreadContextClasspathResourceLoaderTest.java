@@ -28,7 +28,6 @@ import org.codehaus.plexus.resource.PlexusResource;
  * SOFTWARE.
  */
 
-
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$

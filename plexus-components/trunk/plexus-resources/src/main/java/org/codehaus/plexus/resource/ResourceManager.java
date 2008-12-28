@@ -55,6 +55,7 @@ public interface ResourceManager
 
     /**
      * Provides compatibility with the Locator utility used by several Maven Plugins.
+     * 
      * @deprecated
      */
     File resolveLocation( String location, String localfile )
@@ -62,6 +63,7 @@ public interface ResourceManager
 
     /**
      * Provides compatibility with the Locator utility used by several Maven Plugins.
+     * 
      * @deprecated
      */
     File resolveLocation( String location )
@@ -69,22 +71,27 @@ public interface ResourceManager
 
     /**
      * Searches for a resource with the given name.
+     * 
      * @since 1.0-alpha-5
      */
-    PlexusResource getResource( String name ) throws ResourceNotFoundException;
+    PlexusResource getResource( String name )
+        throws ResourceNotFoundException;
 
     /**
-     * Returns a file with the given resources contents. If the resource
-     * is already available as a file, returns that file. Otherwise, a
-     * file in the resource managers output directory is created and the
-     * resource is downloaded to that file.
+     * Returns a file with the given resources contents. If the resource is already available as a file, returns that
+     * file. Otherwise, a file in the resource managers output directory is created and the resource is downloaded to
+     * that file.
+     * 
      * @since 1.0-alpha-5
      */
-    File getResourceAsFile( PlexusResource resource ) throws FileResourceCreationException;
+    File getResourceAsFile( PlexusResource resource )
+        throws FileResourceCreationException;
 
     /**
      * Downloads the resource to the given output file.
+     * 
      * @since 1.0-alpha-5
      */
-    void createResourceAsFile( PlexusResource resource, File outputFile ) throws FileResourceCreationException;
+    void createResourceAsFile( PlexusResource resource, File outputFile )
+        throws FileResourceCreationException;
 }

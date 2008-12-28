@@ -46,10 +46,10 @@ public interface ResourceLoader
 
     /**
      * Returns the resource with the given name.
+     * 
      * @param name The resources name.
      * @return The resource with the given name.
-     * @throws ResourceNotFoundException The resource wasn't found, or wasn't
-     *   available.
+     * @throws ResourceNotFoundException The resource wasn't found, or wasn't available.
      */
     PlexusResource getResource( String name )
         throws ResourceNotFoundException;
