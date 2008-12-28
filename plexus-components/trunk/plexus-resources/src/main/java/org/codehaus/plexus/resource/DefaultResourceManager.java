@@ -188,6 +188,7 @@ public class DefaultResourceManager
         }
 
         final File outputFile = FileUtils.createTempFile( "plexus-resources", "tmp", outputDirectory );
+        outputFile.deleteOnExit();
         createResourceAsFile( resource, outputFile );
         return outputFile;
     }
