@@ -63,7 +63,8 @@ public abstract class AbstractResourceLoaderTest
 
             String content = IOUtil.toString( is, "UTF-8" );
 
-            fail( "Expected ResourceNotFoundException while looking for a resource named '" + name + "'. Content:\n" + content );
+            fail( "Expected ResourceNotFoundException while looking for a resource named '" + name + "'. Content:\n"
+                + content );
         }
         catch ( ResourceNotFoundException e )
         {

@@ -40,16 +40,12 @@ public class JarResourceLoader
     public static final String ID = "jar";
 
     /**
-     * Maps entries to the parent JAR File
-     * Key = the entry *excluding* plain directories
-     * Value = the JAR URL
+     * Maps entries to the parent JAR File (key = the entry *excluding* plain directories, value = the JAR URL).
      */
     private Map entryDirectory = new HashMap( 559 );
 
     /**
-     * Maps JAR URLs to the actual JAR
-     * Key = the JAR URL
-     * Value = the JAR
+     * Maps JAR URLs to the actual JAR (key = the JAR URL, value = the JAR).
      */
     private Map jarfiles = new HashMap( 89 );
 
@@ -80,8 +76,9 @@ public class JarResourceLoader
         }
         if ( !path.startsWith( "jar:" ) )
         {
-            getLogger().error( "JarResourceLoader : JAR path must start with jar: -> " +
-                "see java.net.JarURLConnection for information" );
+            getLogger().error(
+                               "JarResourceLoader : JAR path must start with jar: -> "
+                                   + "see java.net.JarURLConnection for information" );
             return;
         }
         if ( !path.endsWith( "!/" ) )
@@ -89,8 +86,7 @@ public class JarResourceLoader
             path += "!/";
         }
 
-        // Close the jar if it's already open
-        // this is useful for a reload
+        // Close the jar if it's already open this is useful for a reload
         closeJar( path );
 
         // Create a new JarHolder
@@ -104,8 +100,7 @@ public class JarResourceLoader
     }
 
     /**
-     * Closes a Jar file and set its URLConnection
-     * to null.
+     * Closes a Jar file and set its URLConnection to null.
      */
     private void closeJar( String path )
     {
@@ -118,8 +113,7 @@ public class JarResourceLoader
     }
 
     /**
-     * Copy all the entries into the entryDirectory
-     * It will overwrite any duplicate keys.
+     * Copy all the entries into the entryDirectory. It will overwrite any duplicate keys.
      */
     private void addEntries( Map entries )
     {
@@ -127,13 +121,11 @@ public class JarResourceLoader
     }
 
     /**
-     * Get an InputStream so that the Runtime can build a
-     * template with it.
-     *
+     * Get an InputStream so that the Runtime can build a template with it.
+     * 
      * @param source name of template to get
      * @return InputStream containing the template
-     * @throws ResourceNotFoundException if template not found
-     *                                   in the file template path.
+     * @throws ResourceNotFoundException if template not found in the file template path.
      */
     public PlexusResource getResource( String source )
         throws ResourceNotFoundException
@@ -144,8 +136,8 @@ public class JarResourceLoader
         }
 
         /*
-        *  if a / leads off, then just nip that :)
-        */
+         * if a / leads off, then just nip that :)
+         */
         if ( source.startsWith( "/" ) )
         {
             source = source.substring( 1 );

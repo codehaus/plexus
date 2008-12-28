@@ -11,8 +11,7 @@ public class FileResourceCreationException
         super( string );
     }
 
-    public FileResourceCreationException( String string,
-                                          Throwable throwable )
+    public FileResourceCreationException( String string, Throwable throwable )
     {
         super( string, throwable );
     }

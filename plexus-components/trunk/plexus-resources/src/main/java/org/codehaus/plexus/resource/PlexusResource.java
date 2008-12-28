@@ -31,56 +31,65 @@ import java.net.URL;
  */
 
 /**
- * A resource is a byte stream, possibly (but not necessarily) with
- * additional attributes like {@link File}, {@link URL}, or {@link URI}.
+ * A resource is a byte stream, possibly (but not necessarily) with additional attributes like {@link File}, {@link URL}
+ * , or {@link URI}.
+ * 
  * @since 1.0-alpha-5
  */
-public interface PlexusResource {
+public interface PlexusResource
+{
     /**
-     * <p>Returns the resource as an {@link InputStream}. In general, you
-     * should not assume, that this method may me called more than once.
-     * In typical cases (for example, if the Resource is backed by a
-     * file or loaded through the classpath), one may create an
-     * {@link InputStream} as often as is necessary. However, you should
-     * think of cases like an URL pointing to a servlet, where the resource
-     * contents change with every call.</p>
-     * <p>If you need a reliable way of reloading the resource more than
-     * once, then you should use
-     * {@link ResourceManager#getResourceAsFile(PlexusResource)}.</p>
-     * @return An {@link InputStream} with the resources contents,
-     *   never null.
+     * <p>
+     * Returns the resource as an {@link InputStream}. In general, you should not assume, that this method may me called
+     * more than once. In typical cases (for example, if the Resource is backed by a file or loaded through the
+     * classpath), one may create an {@link InputStream} as often as is necessary. However, you should think of cases
+     * like an URL pointing to a servlet, where the resource contents change with every call.
+     * </p>
+     * <p>
+     * If you need a reliable way of reloading the resource more than once, then you should use
+     * {@link ResourceManager#getResourceAsFile(PlexusResource)}.
+     * </p>
+     * 
+     * @return An {@link InputStream} with the resources contents, never null.
      */
-    public InputStream getInputStream() throws IOException;
+    public InputStream getInputStream()
+        throws IOException;
 
     /**
-     * <p>Returns the resource as a file, if possible. A resource
-     * doesn't need to be available as a file: If you require a file,
-     * use {@link ResourceManager#getResourceAsFile(PlexusResource)}.</p>
-     * @return A {@link File} containing the resources contents,
-     *   if available, or null.
+     * <p>
+     * Returns the resource as a file, if possible. A resource doesn't need to be available as a file: If you require a
+     * file, use {@link ResourceManager#getResourceAsFile(PlexusResource)}.
+     * </p>
+     * 
+     * @return A {@link File} containing the resources contents, if available, or null.
      */
-    public File getFile() throws IOException;
+    public File getFile()
+        throws IOException;
 
     /**
-     * <p>Returns the resources URL, if possible. A resource
-     * doesn't need to have an URL.</p>
+     * <p>
+     * Returns the resources URL, if possible. A resource doesn't need to have an URL.
+     * </p>
+     * 
      * @return The resources URL, if available, or null.
      */
-    public URL getURL() throws IOException;
+    public URL getURL()
+        throws IOException;
 
     /**
-     * <p>Returns the resources URI, if possible. A resource
-     * doesn't need to have an URI.</p>
+     * <p>
+     * Returns the resources URI, if possible. A resource doesn't need to have an URI.
+     * </p>
+     * 
      * @return The resources URI, if available, or null.
      */
-    public URI getURI() throws IOException;
+    public URI getURI()
+        throws IOException;
 
     /**
-     * Returns the resources name, if possible. A resources
-     * name is a relatively unspecified thing. For example,
-     * if the resource has an {@link URL}, the name might be created
-     * by invoking {@link URL#toExternalForm()}. In the case
-     * of a {@link File}, it might be {@link File#getPath()}.
+     * Returns the resources name, if possible. A resources name is a relatively unspecified thing. For example, if the
+     * resource has an {@link URL}, the name might be created by invoking {@link URL#toExternalForm()}. In the case of a
+     * {@link File}, it might be {@link File#getPath()}.
      */
     public String getName();
 }

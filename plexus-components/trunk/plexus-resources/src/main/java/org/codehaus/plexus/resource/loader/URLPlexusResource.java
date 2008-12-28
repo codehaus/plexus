@@ -32,11 +32,11 @@ import java.net.URL;
 
 import org.codehaus.plexus.resource.PlexusResource;
 
-
 /**
  * Implementation of {@link PlexusResource} for URL's.
  */
-public class URLPlexusResource implements PlexusResource
+public class URLPlexusResource
+    implements PlexusResource
 {
     private final URL url;
 
@@ -45,12 +45,14 @@ public class URLPlexusResource implements PlexusResource
         this.url = url;
     }
 
-    public File getFile() throws IOException
+    public File getFile()
+        throws IOException
     {
         return null;
     }
 
-    public InputStream getInputStream() throws IOException
+    public InputStream getInputStream()
+        throws IOException
     {
         return url.openStream();
     }
@@ -60,12 +62,14 @@ public class URLPlexusResource implements PlexusResource
         return url.toExternalForm();
     }
 
-    public URI getURI() throws IOException
+    public URI getURI()
+        throws IOException
     {
         return null;
     }
 
-    public URL getURL() throws IOException
+    public URL getURL()
+        throws IOException
     {
         return url;
     }

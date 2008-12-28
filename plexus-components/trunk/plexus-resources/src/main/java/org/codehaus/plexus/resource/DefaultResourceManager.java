@@ -50,6 +50,7 @@ public class DefaultResourceManager
     extends AbstractLogEnabled
     implements ResourceManager
 {
+
     /** @plexus.requirement role="org.codehaus.plexus.resource.loader.ResourceLoader" */
     private Map resourceLoaders;
 
@@ -70,8 +71,7 @@ public class DefaultResourceManager
         }
         catch ( IOException e )
         {
-            throw new ResourceIOException( "Failed to open resource " + resource.getName()
-                                           + ": " + e.getMessage(), e );
+            throw new ResourceIOException( "Failed to open resource " + resource.getName() + ": " + e.getMessage(), e );
         }
     }
 
@@ -81,8 +81,7 @@ public class DefaultResourceManager
         return getResourceAsFile( getResource( name ) );
     }
 
-    public File getResourceAsFile( String name,
-                                   String outputPath )
+    public File getResourceAsFile( String name, String outputPath )
         throws ResourceNotFoundException, FileResourceCreationException
     {
         if ( outputPath == null )
@@ -103,8 +102,7 @@ public class DefaultResourceManager
         return outputFile;
     }
 
-    public File resolveLocation( String name,
-                                 String outputPath )
+    public File resolveLocation( String name, String outputPath )
         throws IOException
     {
         // Honour what the original locator does and return null ...
@@ -137,8 +135,7 @@ public class DefaultResourceManager
         this.outputDirectory = outputDirectory;
     }
 
-    public void addSearchPath( String id,
-                               String path )
+    public void addSearchPath( String id, String path )
     {
         ResourceLoader loader = (ResourceLoader) resourceLoaders.get( id );
 
@@ -150,7 +147,9 @@ public class DefaultResourceManager
         loader.addSearchPath( path );
     }
 
-    public PlexusResource getResource( String name ) throws ResourceNotFoundException {
+    public PlexusResource getResource( String name )
+        throws ResourceNotFoundException
+    {
         for ( Iterator i = resourceLoaders.values().iterator(); i.hasNext(); )
         {
             ResourceLoader resourceLoader = (ResourceLoader) i.next();
@@ -173,7 +172,8 @@ public class DefaultResourceManager
     }
 
     public File getResourceAsFile( PlexusResource resource )
-            throws FileResourceCreationException {
+        throws FileResourceCreationException
+    {
         try
         {
             File f = resource.getFile();
@@ -194,14 +194,15 @@ public class DefaultResourceManager
     }
 
     public void createResourceAsFile( PlexusResource resource, File outputFile )
-            throws FileResourceCreationException {
+        throws FileResourceCreationException
+    {
         InputStream is = null;
         OutputStream os = null;
         try
         {
             is = resource.getInputStream();
             File dir = outputFile.getParentFile();
-            if ( !dir.isDirectory()  &&  !dir.mkdirs() )
+            if ( !dir.isDirectory() && !dir.mkdirs() )
             {
                 throw new FileResourceCreationException( "Failed to create directory " + dir.getPath() );
             }
@@ -222,4 +223,5 @@ public class DefaultResourceManager
             IOUtil.close( os );
         }
     }
+
 }

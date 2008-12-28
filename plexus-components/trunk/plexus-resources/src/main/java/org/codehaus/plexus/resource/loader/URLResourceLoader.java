@@ -19,13 +19,11 @@ public class URLResourceLoader
     protected Map templateRoots = new HashMap();
 
     /**
-     * Get an InputStream so that the Runtime can build a
-     * template with it.
-     *
+     * Get an InputStream so that the Runtime can build a template with it.
+     * 
      * @param name name of template to fetch bytestream of
      * @return InputStream containing the template
-     * @throws ResourceNotFoundException if template not found
-     *                                   in the file template path.
+     * @throws ResourceNotFoundException if template not found in the file template path.
      */
     public PlexusResource getResource( String name )
         throws ResourceNotFoundException
@@ -57,9 +55,12 @@ public class URLResourceLoader
                     // save this root for later re-use
                     templateRoots.put( name, path );
 
-                    return new URLPlexusResource( u ){
+                    return new URLPlexusResource( u )
+                    {
                         private boolean useSuper;
-                        public synchronized InputStream getInputStream() throws IOException
+
+                        public synchronized InputStream getInputStream()
+                            throws IOException
                         {
                             if ( !useSuper )
                             {
@@ -75,8 +76,9 @@ public class URLResourceLoader
             {
                 if ( getLogger().isDebugEnabled() )
                 {
-                    getLogger().debug( "URLResourceLoader: Exception when looking for '" + name + "' at '" + path + "'",
-                               ioe );
+                    getLogger().debug(
+                                       "URLResourceLoader: Exception when looking for '" + name + "' at '" + path + "'",
+                                       ioe );
                 }
 
                 // only save the first one for later throwing

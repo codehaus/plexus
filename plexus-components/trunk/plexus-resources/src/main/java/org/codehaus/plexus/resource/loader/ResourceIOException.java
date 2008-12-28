@@ -24,20 +24,23 @@ package org.codehaus.plexus.resource.loader;
  * SOFTWARE.
  */
 
-
 /**
  * An instance of this class is thrown, if the {@link org.codehaus.plexus.resource.ResourceManager}, or
- * {@link ResourceLoader} encounters an {@link java.io.IOException}, which indicates
- * that the resource exists, but wasn't accessible.
+ * {@link ResourceLoader} encounters an {@link java.io.IOException}, which indicates that the resource exists, but
+ * wasn't accessible.
  */
-public class ResourceIOException extends ResourceNotFoundException {
+public class ResourceIOException
+    extends ResourceNotFoundException
+{
     private static final long serialVersionUID = 1342518075415496931L;
 
-    public ResourceIOException(String name, Throwable cause) {
-        super(name, cause);
+    public ResourceIOException( String name, Throwable cause )
+    {
+        super( name, cause );
     }
 
-    public ResourceIOException(String name) {
-        super(name);
+    public ResourceIOException( String name )
+    {
+        super( name );
     }
 }

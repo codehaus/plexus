@@ -48,7 +48,8 @@ public abstract class AbstractResourceLoader
         paths.add( path );
     }
 
-    public InputStream getResourceAsInputStream( String name ) throws ResourceNotFoundException
+    public InputStream getResourceAsInputStream( String name )
+        throws ResourceNotFoundException
     {
         PlexusResource resource = getResource( name );
         try
@@ -57,8 +58,7 @@ public abstract class AbstractResourceLoader
         }
         catch ( IOException e )
         {
-            throw new ResourceIOException( "Failed to open resource " + resource.getName()
-                                           + ": " + e.getMessage(), e );
+            throw new ResourceIOException( "Failed to open resource " + resource.getName() + ": " + e.getMessage(), e );
         }
     }
 }

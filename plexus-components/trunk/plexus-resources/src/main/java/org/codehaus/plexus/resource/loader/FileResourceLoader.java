@@ -71,11 +71,9 @@ public class FileResourceLoader
     }
 
     /**
-     * @deprecated Use {@link org.codehaus.plexus.resource.ResourceManager#getResourceAsFile( PlexusResource )}.
+     * @deprecated Use {@link org.codehaus.plexus.resource.ResourceManager#getResourceAsFile(PlexusResource )}.
      */
-    public static File getResourceAsFile( String name,
-                                          String outputPath,
-                                          File outputDirectory )
+    public static File getResourceAsFile( String name, String outputPath, File outputDirectory )
         throws FileResourceCreationException
 
     {

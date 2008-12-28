@@ -33,11 +33,11 @@ import java.net.URL;
 
 import org.codehaus.plexus.resource.PlexusResource;
 
-
 /**
  * Implementation of {@link PlexusResource} for files.
  */
-public class FilePlexusResource implements PlexusResource
+public class FilePlexusResource
+    implements PlexusResource
 {
     private final File file;
 
@@ -46,12 +46,14 @@ public class FilePlexusResource implements PlexusResource
         this.file = file;
     }
 
-    public File getFile() throws IOException
+    public File getFile()
+        throws IOException
     {
         return file;
     }
 
-    public InputStream getInputStream() throws IOException
+    public InputStream getInputStream()
+        throws IOException
     {
         return new FileInputStream( file );
     }
@@ -61,12 +63,14 @@ public class FilePlexusResource implements PlexusResource
         return file.getPath();
     }
 
-    public URI getURI() throws IOException
+    public URI getURI()
+        throws IOException
     {
         return file.toURI();
     }
 
-    public URL getURL() throws IOException
+    public URL getURL()
+        throws IOException
     {
         return file.toURI().toURL();
     }
