@@ -1,9 +1,5 @@
 package org.codehaus.plexus.resource.loader;
 
-import java.net.URL;
-
-import org.codehaus.plexus.resource.PlexusResource;
-
 /*
  * The MIT License
  *
@@ -27,6 +23,10 @@ import org.codehaus.plexus.resource.PlexusResource;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+import java.net.URL;
+
+import org.codehaus.plexus.resource.PlexusResource;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>

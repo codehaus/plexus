@@ -1,11 +1,5 @@
 package org.codehaus.plexus.resource;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
-
 /*
  * The MIT License
  *
@@ -29,6 +23,12 @@ import java.net.URL;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
 
 /**
  * A resource is a byte stream, possibly (but not necessarily) with additional attributes like {@link File}, {@link URL}
