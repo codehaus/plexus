@@ -19,8 +19,6 @@ package org.codehaus.plexus.digest;
 import org.codehaus.plexus.PlexusTestCase;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 /**
  * ChecksumFileTest 
@@ -32,18 +30,40 @@ public class ChecksumFileTest extends PlexusTestCase
 {
     private ChecksumFile checksum;
 
-    protected void setUp() throws Exception
+    protected void setUp()
+        throws Exception
     {
         super.setUp();
 
         checksum = (ChecksumFile) lookup( ChecksumFile.class.getName() );
     }
 
-    public void testChecksum() throws FileNotFoundException, DigesterException, IOException
+    public void testChecksum()
+        throws Exception
     {
         File exampleDir = new File( getBasedir(), "src/test/examples" );
 
         assertTrue( checksum.isValidChecksum( new File( exampleDir, "redback-authz-open.jar.md5" ) ) );
         assertTrue( checksum.isValidChecksum( new File( exampleDir, "redback-authz-open.jar.sha1" ) ) );
     }
+
+    public void testCreateChecksum()
+        throws Exception
+    {
+        File dataFile = File.createTempFile( "plexus-digest-test", null );
+        dataFile.deleteOnExit();
+
+        File md5File = checksum.createChecksum( dataFile, new Md5Digester() );
+        md5File.deleteOnExit();
+        assertNotNull( md5File );
+        assertTrue( md5File.isFile() );
+        assertTrue( checksum.isValidChecksum( md5File ) );
+
+        File sha1File = checksum.createChecksum( dataFile, new Sha1Digester() );
+        sha1File.deleteOnExit();
+        assertNotNull( sha1File );
+        assertTrue( sha1File.isFile() );
+        assertTrue( checksum.isValidChecksum( sha1File ) );
+    }
+
 }
