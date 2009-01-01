@@ -71,11 +71,11 @@ public abstract class AbstractDigester
         String trimmedChecksum =
             DigestUtils.cleanChecksum( checksum, streamingDigester.getAlgorithm(), file.getName() );
 
-        //Create checksum for jar file
+        //Create checksum for file
         String sum = calc( file );
         if ( !StringUtils.equalsIgnoreCase( trimmedChecksum, sum ) )
         {
-            throw new DigesterException( "Checksum failed" );
+            throw new DigesterException( "Checksum failed (expected=" + trimmedChecksum + ", actual=" + sum + ")" );
         }
     }
 
