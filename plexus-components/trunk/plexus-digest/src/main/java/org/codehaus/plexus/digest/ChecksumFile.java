@@ -101,7 +101,7 @@ public class ChecksumFile
 
         File referenceFile = new File( path.substring( 0, path.length() - digester.getFilenameExtension().length() ) );
 
-        String rawChecksum = FileUtils.fileRead( checksumFile );
+        String rawChecksum = FileUtils.fileRead( checksumFile, "UTF-8" );
         String expectedChecksum = DigestUtils.cleanChecksum( rawChecksum, digester, referenceFile.getName() );
 
         String actualChecksum = digester.calc( referenceFile );
@@ -122,7 +122,7 @@ public class ChecksumFile
     {
         File checksumFile = new File( referenceFile.getAbsolutePath() + digester.getFilenameExtension() );
         String checksum = digester.calc( referenceFile );
-        FileUtils.fileWrite( checksumFile.getAbsolutePath(), checksum + "  " + referenceFile.getName() );
+        FileUtils.fileWrite( checksumFile.getAbsolutePath(), "UTF-8", checksum + "  " + referenceFile.getName() );
         return checksumFile;
     }
 }
