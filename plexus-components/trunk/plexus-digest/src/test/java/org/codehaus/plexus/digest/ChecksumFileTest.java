@@ -38,13 +38,25 @@ public class ChecksumFileTest extends PlexusTestCase
         checksum = (ChecksumFile) lookup( ChecksumFile.class.getName() );
     }
 
-    public void testChecksum()
+    public void testIsValidChecksum()
         throws Exception
     {
         File exampleDir = new File( getBasedir(), "src/test/examples" );
 
         assertTrue( checksum.isValidChecksum( new File( exampleDir, "redback-authz-open.jar.md5" ) ) );
         assertTrue( checksum.isValidChecksum( new File( exampleDir, "redback-authz-open.jar.sha1" ) ) );
+
+        assertTrue( checksum.isValidChecksum( new File( exampleDir, "plain.jar.md5" ) ) );
+        assertTrue( checksum.isValidChecksum( new File( exampleDir, "plain.jar.sha1" ) ) );
+
+        assertTrue( checksum.isValidChecksum( new File( exampleDir, "single-space.jar.md5" ) ) );
+        assertTrue( checksum.isValidChecksum( new File( exampleDir, "single-space.jar.sha1" ) ) );
+
+        assertTrue( checksum.isValidChecksum( new File( exampleDir, "space-asterisk.jar.md5" ) ) );
+        assertTrue( checksum.isValidChecksum( new File( exampleDir, "space-asterisk.jar.sha1" ) ) );
+
+        assertTrue( checksum.isValidChecksum( new File( exampleDir, "openssl.jar.md5" ) ) );
+        assertTrue( checksum.isValidChecksum( new File( exampleDir, "openssl.jar.sha1" ) ) );
     }
 
     public void testCreateChecksum()
