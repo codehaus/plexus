@@ -207,6 +207,14 @@ limitations under the License.
         <role>Developer</role>
       </roles>
     </developer>
+    <developer>
+      <name>Vincent Siveton</name>
+      <id>vsiveton</id>
+      <email>vsiveton@codehaus.org</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
   </developers>
 
   <mailingLists>
