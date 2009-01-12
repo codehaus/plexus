@@ -8,5 +8,6 @@ Some plexus-components has been moved to the redback svn :
 - plexus-expression-evaluator -> https://svn.codehaus.org/redback/plexus-components/trunk/plexus-expression-evaluator/
 - plexus-command-line -> https://svn.codehaus.org/redback/plexus-components/trunk/plexus-command-line/
 - plexus-msn -> https://svn.codehaus.org/redback/plexus-components/trunk/plexus-msn/
+- plexus-xmlrpc -> https://svn.codehaus.org/redback/plexus-components/trunk/plexus-xmlrpc/
 
 
