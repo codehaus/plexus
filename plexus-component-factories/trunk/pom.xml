@@ -19,6 +19,7 @@
   </dependencies>
   <modules>
     <module>plexus-groovy-factory</module>
+    <module>plexus-ant-factory</module>
   </modules>
   <scm> 
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-component-factories/trunk/</connection>
