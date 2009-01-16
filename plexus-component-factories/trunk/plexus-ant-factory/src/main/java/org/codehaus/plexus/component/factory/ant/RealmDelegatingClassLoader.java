@@ -13,32 +13,40 @@ import java.util.Enumeration;
 public class RealmDelegatingClassLoader
     extends ClassLoader
 {
-    
+
     private final ClassRealm realm;
 
-    public RealmDelegatingClassLoader(ClassRealm realm)
+    public RealmDelegatingClassLoader( ClassRealm realm )
     {
         this.realm = realm;
     }
 
-    protected Enumeration findResources( String name ) throws IOException
+    protected Enumeration findResources( String name )
+        throws IOException
     {
         return realm.findResources( name );
     }
-    
+
     public URL getResource( String name )
     {
         return realm.getResource( name );
     }
-    
+
     public InputStream getResourceAsStream( String name )
     {
         return realm.getResourceAsStream( name );
     }
-    
-    public Class loadClass( String name ) throws ClassNotFoundException
+
+    public Class loadClass( String name )
+        throws ClassNotFoundException
     {
         return realm.loadClass( name );
     }
-    
+
+    protected Class loadClass( String name, boolean resolve )
+        throws ClassNotFoundException
+    {
+        return realm.loadClass( name );
+    }
+
 }
