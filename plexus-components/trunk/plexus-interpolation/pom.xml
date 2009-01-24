@@ -2,96 +2,16 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.codehaus.plexus</groupId>
-    <artifactId>plexus</artifactId>
-    <version>1.0.11</version>
-  </parent>
-  
+    <artifactId>plexus-components</artifactId>
+    <version>1.1.14-SNAPSHOT</version>
+  </parent>  
   <artifactId>plexus-interpolation</artifactId>
-  <version>1.8-SNAPSHOT</version>
-  
+  <version>1.8-SNAPSHOT</version>  
   <name>Plexus Interpolation API</name>
-  
-  <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-components/trunk/plexus-interpolation</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-components/trunk/plexus-interpolation</developerConnection>
-    <url>http://svn.codehaus.org/plexus/plexus-components/trunk/plexus-interpolation</url>
-  </scm>
-  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
     </dependency>
-  </dependencies>
-  
-  <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <artifactId>maven-release-plugin</artifactId>
-          <version>2.0-beta-6</version>
-          <configuration>
-            <tagBase>https://svn.codehaus.org/plexus/plexus-components/tags</tagBase>
-            <useReleaseProfile>true</useReleaseProfile>
-            <arguments>-Prelease</arguments>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
-  
-  <distributionManagement>
-    <site>
-      <id>codehaus.org</id>
-      <url>dav:https://dav.codehaus.org/plexus/plexus-components/plexus-interpolation</url>
-    </site>
-  </distributionManagement>
-  
-  <reporting>
-    <plugins>
-      <plugin>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.4</version>
-      </plugin>
-    </plugins>
-  </reporting>
-
-  <profiles>
-    <profile>
-      <id>release</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <version>2.0.4</version>
-            <executions>
-              <execution>
-                <id>attach-sources</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.4</version>
-            <executions>
-              <execution>
-                <id>attach-javadocs</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>      
-      </build>
-    </profile>
-  </profiles>  
-  
+  </dependencies>  
 </project>
