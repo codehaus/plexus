@@ -19,5 +19,9 @@
       <artifactId>plexus-interactivity-api</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+    </dependency>
   </dependencies>
 </project>
