@@ -11,6 +11,10 @@
   <url>http://plexus.codehaus.org</url>
   <dependencies>
     <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
     </dependency>
@@ -23,7 +27,7 @@
     <dependency>
       <groupId>org.codehaus.swizzle</groupId>
       <artifactId>swizzle-jirareport</artifactId>
-      <version>1.2.2</version>
+      <version>1.2.3-SNAPSHOT</version>
     </dependency>
     <!--  test dependencies -->
     <dependency>
