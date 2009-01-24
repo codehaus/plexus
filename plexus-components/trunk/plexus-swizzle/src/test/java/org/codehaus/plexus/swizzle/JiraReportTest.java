@@ -171,14 +171,9 @@ public class JiraReportTest
         SAXBuilder saxBuilder = new SAXBuilder();
         Document document = saxBuilder.build( new StringReader( xml ) );
         XMLOutputter outp = new XMLOutputter();
-
         outp.setFormat( Format.getPrettyFormat() );
-
-        StringWriter sw = new StringWriter();
-
+        StringWriter sw = new StringWriter();        
         outp.output( document, sw );
         return sw.getBuffer().toString();
-
     }
-
 }
