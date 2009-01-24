@@ -39,28 +39,11 @@ import org.apache.velocity.VelocityContext;
  */
 public class DefaultJiraReport
     extends AbstractLogEnabled
-    implements JiraReport, Startable
+    implements JiraReport
 {
-    /**
-     * Velocity context to use
-     */
     private VelocityContext context;
 
     private static Jira jira;
-
-    // ----------------------------------------------------------------------
-    // Component Lifecycle
-    // ----------------------------------------------------------------------
-
-    public void start()
-    {
-        getLogger().info( "Starting DefaultJiraReport component." );
-    }
-
-    public void stop()
-    {
-        getLogger().info( "Stopping DefaultJiraReport component." );
-    }
 
     // ----------------------------------------------------------------------
     // JiraReport Implementation
@@ -99,7 +82,6 @@ public class DefaultJiraReport
     {
         context.put( "previousReleaseVersion", getPreviousRelease( configuration ) );
         context.put( "lastReleaseDate", getReleaseDate( configuration ) );
-
         context.put( "groupId", configuration.getGroupId() );
         context.put( "artifactId", configuration.getArtifactId() );
         context.put( "downloadUrl", configuration.getDownloadUrl() );
