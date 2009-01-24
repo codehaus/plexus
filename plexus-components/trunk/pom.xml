@@ -6,7 +6,7 @@
   <parent>
     <artifactId>plexus</artifactId>
     <groupId>org.codehaus.plexus</groupId>
-    <version>2.0.0</version>
+    <version>2.0.2</version>
     <relativePath>../pom/pom.xml</relativePath>
   </parent>
 
@@ -47,14 +47,8 @@
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-component-api</artifactId>
-      <version>1.0-alpha-20</version>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-20</version>
-      <scope>test</scope>
+      <version>1.0-alpha-9-stable-1</version>
     </dependency>
   </dependencies>
 
@@ -79,9 +73,18 @@
     <plugins>
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.5</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>javadoc</report>
+            </reports>
+          </reportSet>
+        </reportSets>
       </plugin>
       <plugin>
         <artifactId>maven-jxr-plugin</artifactId>
+        <version>2.1</version>
       </plugin>
       <plugin>
         <groupId>org.codehaus.plexus</groupId>
