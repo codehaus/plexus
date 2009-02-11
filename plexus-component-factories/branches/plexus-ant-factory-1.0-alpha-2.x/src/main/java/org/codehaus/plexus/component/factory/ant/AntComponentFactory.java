@@ -25,4 +25,9 @@ public class AntComponentFactory
         }
     }
 
+    public String getId()
+    {
+        return "ant";
+    }
+
 }
