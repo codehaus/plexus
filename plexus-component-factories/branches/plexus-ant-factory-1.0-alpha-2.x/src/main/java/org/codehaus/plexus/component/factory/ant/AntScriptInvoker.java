@@ -10,6 +10,7 @@ import org.apache.tools.ant.ProjectHelper;
 import org.apache.tools.ant.helper.ProjectHelper2;
 import org.codehaus.plexus.component.MapOrientedComponent;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
+import org.codehaus.plexus.component.factory.ComponentInstantiationException;
 import org.codehaus.plexus.component.repository.ComponentDescriptor;
 import org.codehaus.plexus.component.repository.ComponentRequirement;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
@@ -55,7 +56,7 @@ public class AntScriptInvoker
     private String messageLevel;
 
     public AntScriptInvoker( ComponentDescriptor descriptor, ClassLoader loader )
-        throws IOException
+        throws IOException, ComponentInstantiationException
     {
         this.descriptor = descriptor;
 
@@ -82,6 +83,11 @@ public class AntScriptInvoker
         try
         {
             input = loader.getResourceAsStream( resourceName );
+            
+            if ( input == null )
+            {
+                throw new ComponentInstantiationException( "Cannot find Ant script resource: '" + resourceName + "' in classpath of: " + loader );
+            }
 
             script = File.createTempFile( "plexus-ant-component", ".build.xml" );
             script.deleteOnExit();
@@ -160,6 +166,16 @@ public class AntScriptInvoker
         {
             this.messageLevel = String.valueOf( messageLevelInput );
         }
+
+        // ----------------------------------------------------------------------------
+        // We need things like the basedir in order to initialize the ant project and
+        // we need to initialize the project here so that it can be augmented with
+        // classpath references and other properties before the ant task execution.
+        // This is a little brittle as we're relying on a call for configuration
+        // to signal ant project initialization ... jvz.
+        // ----------------------------------------------------------------------------
+
+        initializeProject();
     }
 
     public void invoke()
@@ -171,8 +187,6 @@ public class AntScriptInvoker
 
         try
         {
-            initializeProject();
-
             project.setDefaultInputStream( System.in );
 
             System.setIn( new DemuxInputStream( project ) );
@@ -273,7 +287,12 @@ public class AntScriptInvoker
 
     protected int convertMsgLevel( String msgLevel )
     {
-        int level = Project.MSG_ERR;
+        int level;
+
+        if ( msgLevel == null )
+        {
+            return Project.MSG_ERR;
+        }
 
         msgLevel = msgLevel.toLowerCase();
 
@@ -311,4 +330,48 @@ public class AntScriptInvoker
         return level;
     }
 
+    public Project getProject()
+    {
+        return project;
+    }
+
+    public ComponentDescriptor getDescriptor()
+    {
+        return descriptor;
+    }
+
+    public File getScript()
+    {
+        return script;
+    }
+
+    public String getScriptResource()
+    {
+        return scriptResource;
+    }
+
+    public String getTarget()
+    {
+        return target;
+    }
+
+    public Map getReferences()
+    {
+        return references;
+    }
+
+    public Properties getProperties()
+    {
+        return properties;
+    }
+
+    public File getBasedir()
+    {
+        return basedir;
+    }
+
+    public String getMessageLevel()
+    {
+        return messageLevel;
+    }
 }
