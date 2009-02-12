@@ -213,24 +213,6 @@ public class AntScriptInvoker
                     throw new AntComponentExecutionException( scriptResource, target, "Failed to parse.", ex );
                 }
 
-                for ( Iterator it = references.entrySet().iterator(); it.hasNext(); )
-                {
-                    Map.Entry entry = (Map.Entry) it.next();
-
-                    String key = (String) entry.getKey();
-
-                    project.addReference( key, entry.getValue() );
-                }
-                
-                for ( Iterator it = properties.entrySet().iterator(); it.hasNext(); )
-                {
-                    Map.Entry entry = (Map.Entry) it.next();
-                    
-                    String key = (String) entry.getKey();
-                    
-                    project.setUserProperty( key, properties.getProperty( key ) );
-                }
-                
                 try
                 {
                     project.executeTarget( target );
@@ -283,6 +265,25 @@ public class AntScriptInvoker
         project.addBuildListener( antLogger );
 
         project.setBaseDir( basedir );
+        
+        for ( Iterator it = references.entrySet().iterator(); it.hasNext(); )
+        {
+            Map.Entry entry = (Map.Entry) it.next();
+
+            String key = (String) entry.getKey();
+
+            project.addReference( key, entry.getValue() );
+        }
+        
+        for ( Iterator it = properties.entrySet().iterator(); it.hasNext(); )
+        {
+            Map.Entry entry = (Map.Entry) it.next();
+            
+            String key = (String) entry.getKey();
+            
+            project.setUserProperty( key, properties.getProperty( key ) );
+        }
+        
     }
 
     protected int convertMsgLevel( String msgLevel )
