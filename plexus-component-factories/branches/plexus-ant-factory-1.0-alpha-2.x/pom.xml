@@ -32,7 +32,7 @@
   </dependencies>
 
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-ant-factory-1.0-alpha-2</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/tags/plexus-ant-factory-1.0-alpha-2</developerConnection>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-component-factories/branches/plexus-ant-factory-1.0-alpha-2.x</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-component-factories/branches/plexus-ant-factory-1.0-alpha-2.x</developerConnection>
   </scm>
 </project>
