@@ -27,6 +27,66 @@ public class StringSearchInterpolatorTest
     extends TestCase
 {
 
+    public void testLongDelimitersInContext()
+        throws InterpolationException
+    {
+        String src = "This is a <expression>test.label</expression> for long delimiters in context.";
+        String result = "This is a test for long delimiters in context.";
+
+        Properties p = new Properties();
+        p.setProperty( "test.label", "test" );
+
+        StringSearchInterpolator interpolator = new StringSearchInterpolator( "<expression>", "</expression>" );
+        interpolator.addValueSource( new PropertiesBasedValueSource( p ) );
+
+        assertEquals( result, interpolator.interpolate( src ) );
+    }
+
+    public void testLongDelimitersWithNoStartContext()
+        throws InterpolationException
+    {
+        String src = "<expression>test.label</expression> for long delimiters in context.";
+        String result = "test for long delimiters in context.";
+
+        Properties p = new Properties();
+        p.setProperty( "test.label", "test" );
+
+        StringSearchInterpolator interpolator = new StringSearchInterpolator( "<expression>", "</expression>" );
+        interpolator.addValueSource( new PropertiesBasedValueSource( p ) );
+
+        assertEquals( result, interpolator.interpolate( src ) );
+    }
+
+    public void testLongDelimitersWithNoEndContext()
+        throws InterpolationException
+    {
+        String src = "This is a <expression>test.label</expression>";
+        String result = "This is a test";
+
+        Properties p = new Properties();
+        p.setProperty( "test.label", "test" );
+
+        StringSearchInterpolator interpolator = new StringSearchInterpolator( "<expression>", "</expression>" );
+        interpolator.addValueSource( new PropertiesBasedValueSource( p ) );
+
+        assertEquals( result, interpolator.interpolate( src ) );
+    }
+
+    public void testLongDelimitersWithNoContext()
+        throws InterpolationException
+    {
+        String src = "<expression>test.label</expression>";
+        String result = "test";
+
+        Properties p = new Properties();
+        p.setProperty( "test.label", "test" );
+
+        StringSearchInterpolator interpolator = new StringSearchInterpolator( "<expression>", "</expression>" );
+        interpolator.addValueSource( new PropertiesBasedValueSource( p ) );
+
+        assertEquals( result, interpolator.interpolate( src ) );
+    }
+
     public void testSimpleSubstitution()
         throws InterpolationException
     {
@@ -81,7 +141,7 @@ public class StringSearchInterpolatorTest
         }
         catch ( InterpolationException e )
         {
-            e.printStackTrace( System.out );
+            // expected
         }
     }
 
@@ -170,7 +230,6 @@ public class StringSearchInterpolatorTest
         assertEquals( "this is a testVar2", result );
     }
 
-    
     public void testSimpleSubstitutionWithDefinedExpr()
         throws InterpolationException
     {
@@ -181,8 +240,8 @@ public class StringSearchInterpolatorTest
         interpolator.addValueSource( new PropertiesBasedValueSource( p ) );
 
         assertEquals( "This is a test value.", interpolator.interpolate( "This is a test @{key}." ) );
-    }    
-    
+    }
+
     public void testEscape()
         throws InterpolationException
     {
@@ -194,10 +253,10 @@ public class StringSearchInterpolatorTest
         interpolator.addValueSource( new PropertiesBasedValueSource( p ) );
 
         String result = interpolator.interpolate( "This is a test \\@{key}." );
-        
-        assertEquals( "This is a test @{key}.", result);
-    }    
-    
+
+        assertEquals( "This is a test @{key}.", result );
+    }
+
     public void testEscapeWithLongEscapeStr()
         throws InterpolationException
     {
@@ -211,8 +270,8 @@ public class StringSearchInterpolatorTest
         String result = interpolator.interpolate( "This is a test $$@{key}." );
 
         assertEquals( "This is a test @{key}.", result );
-    }    
-    
+    }
+
     public void testEscapeWithLongEscapeStrAtStart()
         throws InterpolationException
     {
@@ -226,8 +285,8 @@ public class StringSearchInterpolatorTest
         String result = interpolator.interpolate( "$$@{key} This is a test." );
 
         assertEquals( "@{key} This is a test.", result );
-    }     
-    
+    }
+
     public void testNotEscapeWithLongEscapeStrAtStart()
         throws InterpolationException
     {
@@ -241,8 +300,8 @@ public class StringSearchInterpolatorTest
         String result = interpolator.interpolate( "@{key} This is a test." );
 
         assertEquals( "value This is a test.", result );
-    }     
-    
+    }
+
     public void testEscapeNotFailWithNullEscapeStr()
         throws InterpolationException
     {
@@ -256,8 +315,8 @@ public class StringSearchInterpolatorTest
         String result = interpolator.interpolate( "This is a test @{key}." );
 
         assertEquals( "This is a test value.", result );
-    }    
-    
+    }
+
     public void testOnlyEscapeExprAtStart()
         throws InterpolationException
     {
@@ -271,8 +330,8 @@ public class StringSearchInterpolatorTest
         String result = interpolator.interpolate( "\\@{key} This is a test." );
 
         assertEquals( "@{key} This is a test.", result );
-    }    
-    
+    }
+
     public void testNotEscapeExprAtStart()
         throws InterpolationException
     {
@@ -286,8 +345,8 @@ public class StringSearchInterpolatorTest
         String result = interpolator.interpolate( "@{key} This is a test." );
 
         assertEquals( "value This is a test.", result );
-    }    
-    
+    }
+
     public void testEscapeExprAtStart()
         throws InterpolationException
     {
@@ -301,8 +360,8 @@ public class StringSearchInterpolatorTest
         String result = interpolator.interpolate( "\\@key@ This is a test @key@." );
 
         assertEquals( "@key@ This is a test value.", result );
-    }     
-    
+    }
+
     public void testNPEFree()
         throws InterpolationException
     {
@@ -316,8 +375,8 @@ public class StringSearchInterpolatorTest
         String result = interpolator.interpolate( null );
 
         assertEquals( "", result );
-    }      
-    
+    }
+
     public String getVar()
     {
         return "testVar";

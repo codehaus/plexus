@@ -154,8 +154,8 @@ public class StringSearchInterpolator
                 break;
             }
             
-            String wholeExpr = input.substring( startIdx, endIdx + 1 );
-            String realExpr = wholeExpr.substring( startExpr.length(), wholeExpr.length() - 1 );
+            String wholeExpr = input.substring( startIdx, endIdx + endExpr.length() );
+            String realExpr = wholeExpr.substring( startExpr.length(), wholeExpr.length() - endExpr.length() );
 
             if ( startIdx >= 0 && escapeString != null && escapeString.length() > 0 )
             {
@@ -245,6 +245,11 @@ public class StringSearchInterpolator
             if ( !resolved )
             {
                 result.append( wholeExpr );
+            }
+            
+            if ( endIdx > -1 )
+            {
+                endIdx += endExpr.length() - 1;
             }
         }
         

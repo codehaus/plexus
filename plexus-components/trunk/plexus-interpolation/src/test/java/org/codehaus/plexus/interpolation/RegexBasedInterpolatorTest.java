@@ -49,7 +49,7 @@ public class RegexBasedInterpolatorTest
         }
         catch ( InterpolationException e )
         {
-            e.printStackTrace( System.out );
+            // expected
         }
     }
 
