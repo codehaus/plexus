@@ -6,7 +6,7 @@
     <version>1.0.10</version>
   </parent>
   <artifactId>plexus-stylus-skin</artifactId>
-  <version>1.0</version>
+  <version>1.0.1-SNAPSHOT</version>
   <name>Plexus Site Skin</name>
   <description>Plexus Site Skin</description>
   <scm>
