@@ -10,6 +10,11 @@
     <src>http://media.codehaus.org/images/unity-codehaus-logo.png</src>
   </bannerRight -->
   <version position="left" />
+  <skin>
+    <groupId>org.codehaus.plexus</groupId>
+    <artifactId>plexus-stylus-skin</artifactId>
+    <version>1.0</version>
+  </skin>
 
   <body>
     <links>
