@@ -17,7 +17,10 @@
 
   <name>Plexus Components Parent Project</name>
   <url>http://plexus.codehaus.org/plexus-components</url>
+  
 
+<!-- Commenting these so they don't run when I try to release this parent POM.
+     I'll uncomment again once the release is done.
   <modules>
     <module>plexus-archiver</module>
     <module>plexus-cli</module>
@@ -30,7 +33,7 @@
     <module>plexus-resources</module>
     <module>plexus-swizzle</module>
     <module>plexus-velocity</module>
-  </modules>
+  </modules> -->
 
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-components/trunk/</connection>
