@@ -1,0 +1,100 @@
+#set( $jira = $xmlrpc.connect("${username}:${password}","${jiraServerUrl}/rpc/xmlrpc") )
+#set( $project = $jira.getProject($projectKey) )
+#set( $version = $jira.getVersion( $project, $projectVersion) )
+#set( $url = "${jiraServerUrl}/secure/IssueNavigator.jspa?view=rss&&pid=${project.id}&fixfor=${version.id}&tempMax=500&reset=true&decorator=none" )
+#set( $issues = $rss.fetch($url).issues )
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <title>$project.name Release Report</title>
+  </properties>
+  <body>
+    <section name="Release Report for $project.name [$projectVersion]">
+      <div class="section">
+        <h3><a href="${jiraServerUrl}/browse/${projectKey}?report=com.atlassian.jira.plugin.system.project:roadmap-panel">List of Issues Resolved in this Release</a></h3>
+        <table>
+          <tr>
+            <th>VOTES</th>
+            <th>DESCRIPTION</th>
+          </tr>
+#foreach( $issue in $issues.descending("votes") )
+          <tr>
+            <td>$issue.votes</td>
+            <td><a href="${jiraServerUrl}/browse/${issue.key}">[${issue.key}]</a> <![CDATA[$issue.summary]]></td>
+          </tr>
+#end
+        </table>
+      </div>
+      <div class="section">
+        <h3>Artifact Info</h3>
+        <table>
+          <tr>
+            <th>ITEM</th>
+            <th>DESCRIPTION</th>
+          </tr>
+          <tr>
+            <td><b>GroupId</b></td>
+            <td>${groupId}</td>
+          </tr>
+          <tr>
+            <td><b>ArtifactId</b></td>
+            <td>${artifactId}</td>
+          </tr>
+          <tr>
+            <td><b>Version</b></td>
+            <td>${projectVersion}</td>
+          </tr>
+          <tr>
+            <td><b>Download URL</b></td>
+            <td><a href="${downloadUrl}">
+            ${downloadUrl}</a></td>
+          </tr>
+          <tr>
+            <td><b>SCM</b></td>
+            <td><a href="${scmUrl}">${scmType}</a><p>To checkout use the following
+            command: <pre>   ${scmCheckoutCommand}</pre></p></td>
+          </tr>
+          <tr>
+            <td>Last Release</td>
+#if ( ${previousReleaseVersion} == "" )
+            <td>No previous releases</td>
+#else
+            <td>Version ${previousReleaseVersion} released on ${lastReleaseDate}</td>
+#end
+          </tr>
+          <tr>
+            <td><b>Staging Site</b></td>
+            <td><a href="${stagingSiteUrl}">${stagingSiteUrl}</a></td>
+          </tr>
+          <tr>
+            <td><b>Maven Docck Test Results</b></td>
+#if ( ${docckResultDetails} == "" )
+            <td><img src="images/icon_info_sml.gif" /> No docck results provided.</td>
+#elseif ( ${docckPassed} )
+            <td><img src="images/icon_success_sml.gif" /> <a href="${docckResultDetails}">Successful</a></td>
+#else
+            <td><img src="images/icon_error_sml.gif" /> Failed!
+${docckResultContents}
+              ]]></pre>
+            </td>
+#end
+          </tr>
+          <tr>
+            <td><b>License Header Results</b></td>
+#if ( ${licenseCheckResultDetails} == "" )
+            <td><img src="images/icon_info_sml.gif" /> No license check results provided.</td>
+#elseif ( ${licenseCheckPassed} )
+            <td><img src="images/icon_success_sml.gif" /> <a href="${licenseCheckResultDetails}">Successful</a></td>
+#else
+            <td><img src="images/icon_error_sml.gif" /> Failed!
+              <pre><![CDATA[
+${licenseCheckResultContents}
+              ]]></pre>
+            </td>
+#end
+          </tr>
+        </table>
+      </div>
+    </section>
+  </body>
+</document>
