@@ -62,60 +62,70 @@ public final class OperatingSystemUtils
     {
         Process p = null;
 
-        Properties envVars = new Properties();
-
-        Runtime r = Runtime.getRuntime();
-
-        //If this is windows set the shell to command.com or cmd.exe with correct arguments.
-        if ( Os.isFamily( Os.FAMILY_WINDOWS ) )
+        try
         {
-            if ( Os.isFamily( Os.FAMILY_WIN9X ) )
+            Properties envVars = new Properties();
+    
+            Runtime r = Runtime.getRuntime();
+    
+            //If this is windows set the shell to command.com or cmd.exe with correct arguments.
+            if ( Os.isFamily( Os.FAMILY_WINDOWS ) )
             {
-                p = r.exec( "command.com /c set" );
+                if ( Os.isFamily( Os.FAMILY_WIN9X ) )
+                {
+                    p = r.exec( "command.com /c set" );
+                }
+                else
+                {
+                    p = r.exec( "cmd.exe /c set" );
+                }
             }
             else
             {
-                p = r.exec( "cmd.exe /c set" );
+                p = r.exec( "env" );
             }
-        }
-        else
-        {
-            p = r.exec( "env" );
-        }
-
-        BufferedReader br = new BufferedReader( new InputStreamReader( p.getInputStream() ) );
-
-        String line;
-
-        String lastKey = null;
-        String lastVal = null;
-
-        while ( ( line = br.readLine() ) != null )
-        {
-            int idx = line.indexOf( '=' );
-
-            if ( idx > 0 )
+    
+            BufferedReader br = new BufferedReader( new InputStreamReader( p.getInputStream() ) );
+    
+            String line;
+    
+            String lastKey = null;
+            String lastVal = null;
+    
+            while ( ( line = br.readLine() ) != null )
             {
-                lastKey = line.substring( 0, idx );
-
-                if ( !caseSensitive )
+                int idx = line.indexOf( '=' );
+    
+                if ( idx > 0 )
                 {
-                    lastKey = lastKey.toUpperCase();
+                    lastKey = line.substring( 0, idx );
+    
+                    if ( !caseSensitive )
+                    {
+                        lastKey = lastKey.toUpperCase();
+                    }
+    
+                    lastVal = line.substring( idx + 1 );
+    
+                    envVars.setProperty( lastKey, lastVal );
                 }
-
-                lastVal = line.substring( idx + 1 );
-
-                envVars.setProperty( lastKey, lastVal );
+                else if ( lastKey != null )
+                {
+                    lastVal += "\n" + line;
+    
+                    envVars.setProperty( lastKey, lastVal );
+                }
             }
-            else if ( lastKey != null )
-            {
-                lastVal += "\n" + line;
 
-                envVars.setProperty( lastKey, lastVal );
+            return envVars;
+        }
+        finally
+        {
+            if ( p != null )
+            {
+                p.destroy();
             }
         }
-
-        return envVars;
     }
 
 }
