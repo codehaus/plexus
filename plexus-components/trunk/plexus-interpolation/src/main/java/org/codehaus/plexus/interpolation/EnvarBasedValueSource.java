@@ -33,7 +33,10 @@ public class EnvarBasedValueSource
     extends AbstractValueSource
 {
 
-    private Properties envars;
+    private static Properties envarsCaseSensitive;
+    private static Properties envarsCaseInsensitive;
+
+    private final Properties envars;
     private final boolean caseSensitive;
 
     /**
@@ -58,8 +61,28 @@ public class EnvarBasedValueSource
     {
         super( false );
         this.caseSensitive = caseSensitive;
+        this.envars = getEnvars( caseSensitive );
+    }
 
-        envars = OperatingSystemUtils.getSystemEnvVars( caseSensitive );
+    private static synchronized Properties getEnvars( boolean caseSensitive )
+        throws IOException
+    {
+        if ( caseSensitive )
+        {
+            if ( envarsCaseSensitive == null )
+            {
+                envarsCaseSensitive = OperatingSystemUtils.getSystemEnvVars( caseSensitive );
+            }
+            return envarsCaseSensitive;
+        }
+        else
+        {
+            if ( envarsCaseInsensitive == null )
+            {
+                envarsCaseInsensitive = OperatingSystemUtils.getSystemEnvVars( caseSensitive );
+            }
+            return envarsCaseInsensitive;
+        }
     }
 
     /**
