@@ -3,8 +3,8 @@
 
   <parent>
     <groupId>org.codehaus.plexus</groupId>
-    <artifactId>plexus</artifactId>
-    <version>1.0.13</version>
+    <artifactId>plexus-components</artifactId>
+    <version>1.1.13</version>
   </parent>
 
   <artifactId>plexus-interpolation</artifactId>
