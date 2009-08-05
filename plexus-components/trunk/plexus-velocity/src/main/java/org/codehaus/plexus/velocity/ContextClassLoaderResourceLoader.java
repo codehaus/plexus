@@ -45,7 +45,12 @@ public class ContextClassLoaderResourceLoader
         {
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
-            result= classLoader.getResourceAsStream( name );
+            if ( name.startsWith( "/" ) )
+            {
+                name = name.substring( 1 );
+            }
+
+            result = classLoader.getResourceAsStream( name );
         }
         catch( Exception fnfe )
         {
