@@ -29,7 +29,9 @@
     <module>plexus-interpolation</module>
     <module>plexus-io</module>
     <module>plexus-resources</module>
+    <!--
     <module>plexus-swizzle</module>
+    -->
     <module>plexus-velocity</module>
   </modules>
 
