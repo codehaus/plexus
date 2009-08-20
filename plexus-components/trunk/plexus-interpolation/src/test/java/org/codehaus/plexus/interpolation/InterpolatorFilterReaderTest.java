@@ -25,24 +25,25 @@ package org.codehaus.plexus.interpolation;
  */
 
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import junit.framework.TestCase;
 
 /**
- * InterpolatorFilterReaderTest, heavily based on InterpolationFilterReaderTest. Heh,
- * even the test strings remained the same!
- *
+ * InterpolatorFilterReaderTest, heavily based on InterpolationFilterReaderTest. Heh, even the test strings remained the
+ * same!
+ * 
  * @author cstamas
- *
+ * 
  */
 public class InterpolatorFilterReaderTest
     extends TestCase
 {
     /*
-     * Added and commented by jdcasey@03-Feb-2005 because it is a bug in the
-     * InterpolationFilterReader.
+     * Added and commented by jdcasey@03-Feb-2005 because it is a bug in the InterpolationFilterReader.
      * kenneyw@15-04-2005 fixed the bug.
      */
     public void testShouldNotInterpolateExpressionAtEndOfDataWithInvalidEndToken()
@@ -162,8 +163,8 @@ public class InterpolatorFilterReaderTest
         String foo = "\\${name} is an \\${noun}";
 
         assertEquals( "${name} is an ${noun}", interpolate( foo, m, "\\" ) );
-    }    
-    
+    }
+
     public void testEscapeOnlyAtStart()
         throws Exception
     {
@@ -173,10 +174,10 @@ public class InterpolatorFilterReaderTest
 
         String foo = "\\@name@ is an @noun@";
 
-        String result =  interpolate( foo, m, "@", "@" ); 
-        assertEquals( "@name@ is an asshole", result);
-    }    
-    
+        String result = interpolate( foo, m, "@", "@" );
+        assertEquals( "@name@ is an asshole", result );
+    }
+
     public void testEscapeOnlyAtStartDefaultToken()
         throws Exception
     {
@@ -188,8 +189,73 @@ public class InterpolatorFilterReaderTest
 
         String result = interpolate( foo, m, "${", "}" );
         assertEquals( "${name} is an asshole", result );
-    }    
-    
+    }
+
+    public void testShouldDetectRecursiveExpressionPassingThroughTwoPrefixes()
+        throws Exception
+    {
+        List prefixes = new ArrayList();
+
+        prefixes.add( "prefix1" );
+        prefixes.add( "prefix2" );
+
+        RecursionInterceptor ri = new PrefixAwareRecursionInterceptor( prefixes, false );
+
+        Map context = new HashMap();
+        context.put( "name", "${prefix2.name}" );
+
+        String input = "${prefix1.name}";
+
+        StringSearchInterpolator interpolator = new StringSearchInterpolator();
+
+        interpolator.addValueSource( new MapBasedValueSource( context ) );
+
+        InterpolatorFilterReader r = new InterpolatorFilterReader( new StringReader( input ), interpolator, ri );
+        r.setInterpolateWithPrefixPattern( false );
+        r.setEscapeString( "\\" );
+        StringBuffer buf = new StringBuffer();
+        int read = -1;
+        char[] cbuf = new char[1024];
+        while ( ( read = r.read( cbuf ) ) > -1 )
+        {
+            buf.append( cbuf, 0, read );
+        }
+
+        assertEquals( input, buf.toString() );
+    }
+
+    public void testShouldDetectRecursiveExpressionWithPrefixAndWithout()
+        throws Exception
+    {
+        List prefixes = new ArrayList();
+
+        prefixes.add( "prefix1" );
+
+        RecursionInterceptor ri = new PrefixAwareRecursionInterceptor( prefixes, false );
+
+        Map context = new HashMap();
+        context.put( "name", "${prefix1.name}" );
+
+        String input = "${name}";
+
+        StringSearchInterpolator interpolator = new StringSearchInterpolator();
+
+        interpolator.addValueSource( new MapBasedValueSource( context ) );
+
+        InterpolatorFilterReader r = new InterpolatorFilterReader( new StringReader( input ), interpolator, ri );
+        r.setInterpolateWithPrefixPattern( false );
+        r.setEscapeString( "\\" );
+        StringBuffer buf = new StringBuffer();
+        int read = -1;
+        char[] cbuf = new char[1024];
+        while ( ( read = r.read( cbuf ) ) > -1 )
+        {
+            buf.append( cbuf, 0, read );
+        }
+
+        assertEquals( "${prefix1.name}", buf.toString() );
+    }
+
     // ----------------------------------------------------------------------
     //
     // ----------------------------------------------------------------------
@@ -231,8 +297,7 @@ public class InterpolatorFilterReaderTest
 
         interpolator.addValueSource( new MapBasedValueSource( context ) );
 
-        InterpolatorFilterReader r = new InterpolatorFilterReader( new StringReader( input ), interpolator, beginToken,
-                                                                   endToken );
+        InterpolatorFilterReader r = new InterpolatorFilterReader( new StringReader( input ), interpolator, beginToken, endToken );
         r.setInterpolateWithPrefixPattern( false );
         r.setEscapeString( "\\" );
         StringBuffer buf = new StringBuffer();
@@ -244,6 +309,6 @@ public class InterpolatorFilterReaderTest
         }
 
         return buf.toString();
-    }    
-    
+    }
+
 }
