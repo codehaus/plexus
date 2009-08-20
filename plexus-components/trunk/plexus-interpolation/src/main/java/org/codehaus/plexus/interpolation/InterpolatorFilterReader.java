@@ -71,6 +71,11 @@ public class InterpolatorFilterReader
 
     /** Interpolator used to interpolate */
     private Interpolator interpolator;
+    
+    /**
+     * @since 1.12
+     */
+    private RecursionInterceptor recursionInterceptor;
 
     /** replacement text from a token */
     private String replaceData = null;
@@ -121,6 +126,31 @@ public class InterpolatorFilterReader
      */
     public InterpolatorFilterReader( Reader in, Interpolator interpolator, String beginToken, String endToken )
     {
+        this( in, interpolator, beginToken, endToken, new SimpleRecursionInterceptor() );
+    }    
+
+    /**
+     * this constructor use default begin token ${ and default end token } 
+     * @param in reader to use
+     * @param interpolator interpolator instance to use
+     * @param ri The {@link RecursionInterceptor} to use to prevent recursive expressions.
+     * @since 1.12
+     */
+    public InterpolatorFilterReader( Reader in, Interpolator interpolator, RecursionInterceptor ri )
+    {
+        this( in, interpolator, DEFAULT_BEGIN_TOKEN, DEFAULT_END_TOKEN, new SimpleRecursionInterceptor() );
+    }
+    
+    /**
+     * @param in reader to use
+     * @param interpolator interpolator instance to use
+     * @param beginToken start token to use
+     * @param endToken end token to use
+     * @param ri The {@link RecursionInterceptor} to use to prevent recursive expressions.
+     * @since 1.12
+     */
+    public InterpolatorFilterReader( Reader in, Interpolator interpolator, String beginToken, String endToken, RecursionInterceptor ri )
+    {
         super( in );
 
         this.interpolator = interpolator;
@@ -128,6 +158,8 @@ public class InterpolatorFilterReader
         this.beginToken = beginToken;
         
         this.endToken = endToken;
+        
+        recursionInterceptor = ri;
         
         this.orginalBeginToken = this.beginToken;
     }    
@@ -333,11 +365,11 @@ public class InterpolatorFilterReader
                 {
                     if ( interpolateWithPrefixPattern )
                     {
-                        value = interpolator.interpolate( key.toString(), "" );
+                        value = interpolator.interpolate( key.toString(), "", recursionInterceptor );
                     }
                     else
                     {
-                        value = interpolator.interpolate( key.toString() );
+                        value = interpolator.interpolate( key.toString(), recursionInterceptor );
                     }
                 }
             }
