@@ -54,6 +54,11 @@ public class ObjectBasedValueSource
      */
     public Object getValue( String expression )
     {
+        if ( expression == null || expression.trim().length() < 1 )
+        {
+            return null;
+        }
+        
         try
         {
             return ReflectionValueExtractor.evaluate( expression, root, false );
