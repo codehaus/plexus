@@ -58,12 +58,6 @@ public class InterpolationException
         this.expression = expression;
     }
 
-    public InterpolationException( String message )
-    {
-        super( message );
-        this.expression = null;
-    }
-
     private static String buildMessage( String message,
                                         String expression )
     {
