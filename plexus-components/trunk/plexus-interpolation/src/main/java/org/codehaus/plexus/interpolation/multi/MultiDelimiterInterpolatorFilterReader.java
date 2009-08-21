@@ -52,20 +52,27 @@
  * <http://www.codehaus.org/>.
  */
 
-package org.codehaus.plexus.interpolation;
+package org.codehaus.plexus.interpolation.multi;
+
+import org.codehaus.plexus.interpolation.InterpolationException;
+import org.codehaus.plexus.interpolation.Interpolator;
+import org.codehaus.plexus.interpolation.RecursionInterceptor;
+import org.codehaus.plexus.interpolation.SimpleRecursionInterceptor;
 
 import java.io.FilterReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 
 /**
  * A FilterReader implementation, that works with Interpolator interface instead of it's own interpolation
  * implementation. This implementation is heavily based on org.codehaus.plexus.util.InterpolationFilterReader.
  *
  * @author cstamas
- * @version $Id$
+ * @version $Id: InterpolatorFilterReader.java 8351 2009-08-20 22:25:14Z jdcasey $
  */
-public class InterpolatorFilterReader
+public class MultiDelimiterInterpolatorFilterReader
     extends FilterReader
 {
 
@@ -92,12 +99,6 @@ public class InterpolatorFilterReader
     /** Default end token. */
     public static final String DEFAULT_END_TOKEN = "}";
     
-    private String beginToken;
-    
-    private String orginalBeginToken;
-    
-    private String endToken;
-    
     /** true by default to preserve backward comp */
     private boolean interpolateWithPrefixPattern = true;
 
@@ -108,37 +109,24 @@ public class InterpolatorFilterReader
     /** if true escapeString will be preserved \{foo} -> \{foo} */
     private boolean preserveEscapeString = false;
     
-    /**
-     * this constructor use default begin token ${ and default end token } 
-     * @param in reader to use
-     * @param interpolator interpolator instance to use
-     */
-    public InterpolatorFilterReader( Reader in, Interpolator interpolator )
-    {
-        this( in, interpolator, DEFAULT_BEGIN_TOKEN, DEFAULT_END_TOKEN );
-    }
+    private LinkedHashSet delimiters = new LinkedHashSet();
     
-    /**
-     * @param in reader to use
-     * @param interpolator interpolator instance to use
-     * @param beginToken start token to use
-     * @param endToken end token to use
-     */
-    public InterpolatorFilterReader( Reader in, Interpolator interpolator, String beginToken, String endToken )
-    {
-        this( in, interpolator, beginToken, endToken, new SimpleRecursionInterceptor() );
-    }    
+    private DelimiterSpecification currentSpec;
 
+    private String beginToken;
+
+    private String originalBeginToken;
+
+    private String endToken;
+    
     /**
      * this constructor use default begin token ${ and default end token } 
      * @param in reader to use
      * @param interpolator interpolator instance to use
-     * @param ri The {@link RecursionInterceptor} to use to prevent recursive expressions.
-     * @since 1.12
      */
-    public InterpolatorFilterReader( Reader in, Interpolator interpolator, RecursionInterceptor ri )
+    public MultiDelimiterInterpolatorFilterReader( Reader in, Interpolator interpolator )
     {
-        this( in, interpolator, DEFAULT_BEGIN_TOKEN, DEFAULT_END_TOKEN, new SimpleRecursionInterceptor() );
+        this( in, interpolator, new SimpleRecursionInterceptor() );
     }
     
     /**
@@ -149,21 +137,40 @@ public class InterpolatorFilterReader
      * @param ri The {@link RecursionInterceptor} to use to prevent recursive expressions.
      * @since 1.12
      */
-    public InterpolatorFilterReader( Reader in, Interpolator interpolator, String beginToken, String endToken, RecursionInterceptor ri )
+    public MultiDelimiterInterpolatorFilterReader( Reader in, Interpolator interpolator, RecursionInterceptor ri )
     {
         super( in );
 
         this.interpolator = interpolator;
         
-        this.beginToken = beginToken;
-        
-        this.endToken = endToken;
-        
         recursionInterceptor = ri;
         
-        this.orginalBeginToken = this.beginToken;
+        delimiters.add( DelimiterSpecification.DEFAULT_SPEC );
     }    
 
+    public MultiDelimiterInterpolatorFilterReader addDelimiterSpec( String delimiterSpec )
+    {
+        delimiters.add( DelimiterSpecification.parse( delimiterSpec ) );
+        return this;
+    }
+    
+    public boolean removeDelimiterSpec( String delimiterSpec )
+    {
+        return delimiters.remove( DelimiterSpecification.parse( delimiterSpec ) );
+    }
+    
+    public MultiDelimiterInterpolatorFilterReader setDelimiterSpecs( LinkedHashSet specs )
+    {
+        delimiters.clear();
+        for ( Iterator it = specs.iterator(); it.hasNext(); )
+        {
+            String spec = (String) it.next();
+            delimiters.add( DelimiterSpecification.parse( spec ) );
+        }
+        
+        return this;
+    }
+    
     /**
      * Skips characters. This method will block until some characters are available, an I/O error occurs, or the end of
      * the stream is reached.
@@ -252,16 +259,56 @@ public class InterpolatorFilterReader
             ch = in.read();
         }
         
-        if ( ch == this.beginToken.charAt( 0 ) || ( useEscape && ch == this.orginalBeginToken.charAt( 0 ) ) )
+        boolean inEscape = false;
+        
+        if ( ( inEscape = ( useEscape && ch == escapeString.charAt( 0 ) ) ) || reselectDelimiterSpec( ch ) )
         {
             StringBuffer key = new StringBuffer( );
 
             key.append( (char) ch );
+            
+            // this will happen when we're using an escape string, and ONLY then.
+            boolean atEnd = false;
+
+            if ( inEscape )
+            {
+                for( int i = 0; i < escapeString.length() - 1; i++ )
+                {
+                    ch = in.read();
+                    if ( ch == -1 )
+                    {
+                        atEnd = true;
+                        break;
+                    }
+                    
+                    key.append( (char) ch );
+                }
+                
+                if ( !atEnd )
+                {
+                    ch = in.read();
+                    if ( !reselectDelimiterSpec( ch ) )
+                    {
+                        replaceData = key.toString();
+                        replaceIndex = 1;
+                        return replaceData.charAt( 0 );
+                    }
+                    else
+                    {
+                        key.append( (char) ch );
+                    }
+                }
+            }
 
             int beginTokenMatchPos = 1;
-
             do
             {
+                if ( atEnd )
+                {
+                    // didn't finish reading the escape string.
+                    break;
+                }
+                
                 if ( previousIndex != -1 && previousIndex < this.endToken.length() )
                 {
                     ch = this.endToken.charAt( previousIndex++ );
@@ -273,10 +320,8 @@ public class InterpolatorFilterReader
                 if ( ch != -1 )
                 {
                     key.append( (char) ch );
-                    if ( ( beginTokenMatchPos < this.beginToken.length() )
-                        && ( ch != this.beginToken.charAt( beginTokenMatchPos++ ) )
-                        && ( useEscape && this.orginalBeginToken.length() > ( beginTokenMatchPos - 1 ) && ch != this.orginalBeginToken
-                            .charAt( beginTokenMatchPos - 1 ) ) )
+                    if ( ( beginTokenMatchPos < this.originalBeginToken.length() )
+                        && ( ch != this.originalBeginToken.charAt( beginTokenMatchPos ) )  )
                     {
                         ch = -1; // not really EOF but to trigger code below
                         break;
@@ -286,13 +331,16 @@ public class InterpolatorFilterReader
                 {
                     break;
                 }
+                
                 // MSHARED-81 olamy : we must take care of token with length 1, escaping and same char : \@foo@
                 // here ch == endToken == beginToken -> not going to next char : bad :-)
-                if ( useEscape && this.orginalBeginToken == this.endToken && key.toString().startsWith( this.beginToken ) )
+                if ( useEscape && this.originalBeginToken == this.endToken && key.toString().startsWith( this.beginToken ) )
                 {
                     ch = in.read();
                     key.append( (char) ch );
                 }
+                
+                beginTokenMatchPos++;
             }
             while ( ch != this.endToken.charAt( 0 ) );
 
@@ -347,7 +395,7 @@ public class InterpolatorFilterReader
                 boolean escapeFound = false;
                 if ( useEscape )
                 {
-                    if ( key.toString().startsWith( escapeString + orginalBeginToken ) )
+                    if ( key.toString().startsWith( beginToken ) )
                     {
                         String keyStr = key.toString();
                         if ( !preserveEscapeString )
@@ -402,6 +450,25 @@ public class InterpolatorFilterReader
         return ch;
     }
 
+    private boolean reselectDelimiterSpec( int ch )
+    {
+        for ( Iterator it = delimiters.iterator(); it.hasNext(); )
+        {
+            DelimiterSpecification spec = (DelimiterSpecification) it.next();
+            if ( ch == spec.getBegin().charAt( 0 ) )
+            {
+                currentSpec = spec;
+                originalBeginToken = currentSpec.getBegin();
+                beginToken = useEscape ? escapeString + originalBeginToken : originalBeginToken;
+                endToken = currentSpec.getEnd();
+                
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
     public boolean isInterpolateWithPrefixPattern()
     {
         return interpolateWithPrefixPattern;
@@ -422,8 +489,6 @@ public class InterpolatorFilterReader
         if ( escapeString != null && escapeString.length() >= 1 )
         {
             this.escapeString = escapeString;
-            this.orginalBeginToken = beginToken;
-            this.beginToken = escapeString + beginToken;
             this.useEscape = escapeString != null && escapeString.length() >= 1;
         }
     }
@@ -443,7 +508,7 @@ public class InterpolatorFilterReader
         return recursionInterceptor;
     }
 
-    public InterpolatorFilterReader setRecursionInterceptor( RecursionInterceptor recursionInterceptor )
+    public MultiDelimiterInterpolatorFilterReader setRecursionInterceptor( RecursionInterceptor recursionInterceptor )
     {
         this.recursionInterceptor = recursionInterceptor;
         return this;

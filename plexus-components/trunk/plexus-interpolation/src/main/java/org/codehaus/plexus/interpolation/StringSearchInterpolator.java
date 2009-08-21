@@ -94,13 +94,13 @@ public class StringSearchInterpolator
     public String interpolate( String input, String thisPrefixPattern )
         throws InterpolationException
     {
-        throw new UnsupportedOperationException( "Regular expressions are not supported in this Interpolator implementation." );
+        return interpolate( input, new SimpleRecursionInterceptor() );
     }
 
     public String interpolate( String input, String thisPrefixPattern, RecursionInterceptor recursionInterceptor )
         throws InterpolationException
     {
-        throw new UnsupportedOperationException( "Regular expressions are not supported in this Interpolator implementation." );
+        return interpolate( input, recursionInterceptor );
     }
 
     public String interpolate( String input )
