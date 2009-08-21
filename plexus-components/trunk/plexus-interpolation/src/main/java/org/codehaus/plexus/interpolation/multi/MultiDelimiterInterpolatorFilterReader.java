@@ -143,6 +143,9 @@ public class MultiDelimiterInterpolatorFilterReader
 
         this.interpolator = interpolator;
         
+        // always cache answers, since we'll be sending in pure expressions, not mixed text.
+        this.interpolator.setCacheAnswers( true );
+        
         recursionInterceptor = ri;
         
         delimiters.add( DelimiterSpecification.DEFAULT_SPEC );
@@ -330,14 +333,6 @@ public class MultiDelimiterInterpolatorFilterReader
                 else
                 {
                     break;
-                }
-                
-                // MSHARED-81 olamy : we must take care of token with length 1, escaping and same char : \@foo@
-                // here ch == endToken == beginToken -> not going to next char : bad :-)
-                if ( useEscape && this.originalBeginToken == this.endToken && key.toString().startsWith( this.beginToken ) )
-                {
-                    ch = in.read();
-                    key.append( (char) ch );
                 }
                 
                 beginTokenMatchPos++;
