@@ -45,7 +45,10 @@ public abstract class AbstractResourceLoader
 
     public void addSearchPath( String path )
     {
-        paths.add( path );
+        if ( !paths.contains( path ) )
+        {
+            paths.add( path );
+        }
     }
 
     public InputStream getResourceAsInputStream( String name )

@@ -35,7 +35,7 @@ import org.codehaus.plexus.resource.PlexusResource;
 
 /**
  * @author Jason van Zyl
- * @plexus.component role-hint="url"
+ * @plexus.component role-hint="url" instantiation-strategy="per-lookup"
  */
 public class URLResourceLoader
     extends AbstractResourceLoader

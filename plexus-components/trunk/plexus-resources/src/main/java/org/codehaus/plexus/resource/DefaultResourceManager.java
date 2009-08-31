@@ -44,7 +44,7 @@ import java.util.Map;
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @author Jason van Zyl
  * @version $Id$
- * @plexus.component
+ * @plexus.component instantiation-strategy="per-lookup"
  */
 public class DefaultResourceManager
     extends AbstractLogEnabled

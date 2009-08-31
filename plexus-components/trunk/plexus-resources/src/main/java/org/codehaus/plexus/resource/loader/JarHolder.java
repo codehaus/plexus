@@ -166,7 +166,7 @@ public class JarHolder
 
             public String getName()
             {
-                return conn.getJarFileURL() + name;
+                return conn.getURL() + name;
             }
 
             public URI getURI()
