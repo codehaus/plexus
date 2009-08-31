@@ -37,7 +37,7 @@ import org.codehaus.plexus.util.FileUtils;
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @author Jason van Zyl
  * @version $Id$
- * @plexus.component role-hint="file"
+ * @plexus.component role-hint="file" instantiation-strategy="per-lookup"
  */
 public class FileResourceLoader
     extends AbstractResourceLoader

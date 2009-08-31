@@ -27,12 +27,12 @@ package org.codehaus.plexus.resource.loader;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.codehaus.plexus.resource.PlexusResource;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * @author Jason van Zyl
- * @plexus.component role-hint="jar"
+ * @plexus.component role-hint="jar" instantiation-strategy="per-lookup"
  */
 public class JarResourceLoader
     extends AbstractResourceLoader
@@ -42,16 +42,20 @@ public class JarResourceLoader
     /**
      * Maps entries to the parent JAR File (key = the entry *excluding* plain directories, value = the JAR URL).
      */
-    private Map entryDirectory = new HashMap( 559 );
+    private Map entryDirectory = new LinkedHashMap( 559 );
 
     /**
      * Maps JAR URLs to the actual JAR (key = the JAR URL, value = the JAR).
      */
-    private Map jarfiles = new HashMap( 89 );
+    private Map jarfiles = new LinkedHashMap( 89 );
+    
+    private boolean initializeCalled;
 
     public void initialize()
         throws InitializationException
     {
+        initializeCalled = true;
+        
         if ( paths != null )
         {
             for ( int i = 0; i < paths.size(); i++ )
@@ -130,6 +134,18 @@ public class JarResourceLoader
     public PlexusResource getResource( String source )
         throws ResourceNotFoundException
     {
+        if ( !initializeCalled )
+        {
+            try
+            {
+                initialize();
+            }
+            catch ( InitializationException e )
+            {
+                throw new ResourceNotFoundException( e.getMessage(), e );
+            }
+        }
+        
         if ( source == null || source.length() == 0 )
         {
             throw new ResourceNotFoundException( "Need to have a resource!" );
@@ -155,5 +171,17 @@ public class JarResourceLoader
         }
 
         throw new ResourceNotFoundException( "JarResourceLoader Error: cannot find resource " + source );
+    }
+
+    public void addSearchPath( String path )
+    {
+        if ( !paths.contains( path ) )
+        {
+            if ( initializeCalled )
+            {
+                loadJar( path );
+            }
+            paths.add( path );
+        }
     }
 }
