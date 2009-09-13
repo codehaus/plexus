@@ -24,5 +24,12 @@
     <menu ref="parent" inherit="top" />
     <menu ref="modules" inherit="top" />
     <menu ref="reports" inherit="bottom" />
+
+    <menu name="Plexus Projects" inherit="bottom">
+      <item name="Plexus Classworlds" href="http://plexus.codehaus.org/plexus-classworlds/" />
+      <item name="Plexus Container"   href="http://plexus.codehaus.org/plexus-containers/" />
+      <item name="Plexus Components"  href="http://plexus.codehaus.org/plexus-components/" />
+      <item name="Plexus Utils"       href="http://plexus.codehaus.org/plexus-utils/" />
+    </menu>
   </body>
 </project>
