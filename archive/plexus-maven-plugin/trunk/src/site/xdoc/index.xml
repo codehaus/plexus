@@ -4,6 +4,7 @@
     <author email="olamy@codehaus.org">Olivier Lamy</author>
   </properties>
   <body>
+    <h1>This plugin has been superceded by <a href="/plexus-containers/plexus-component-metadata/">plexus-component-metadata</a></h1>
     <section name="Plexus Maven Plugin">
       <p>This plugin provide some help with Maven : <a href="plugin-info.html">goals</a></p>
       <subsection name="Component Descriptor Generation">
@@ -25,8 +26,8 @@
           </execution>
         </executions>
       </plugin>
-]]>            
-          </source>        
+]]>
+          </source>
         </p>
       </subsection>
       <subsection name="Component Report">
@@ -39,9 +40,9 @@
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-maven-plugin</artifactId>
       </plugin>
-]]>            
-          </source>        
-        </p>        
+]]>
+          </source>
+        </p>
       </subsection>
     </section>
   </body>
