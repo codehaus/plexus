@@ -15,7 +15,6 @@
 
   <name>Plexus CLI</name>
   <description>Easily create CLIs with Plexus components</description>
-  <url>http://maven.apache.org</url>
 
   <dependencies>
     <dependency>
