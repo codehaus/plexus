@@ -5,31 +5,34 @@
     <href>http://plexus.codehaus.org/</href>
     <src>/images/plexus-logo.png</src>
   </bannerLeft>
-  <!-- bannerRight>
-    <name>The Codehaus</name>
-    <href>http://codehaus.org</href>
-    <src>http://media.codehaus.org/images/unity-codehaus-logo.png</src>
-  </bannerRight -->
+
+  <publishDate format="yyyy-MM-dd" position="right" />
+
   <skin>
     <groupId>org.codehaus.plexus</groupId>
     <artifactId>plexus-stylus-skin</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
   </skin>
+
   <body>
+    <breadcrumbs>
+      <item name="Plexus" href="/"/>
+    </breadcrumbs>
+
     <head>
       <link rel="icon" href="/favicon.ico" type="image/x-icon" />
       <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     </head>
-    
+
     <links>
       <item name="Plexus" href="http://plexus.codehaus.org" />
       <item name="The Codehaus" href="http://codehaus.org" />
     </links>
-    
+
     <menu name="Plexus">
-      <item name="Overview" href="/index.html" />   
+      <item name="Overview" href="/index.html" />
     </menu>
-    
+
     <menu name="Downloads">
       <!-- .tgz files for latest release and snapshots -->
       <item name="Sources" href="source-repository.html" />
@@ -42,7 +45,7 @@
       <item name="Developer Guide" href="/Plexus_developer_reference" />
 -->
     </menu>
-    
+
     <menu name="Guides">
       <!-- 5 minute tutorial -->
       <item name="Quick Start" href="/guides/quick-start/getting-started.html" />
@@ -52,7 +55,7 @@
       <item name="Plexus in Web Applications" href="/guides/plexus-web-applications/index.html" />-->
 
       <!-- Detailed Plexus manual -->
-      <item name="Developer Guide" href="/guides/developer-guide/index.html" />    
+      <item name="Developer Guide" href="/guides/developer-guide/index.html" />
     </menu>
 
     <menu name="Reference">
@@ -60,26 +63,27 @@
       <item name="Why Use Components?" href="/ref/why-use-components.html" />
       <!-- Discuss elements for plexus.xml and components.xml and differences -->
       <item name="Plexus Descriptor" href="/ref/plexus-descriptor.html" />
-      <item name="Component Descriptor" href="/guides/developer-guide/configuration/component-descriptor.html" />      
+      <item name="Component Descriptor" href="/guides/developer-guide/configuration/component-descriptor.html" />
       <item name="Component Configuration" href="/ref/component-configuration.html" />
       <item name="Technical Articles" href="/ref/technical-articles.html" />
       <item name="Available Components" href="/ref/available-components.html" />
       <item name="FAQs" href="/faq.html" />
     </menu>
-    
+
     <menu name="Community">
       <item name="Mailing Lists" href="mail-lists.html" />
       <item name="IRC" href="/irc.html" />
       <item name="Get Involved" href="/get-involved.html" />
     </menu>
-    
-    <menu name="Relevant Projects">
-      <item name="Plexus Common Utilities" href="plexus-utils" />
-      <item name="Plexus Maven Plugin" href="plexus-maven-plugin" />
+
+    <menu name="Plexus Projects" inherit="bottom">
+      <item name="Plexus Classworlds" href="/plexus-classworlds/" />
+      <item name="Plexus Container"   href="/plexus-containers/" />
+      <item name="Plexus Components"  href="/plexus-components/" />
+      <item name="Plexus Maven Plugin" href="/plexus-maven-plugin/" />
+      <item name="Plexus Utils"       href="/plexus-utils/" />
     </menu>
 
-    
-    
     <menu ref="reports" />
 
   </body>
