@@ -22,7 +22,7 @@ limitations under the License.
   <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus</artifactId>
   <packaging>pom</packaging>
-  <version>2.0.3-SNAPSHOT</version>
+  <version>2.0.3</version>
 
   <name>Plexus</name>
   <description>The Plexus project provides a full software stack for creating and executing software projects.</description>
@@ -247,9 +247,9 @@ limitations under the License.
   </mailingLists>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/pom/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/pom/trunk/</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/pom/trunk/</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/pom/tags/plexus-2.0.3</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/pom/tags/plexus-2.0.3</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/pom/tags/plexus-2.0.3</url>
   </scm>
   <issueManagement>
     <system>JIRA</system>
