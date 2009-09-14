@@ -13,28 +13,52 @@
             <th>Description</th>
           </tr>
           <tr>
-            <td><a href="../plexus-components/plexus-velocity">plexus-velocity</a></td>
-            <td>Component to render velocity templates</td>
-          </tr>          
-          <tr>
-            <td><a href="../plexus-components/plexus-xwork-integration">plexus-xwork-integration</a></td>
-            <td>Provide an easy integration of Plexus with webwork.</td>
+            <td><a href="../plexus-components/plexus-archiver">plexus-archiver</a></td>
+            <td>Component to manipulate archives.</td>
           </tr>
           <tr>
-            <td><a href="../plexus-components/plexus-mail-sender">plexus-mail-sender</a></td>
-            <td>Mail sender with different providers (javamail, simple)</td>
+            <td><a href="../plexus-components/plexus-cli">plexus-cli</a></td>
+            <td>Components to easily create CLIs.</td>
+          </tr>
+          <tr>
+            <td><a href="../plexus-components/plexus-compiler">plexus-compiler</a></td>
+            <td>Components to manipulate compilers.</td>
+          </tr>
+          <tr>
+            <td><a href="../plexus-components/plexus-digest">plexus-digest</a></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><a href="../plexus-components/plexus-i18n">plexus-i18n</a></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><a href="../plexus-components/plexus-interactivity">plexus-interactivity</a></td>
+            <td></td>
           </tr>
           <tr>
             <td><a href="../plexus-components/plexus-interpolation">plexus-interpolation</a></td>
             <td>Flexible interpolation Framework.</td>
-          </tr>    
+          </tr>
           <tr>
-            <td><a href="../plexus-components/plexus-cache">plexus-cache</a></td>
-            <td>Cache API with different providers (oscache, whirlycache, hashmap)</td>
-          </tr>                
+            <td><a href="../plexus-components/plexus-io">plexus-io</a></td>
+            <td>Components designed for use in I/O operations.</td>
+          </tr>
+          <tr>
+            <td><a href="../plexus-components/plexus-resources">plexus-resources</a></td>
+            <td>A component to transparently retrieve resources from the filesystem, classpath or internet.</td>
+          </tr>
+          <tr>
+            <td><a href="../plexus-components/plexus-swizzle">plexus-swizzle</a></td>
+            <td>A component adaptated from David Blevin's Swizzle project to generate reports from an issue tracking system (JIRA).</td>
+          </tr>
+          <tr>
+            <td><a href="../plexus-components/plexus-velocity">plexus-velocity</a></td>
+            <td>Component to render velocity templates</td>
+          </tr>
         </table>
       </subsection>
-      <subsection name="Sandboxed Components">
+      <subsection name="Sandboxed or Archived Components">
         <table>
           <tr>
             <th>Name</th>
@@ -47,8 +71,20 @@
           <tr>
             <td><a href="../plexus-components/plexus-contextualizer">plexus-contextualizer</a></td>
             <td>Component to add values in your Plexus Context.</td>
-          </tr>          
-        </table>      
+          </tr>
+          <tr>
+            <td><a href="../plexus-components/plexus-xwork-integration">plexus-xwork-integration</a></td>
+            <td>Provide an easy integration of Plexus with webwork.</td>
+          </tr>
+          <tr>
+            <td><a href="../plexus-components/plexus-mail-sender">plexus-mail-sender</a></td>
+            <td>Mail sender with different providers (javamail, simple)</td>
+          </tr>
+          <tr>
+            <td><a href="../plexus-components/plexus-cache">plexus-cache</a></td>
+            <td>Cache API with different providers (oscache, whirlycache, hashmap)</td>
+          </tr>
+        </table>
       </subsection>
     </section>
   </body>
