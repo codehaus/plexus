@@ -55,6 +55,11 @@ public class ThreadContextClasspathResourceLoader
             throw new ResourceNotFoundException( name );
         }
 
+        if ( name != null && name.startsWith( "/" ) )
+        {
+            name = name.substring( 1 );
+        }
+
         final URL url = classLoader.getResource( name );
         if ( url == null )
         {
