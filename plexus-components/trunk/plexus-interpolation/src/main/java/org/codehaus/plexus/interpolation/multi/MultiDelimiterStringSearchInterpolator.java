@@ -58,12 +58,20 @@ public class MultiDelimiterStringSearchInterpolator
     
     public MultiDelimiterStringSearchInterpolator addDelimiterSpec( String delimiterSpec )
     {
+        if ( delimiterSpec == null )
+        {
+            return this;
+        }
         delimiters.add( DelimiterSpecification.parse( delimiterSpec ) );
         return this;
     }
     
     public boolean removeDelimiterSpec( String delimiterSpec )
     {
+        if ( delimiterSpec == null )
+        {
+            return false;
+        }        
         return delimiters.remove( DelimiterSpecification.parse( delimiterSpec ) );
     }
     
@@ -391,6 +399,10 @@ public class MultiDelimiterStringSearchInterpolator
         for ( Iterator it = specs.iterator(); it.hasNext(); )
         {
             String spec = (String) it.next();
+            if ( spec == null )
+            {
+                continue;
+            }            
             delimiters.add( DelimiterSpecification.parse( spec ) );
         }
         
