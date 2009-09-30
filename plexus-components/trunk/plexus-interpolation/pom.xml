@@ -8,7 +8,7 @@
   </parent>
 
   <artifactId>plexus-interpolation</artifactId>
-  <version>1.14-SNAPSHOT</version>
+  <version>1.13-SNAPSHOT</version>
 
   <name>Plexus Interpolation API</name>
 </project>
