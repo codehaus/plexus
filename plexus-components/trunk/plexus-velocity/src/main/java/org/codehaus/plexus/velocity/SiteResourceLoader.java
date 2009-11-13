@@ -21,6 +21,7 @@ import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 import org.apache.velocity.exception.ResourceNotFoundException;
 
 import java.io.InputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -36,9 +37,12 @@ public class SiteResourceLoader
 {
     private static String resource;
 
+    private static File resourceDir;
+
     public static void setResource( String staticResource )
     {
         resource = staticResource;
+        resourceDir = new File( resource ).getParentFile();
     }
 
     public void init( ExtendedProperties p )
@@ -52,7 +56,15 @@ public class SiteResourceLoader
         {
             try
             {
-                return new FileInputStream( resource );
+                File f = new File( resourceDir, name );
+                if ( f.exists() )
+                {
+                    return new FileInputStream( f );
+                }
+                else
+                {
+                    return new FileInputStream( resource );
+                }
             }
             catch ( FileNotFoundException e )
             {
