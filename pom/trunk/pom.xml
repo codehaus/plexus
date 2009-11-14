@@ -352,9 +352,6 @@ limitations under the License.
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
           <version>2.4.1</version>
-          <configuration>
-            <encoding>${project.build.sourceEncoding}</encoding>
-          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -436,7 +433,6 @@ limitations under the License.
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>2.6.1</version>
             <configuration>
-              <encoding>${project.build.sourceEncoding}</encoding>
               <links>
                 <link>http://java.sun.com/j2ee/1.4/docs/api</link>
                 <link>http://junit.sourceforge.net/javadoc/</link>
@@ -510,8 +506,8 @@ limitations under the License.
           </plugin>
         </plugins>
       </build>
-      
+
     </profile>
-    
+
   </profiles>
 </project>
