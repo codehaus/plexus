@@ -24,13 +24,13 @@ limitations under the License.
   </parent>
 
   <artifactId>plexus-velocity</artifactId>
-  <version>1.1.8-SNAPSHOT</version>
+  <version>1.1.8</version>
 
   <name>Plexus Velocity Component</name>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-components/trunk/plexus-velocity</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-components/trunk/plexus-velocity</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-components/trunk/plexus-velocity</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-components/tags/plexus-velocity-1.1.8</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-components/tags/plexus-velocity-1.1.8</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-components/tags/plexus-velocity-1.1.8</url>
   </scm>
 
   <dependencies>
