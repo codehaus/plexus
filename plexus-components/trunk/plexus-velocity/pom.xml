@@ -27,6 +27,11 @@ limitations under the License.
   <version>1.1.8-SNAPSHOT</version>
 
   <name>Plexus Velocity Component</name>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-components/trunk/plexus-velocity</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-components/trunk/plexus-velocity</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-components/trunk/plexus-velocity</url>
+  </scm>
 
   <dependencies>
     <dependency>
