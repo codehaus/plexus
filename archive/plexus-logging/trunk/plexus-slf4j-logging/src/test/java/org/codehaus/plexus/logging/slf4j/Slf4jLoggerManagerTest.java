@@ -20,8 +20,8 @@ import org.codehaus.plexus.logging.AbstractLoggerManagerTest;
 import org.codehaus.plexus.logging.LoggerManager;
 
 /**
- * SlfLoggerManagerTest 
- *
+ * SlfLoggerManagerTest
+ * 
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
@@ -35,4 +35,35 @@ public class Slf4jLoggerManagerTest
         return (LoggerManager) lookup( LoggerManager.ROLE );
     }
 
+    // = SLF4J is a facade, so setting the levels explicitly is no-go
+
+    public void testDebugLevelConfiguration()
+        throws Exception
+    {
+        // pass
+    }
+
+    public void testInfoLevelConfiguration()
+        throws Exception
+    {
+        // pass
+    }
+
+    public void testWarnLevelConfiguration()
+        throws Exception
+    {
+        // pass
+    }
+
+    public void testErrorLevelConfiguration()
+        throws Exception
+    {
+        // pass
+    }
+
+    public void testFatalLevelConfiguration()
+        throws Exception
+    {
+        // pass
+    }
 }
