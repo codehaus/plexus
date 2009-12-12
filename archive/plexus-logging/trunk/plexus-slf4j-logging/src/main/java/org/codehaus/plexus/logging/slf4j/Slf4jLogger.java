@@ -21,9 +21,7 @@ import org.codehaus.plexus.logging.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Slf4jLogger 
- * 
- * A logger for those who want to use the <a href="http://www.slf4j.org/">slf4j</a> logging facilities.
+ * Slf4jLogger A logger for those who want to use the <a href="http://www.slf4j.org/">slf4j</a> logging facilities.
  * <p/>
  * The mapping of the logging levels:
  * <ul>
@@ -33,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * <li>Plexus ERROR &lt;==&gt; Slf4j ERROR</li>
  * <li>Plexus FATAL_ERROR &lt;==&gt; Slf4j ERROR</li>
  * </ul>
- *
+ * 
  * @author <a href="mailto:joakim@erdfelt.com">Joakim Erdfelt</a>
  * @version $Id$
  */
@@ -42,16 +40,41 @@ public class Slf4jLogger
 {
     private org.slf4j.Logger logger;
 
-    public Slf4jLogger( int threshold, org.slf4j.Logger logger )
+    public Slf4jLogger( int treshold, org.slf4j.Logger logger )
     {
-        super( threshold, logger.getName() );
-        
+        super( treshold, logger.getName() );
+
         if ( null == logger )
         {
             throw new IllegalArgumentException( "Logger cannot be null" );
         }
-        
+
         this.logger = logger;
+    }
+
+    public boolean isDebugEnabled()
+    {
+        return logger.isDebugEnabled();
+    }
+
+    public boolean isInfoEnabled()
+    {
+        return logger.isInfoEnabled();
+    }
+
+    public boolean isWarnEnabled()
+    {
+        return logger.isWarnEnabled();
+    }
+
+    public boolean isErrorEnabled()
+    {
+        return logger.isErrorEnabled();
+    }
+
+    public boolean isFatalErrorEnabled()
+    {
+        return logger.isErrorEnabled();
     }
 
     public void debug( String message, Throwable throwable )

@@ -33,6 +33,7 @@ public class Slf4jLoggerManager
 {
     protected Logger createLogger( String key )
     {
+        // SLF4j is a facade for other loggers, setting treshold has no meaning
         return new Slf4jLogger( getThreshold(), org.slf4j.LoggerFactory.getLogger( key ) );
     }
 }
