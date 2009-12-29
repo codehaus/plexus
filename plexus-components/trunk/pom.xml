@@ -12,7 +12,7 @@
 
   <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus-components</artifactId>
-  <version>1.1.16-SNAPSHOT</version>
+  <version>1.1.16</version>
   <packaging>pom</packaging>
 
   <name>Plexus Components</name>
@@ -36,9 +36,9 @@
   </modules>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-components/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-components/trunk</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-components/trunk/</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-components/tags/plexus-components-1.1.16</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-components/tags/plexus-components-1.1.16</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-components/tags/plexus-components-1.1.16</url>
   </scm>
   <issueManagement>
     <system>JIRA</system>
@@ -139,8 +139,8 @@
             <configuration>
               <mappingId>customizable</mappingId>
               <configurators>
-                <configurator id='org.maven.ide.eclipse.jdt.javaConfigurator' />
-                <configurator id='org.maven.ide.eclipse.plexus.annotations.plexusConfigurator' />
+                <configurator id="org.maven.ide.eclipse.jdt.javaConfigurator" />
+                <configurator id="org.maven.ide.eclipse.plexus.annotations.plexusConfigurator" />
                 <configurator id="org.maven.ide.eclipse.modello.modelloConfigurator" />
               </configurators>
               <mojoExecutions>
