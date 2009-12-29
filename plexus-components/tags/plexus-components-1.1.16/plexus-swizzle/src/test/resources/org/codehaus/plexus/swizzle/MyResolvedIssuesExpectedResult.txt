@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <author>John Tolentino</author>
+    <title>My Custom Resolved Issues Report</title>
+  </properties>
+  <body>
+    <section name="Issues Resolved for Swizzle [Test 0.1.1]">
+      <ul>
+        <li>[SWIZZLE-6] <![CDATA[Fix the toilet]]></li>
+      </ul>
+      <ul>
+        <li>[SWIZZLE-12] <![CDATA[Fix whole in the wall]]></li>
+      </ul>
+      <div class="section">
+        <h3>Release-related Items</h3>
+        <table>
+          <tr>
+            <th>ITEM</th>
+            <th>DESCRIPTION</th>
+          </tr>
+          <tr>
+            <td>Last Release</td>
+            <td>Version Test 0.1.0 released on 2006/07/04 12:00:00</td>
+          </tr>
+        </table>
+      </div>
+    </section>
+  </body>
+</document>
