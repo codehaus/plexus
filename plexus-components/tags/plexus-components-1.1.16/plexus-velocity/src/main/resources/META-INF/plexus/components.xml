@@ -1,0 +1,37 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.plexus.velocity.VelocityComponent</role>
+      <role-hint>default</role-hint>
+      <implementation>org.codehaus.plexus.velocity.DefaultVelocityComponent</implementation>
+      <configuration>
+        <properties>
+          <property>
+            <name>resource.loader</name>
+            <value>classpath,site</value>
+          </property>
+          <property>
+            <name>classpath.resource.loader.class</name>
+            <value>org.codehaus.plexus.velocity.ContextClassLoaderResourceLoader</value>
+          </property>
+          <property>
+            <name>site.resource.loader.class</name>
+            <value>org.codehaus.plexus.velocity.SiteResourceLoader</value>
+          </property>
+          <property>
+            <name>runtime.log.invalid.references</name>
+            <value>false</value>
+          </property>
+          <property>
+            <name>velocimacro.messages.on</name>
+            <value>false</value>
+          </property>
+          <property>
+            <name>resource.manager.logwhenfound</name>
+            <value>false</value>
+          </property>
+        </properties>
+      </configuration>
+    </component>
+  </components>
+</component-set>
