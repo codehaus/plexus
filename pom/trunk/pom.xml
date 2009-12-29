@@ -494,7 +494,8 @@ limitations under the License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-site-plugin</artifactId>
-            <version>2.0.1</version>
+            <version>2.1</version>
+            <inherited>false</inherited>
             <executions>
               <execution>
                 <id>attach-descriptor</id>
