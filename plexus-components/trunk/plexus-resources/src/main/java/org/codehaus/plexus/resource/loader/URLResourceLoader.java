@@ -115,6 +115,47 @@ public class URLResourceLoader
                 }
             }
         }
+        
+        // here we try to download without any path just the name which can be an url
+        
+        try
+        {
+            URL u = new URL( name );
+
+            final InputStream inputStream = u.openStream();
+
+            if ( inputStream != null )
+            {
+                return new URLPlexusResource( u )
+                {
+                    private boolean useSuper;
+
+                    public synchronized InputStream getInputStream()
+                        throws IOException
+                    {
+                        if ( !useSuper )
+                        {
+                            useSuper = true;
+                            return inputStream;
+                        }
+                        return super.getInputStream();
+                    }
+                };
+            }
+        }
+        catch ( IOException ioe )
+        {
+            if ( getLogger().isDebugEnabled() )
+            {
+                getLogger().debug( "URLResourceLoader: Exception when looking for '" + name, ioe );
+            }
+
+            // only save the first one for later throwing
+            if ( exception == null )
+            {
+                exception = ioe;
+            }
+        }
 
         // if we never found the template
         String msg;
