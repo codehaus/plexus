@@ -164,7 +164,9 @@ public class DefaultResourceManager
             }
             catch ( ResourceNotFoundException e )
             {
-                // ignore and continue to the next loader
+                getLogger().debug(
+                                   "The resource " + "'" + name + "'" + " was not found with resourceLoader "
+                                       + resourceLoader.getClass().getName() + "." );
             }
         }
 
