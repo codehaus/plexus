@@ -408,7 +408,7 @@ limitations under the License.
             <version>2.2</version>
             <configuration>
               <configLocation>http://svn.apache.org/repos/asf/maven/plugins/tags/maven-checkstyle-plugin-2.2/src/main/resources/config/maven_checks.xml</configLocation>
-              <headerLocation>http://svn.apache.org/repos/asf/maven/plugins/tags/maven-checkstyle-plugin-2.2/src/main/resources/config/maven-header.txt</headerLocation>
+              <headerLocation>http://svn.codehaus.org/plexus/pom/trunk/src/main/resources/config/plexus-header.txt</headerLocation>
             </configuration>
           </plugin>
           <plugin>
