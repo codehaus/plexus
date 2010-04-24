@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>plexus-resources</artifactId>
-  <version>1.0-alpha-8-SNAPSHOT</version>
+  <version>1.0-SNAPSHOT</version>
 
   <name>Plexus Resource Component</name>
   <description>A component to transparently retrieve resources from the filesystem, classpath or internet.</description>
