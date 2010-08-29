@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <title>Project Votes Report</title>
+  </properties>
+  <body>
+    <section name="Issue Tracking Votes">
+      <h3>Swizzle <a href="http://jira.codehaus.org/browse/SWIZZLE?report=com.atlassian.jira.plugin.system.project:roadmap-panel">(Road Map)</a></h3>
+      <table>
+        <tr>
+          <th>TOTAL VOTES: 4</th>
+          <th>DESCRIPTION</th>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><a href="http://jira.codehaus.org/browse/SWIZZLE-10">[SWIZZLE-10]</a> <![CDATA[Beer fridge for the garage]]></td>
+        </tr>
+      </table>
+    </section>
+  </body>
+</document>
