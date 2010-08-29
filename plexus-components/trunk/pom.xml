@@ -92,6 +92,19 @@
   
   <profiles>
     <profile>
+      <id>parent-release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-release-plugin</artifactId>
+            <configuration>
+              <arguments>-N -Pplexus-release</arguments>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>maven-3</id>
       <activation>
         <file>
@@ -117,7 +130,6 @@
           </plugin>
         </plugins>
       </build>
-
     </profile>  
     <profile>
       <id>m2e</id>
