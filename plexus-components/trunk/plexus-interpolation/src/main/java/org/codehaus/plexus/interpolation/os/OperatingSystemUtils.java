@@ -27,6 +27,7 @@ package org.codehaus.plexus.interpolation.os;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Locale;
 import java.util.Properties;
 
 /**
@@ -102,7 +103,7 @@ public final class OperatingSystemUtils
     
                     if ( !caseSensitive )
                     {
-                        lastKey = lastKey.toUpperCase();
+                        lastKey = lastKey.toUpperCase( Locale.ENGLISH );
                     }
     
                     lastVal = line.substring( idx + 1 );
