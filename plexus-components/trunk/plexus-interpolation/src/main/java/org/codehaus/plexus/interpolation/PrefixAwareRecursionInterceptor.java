@@ -112,7 +112,7 @@ public class PrefixAwareRecursionInterceptor
             return Collections.EMPTY_LIST;
         }
 
-        int idx = nakedExpressions.indexOf( expression );
+        int idx = nakedExpressions.indexOf( expr );
         if ( idx < 0 )
         {
             return Collections.EMPTY_LIST;

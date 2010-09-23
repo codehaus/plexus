@@ -291,9 +291,7 @@ public class RegexBasedInterpolator
 
             if ( recursionInterceptor.hasRecursiveExpression( realExpr ) )
             {
-                throw new InterpolationException( "Detected the following recursive expression cycle: "
-                                                                  + recursionInterceptor.getExpressionCycle( realExpr ),
-                                                  wholeExpr );
+                throw new InterpolationCycleException( recursionInterceptor, realExpr, wholeExpr );
             }
 
             recursionInterceptor.expressionResolutionStarted( realExpr );
