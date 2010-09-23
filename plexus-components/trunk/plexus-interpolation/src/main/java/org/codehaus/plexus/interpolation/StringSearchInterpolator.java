@@ -186,6 +186,8 @@ public class StringSearchInterpolator
                 }
 
                 recursionInterceptor.expressionResolutionStarted( realExpr );
+                try
+                {
 
                 Object value = existingAnswers.get( realExpr );
                 Object bestAnswer = null;
@@ -238,8 +240,12 @@ public class StringSearchInterpolator
                 {
                     unresolvable.add( wholeExpr );
                 }
-                
-                recursionInterceptor.expressionResolutionFinished( realExpr );
+
+                }
+                finally
+                {
+                    recursionInterceptor.expressionResolutionFinished( realExpr );
+                }
             }
 
             if ( !resolved )
