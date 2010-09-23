@@ -188,59 +188,58 @@ public class StringSearchInterpolator
                 recursionInterceptor.expressionResolutionStarted( realExpr );
                 try
                 {
-
-                Object value = existingAnswers.get( realExpr );
-                Object bestAnswer = null;
-                for ( Iterator it = valueSources.iterator(); it.hasNext() && value == null; )
-                {
-                    ValueSource vs = (ValueSource) it.next();
-
-                    value = vs.getValue( realExpr );
-                    
-                    if ( value != null && value.toString().indexOf( wholeExpr ) > -1 )
+                    Object value = existingAnswers.get( realExpr );
+                    Object bestAnswer = null;
+                    for ( Iterator it = valueSources.iterator(); it.hasNext() && value == null; )
                     {
-                        bestAnswer = value;
-                        value = null;
-                    }
-                }
-                
-                // this is the simplest recursion check to catch exact recursion 
-                // (non synonym), and avoid the extra effort of more string 
-                // searching.
-                if ( value == null && bestAnswer != null )
-                {
-                    throw new InterpolationCycleException( recursionInterceptor, realExpr, wholeExpr );
-                }
+                        ValueSource vs = (ValueSource) it.next();
 
-                if ( value != null )
-                {
-                    value = interpolate( String.valueOf( value ), recursionInterceptor, unresolvable );
-                    
-                    if ( postProcessors != null && !postProcessors.isEmpty() )
-                    {
-                        for ( Iterator it = postProcessors.iterator(); it.hasNext(); )
+                        value = vs.getValue( realExpr );
+
+                        if ( value != null && value.toString().indexOf( wholeExpr ) > -1 )
                         {
-                            InterpolationPostProcessor postProcessor = (InterpolationPostProcessor) it.next();
-                            Object newVal = postProcessor.execute( realExpr, value );
-                            if ( newVal != null )
-                            {
-                                value = newVal;
-                                break;
-                            }
+                            bestAnswer = value;
+                            value = null;
                         }
                     }
 
-                    // could use:
-                    // result = matcher.replaceFirst( stringValue );
-                    // but this could result in multiple lookups of stringValue, and replaceAll is not correct behaviour
-                    result.append( String.valueOf( value ) );
-                    resolved = true;
-                }
-                else
-                {
-                    unresolvable.add( wholeExpr );
-                }
+                    // this is the simplest recursion check to catch exact recursion
+                    // (non synonym), and avoid the extra effort of more string
+                    // searching.
+                    if ( value == null && bestAnswer != null )
+                    {
+                        throw new InterpolationCycleException( recursionInterceptor, realExpr, wholeExpr );
+                    }
 
+                    if ( value != null )
+                    {
+                        value = interpolate( String.valueOf( value ), recursionInterceptor, unresolvable );
+
+                        if ( postProcessors != null && !postProcessors.isEmpty() )
+                        {
+                            for ( Iterator it = postProcessors.iterator(); it.hasNext(); )
+                            {
+                                InterpolationPostProcessor postProcessor = (InterpolationPostProcessor) it.next();
+                                Object newVal = postProcessor.execute( realExpr, value );
+                                if ( newVal != null )
+                                {
+                                    value = newVal;
+                                    break;
+                                }
+                            }
+                        }
+
+                        // could use:
+                        // result = matcher.replaceFirst( stringValue );
+                        // but this could result in multiple lookups of stringValue, and replaceAll is not correct
+                        // behaviour
+                        result.append( String.valueOf( value ) );
+                        resolved = true;
+                    }
+                    else
+                    {
+                        unresolvable.add( wholeExpr );
+                    }
                 }
                 finally
                 {
