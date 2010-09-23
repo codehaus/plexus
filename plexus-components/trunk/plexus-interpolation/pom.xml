@@ -8,13 +8,13 @@
   </parent>
 
   <artifactId>plexus-interpolation</artifactId>
-  <version>1.14-SNAPSHOT</version>
+  <version>1.14</version>
 
   <name>Plexus Interpolation API</name>
 
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-components/trunk/plexus-interpolation</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-components/trunk/plexus-interpolation</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/plexus/plexus-components/trunk/plexus-interpolation</url>
+    <connection>scm:svn:http://svn.codehaus.org/plexus/plexus-components/tags/plexus-interpolation-1.14</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/plexus/plexus-components/tags/plexus-interpolation-1.14</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/plexus/plexus-components/tags/plexus-interpolation-1.14</url>
   </scm>
 </project>
