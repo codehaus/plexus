@@ -132,8 +132,6 @@ public class MultiDelimiterInterpolatorFilterReader
     /**
      * @param in reader to use
      * @param interpolator interpolator instance to use
-     * @param beginToken start token to use
-     * @param endToken end token to use
      * @param ri The {@link RecursionInterceptor} to use to prevent recursive expressions.
      * @since 1.12
      */
