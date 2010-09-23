@@ -297,41 +297,40 @@ public class RegexBasedInterpolator
             recursionInterceptor.expressionResolutionStarted( realExpr );
             try
             {
-
-            Object value = existingAnswers.get( realExpr );
-            for ( Iterator it = valueSources.iterator(); it.hasNext() && value == null; )
-            {
-                ValueSource vs = (ValueSource) it.next();
-
-                value = vs.getValue( realExpr );
-            }
-
-            if ( value != null )
-            {
-                value = interpolate( String.valueOf( value ), recursionInterceptor, expressionPattern, realExprGroup );
-                
-                if ( postProcessors != null && !postProcessors.isEmpty() )
+                Object value = existingAnswers.get( realExpr );
+                for ( Iterator it = valueSources.iterator(); it.hasNext() && value == null; )
                 {
-                    for ( Iterator it = postProcessors.iterator(); it.hasNext(); )
-                    {
-                        InterpolationPostProcessor postProcessor = (InterpolationPostProcessor) it.next();
-                        Object newVal = postProcessor.execute( realExpr, value );
-                        if ( newVal != null )
-                        {
-                            value = newVal;
-                            break;
-                        }
-                    }
+                    ValueSource vs = (ValueSource) it.next();
+
+                    value = vs.getValue( realExpr );
                 }
 
-                // could use:
-                // result = matcher.replaceFirst( stringValue );
-                // but this could result in multiple lookups of stringValue, and replaceAll is not correct behaviour
-                result = StringUtils.replace( result, wholeExpr, String.valueOf( value ) );
+                if ( value != null )
+                {
+                    value =
+                        interpolate( String.valueOf( value ), recursionInterceptor, expressionPattern, realExprGroup );
 
-                matcher.reset( result );
-            }
+                    if ( postProcessors != null && !postProcessors.isEmpty() )
+                    {
+                        for ( Iterator it = postProcessors.iterator(); it.hasNext(); )
+                        {
+                            InterpolationPostProcessor postProcessor = (InterpolationPostProcessor) it.next();
+                            Object newVal = postProcessor.execute( realExpr, value );
+                            if ( newVal != null )
+                            {
+                                value = newVal;
+                                break;
+                            }
+                        }
+                    }
 
+                    // could use:
+                    // result = matcher.replaceFirst( stringValue );
+                    // but this could result in multiple lookups of stringValue, and replaceAll is not correct behaviour
+                    result = StringUtils.replace( result, wholeExpr, String.valueOf( value ) );
+
+                    matcher.reset( result );
+                }
             }
             finally
             {
