@@ -295,6 +295,8 @@ public class RegexBasedInterpolator
             }
 
             recursionInterceptor.expressionResolutionStarted( realExpr );
+            try
+            {
 
             Object value = existingAnswers.get( realExpr );
             for ( Iterator it = valueSources.iterator(); it.hasNext() && value == null; )
@@ -330,7 +332,11 @@ public class RegexBasedInterpolator
                 matcher.reset( result );
             }
 
-            recursionInterceptor.expressionResolutionFinished( realExpr );
+            }
+            finally
+            {
+                recursionInterceptor.expressionResolutionFinished( realExpr );
+            }
         }
         
         return result;

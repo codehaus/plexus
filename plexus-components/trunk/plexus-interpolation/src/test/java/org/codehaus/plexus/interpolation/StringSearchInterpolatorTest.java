@@ -17,7 +17,9 @@ package org.codehaus.plexus.interpolation;
  */
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -375,6 +377,51 @@ public class StringSearchInterpolatorTest
         String result = interpolator.interpolate( null );
 
         assertEquals( "", result );
+    }
+
+    public void testInterruptedInterpolate()
+        throws InterpolationException
+    {
+        Interpolator interpolator = new StringSearchInterpolator();
+        RecursionInterceptor recursionInterceptor = new SimpleRecursionInterceptor();
+        final boolean[] error = new boolean[] { false };
+        interpolator.addValueSource( new ValueSource()
+        {
+            public Object getValue( String expression ) {
+                if ( expression.equals( "key" ) )
+                {
+                    if ( error[ 0 ] )
+                    {
+                        throw new IllegalStateException( "broken" );
+                    }
+                    return "val";
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            public List getFeedback()
+            {
+                return Collections.EMPTY_LIST;
+            }
+            public void clearFeedback()
+            {
+            }
+        } );
+        assertEquals( "control case", "-val-" , interpolator.interpolate( "-${key}-", recursionInterceptor ) );
+        error[ 0 ] = true;
+        try
+        {
+            interpolator.interpolate( "-${key}-", recursionInterceptor );
+            fail( "should have thrown exception" );
+        }
+        catch ( IllegalStateException x )
+        {
+            // right
+        }
+        error[ 0 ] = false;
+        assertEquals( "should not believe there is a cycle here", "-val-", interpolator.interpolate( "-${key}-", recursionInterceptor ) );
     }
 
     public String getVar()
