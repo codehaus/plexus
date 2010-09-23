@@ -35,6 +35,7 @@ public class PrefixAwareRecursionInterceptorTest
         receptor.expressionResolutionStarted( expr );
 
         assertTrue( receptor.hasRecursiveExpression( expr ) );
+        assertEquals( "[first]", receptor.getExpressionCycle( expr ).toString() );
 
         receptor.expressionResolutionFinished( expr );
 

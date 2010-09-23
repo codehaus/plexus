@@ -24,7 +24,7 @@ public class InterpolationCycleException
 
     public InterpolationCycleException( RecursionInterceptor recursionInterceptor, String realExpr, String wholeExpr )
     {
-        super( "Detected the following recursive expression cycle: "
+        super( "Detected the following recursive expression cycle in '" + realExpr + "': "
                         + recursionInterceptor.getExpressionCycle( realExpr ), wholeExpr );
         
     }
