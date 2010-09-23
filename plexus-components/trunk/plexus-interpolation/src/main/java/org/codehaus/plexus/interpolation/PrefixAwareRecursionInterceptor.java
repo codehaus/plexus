@@ -43,10 +43,6 @@ public class PrefixAwareRecursionInterceptor
 
     private final Collection possiblePrefixes;
 
-    private String endToken = DEFAULT_END_TOKEN;
-
-    private String startToken = DEFAULT_START_TOKEN;
-
     private boolean watchUnprefixedExpressions = true;
 
     /**
