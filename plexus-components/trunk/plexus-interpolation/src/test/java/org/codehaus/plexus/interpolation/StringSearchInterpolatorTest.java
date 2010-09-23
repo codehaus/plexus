@@ -175,12 +175,12 @@ public class StringSearchInterpolatorTest
     {
         StringSearchInterpolator rbi = new StringSearchInterpolator();
 
-        rbi.addValueSource( new EnvarBasedValueSource() );
+        rbi.addValueSource( new EnvarBasedValueSource( false ) );
 
-        String result = rbi.interpolate( "this is a ${env.HOME}" );
+        String result = rbi.interpolate( "this is a ${env.HOME} ${env.PATH}" );
 
-        assertFalse( "this is a ${HOME}".equals( result ) );
-        assertFalse( "this is a ${env.HOME}".equals( result ) );
+        assertFalse( "this is a ${HOME} ${PATH}".equals( result ) );
+        assertFalse( "this is a ${env.HOME} ${env.PATH}".equals( result ) );
     }
 
     public void testUsePostProcessor_DoesNotChangeValue()
