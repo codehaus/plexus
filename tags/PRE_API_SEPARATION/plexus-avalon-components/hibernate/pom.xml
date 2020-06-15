@@ -50,7 +50,7 @@
     <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
-      <version>2.1</version>
+      <version>3.2.2</version>
       <url>http://jakarta.apache.org/commons/sandbox/attributes/</url>
     </dependency>
  
